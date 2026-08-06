@@ -1,6 +1,6 @@
 # bhc-website
 
-The new **Beyond House Cleaning** website — an SEO-first rebuild targeting the **B / DY / TF / WS / WV** postcode areas (Birmingham, Dudley, Telford, Walsall, Wolverhampton).
+The new **Beyond House Cleaning** website — an SEO-first rebuild covering the existing **Warwickshire + Coventry** area *and* expanding into the **B / DY / TF / WS / WV** postcode areas (Birmingham, Dudley, Telford, Walsall, Wolverhampton).
 
 The primary goal is **online visibility**: organic ranking and Google Maps / map-pack ranking. Every choice — markup, framework, hosting, content — is made for SEO first. Booking and admin are out of scope; they live in `project-bk-v3`.
 
@@ -35,8 +35,9 @@ Status: **research & design phase.** No site code yet.
 
 - **Arbor Trail's engine is 85 programmatic location×service pages plus review volume — not blogging** (they have exactly one blog post).
 - They carry **zero structured data** and **four competing URL patterns** that cannibalise each other. Both are cheap wins for us.
-- Our current 95 location pages all target **Warwickshire**, which the new service area abandons. Needs a redirect map.
-- The GBP pin is in **Leamington Spa** — 25–50 miles from the new target areas. One pin there **cannot** rank in the map pack across B/DY/TF/WS/WV. See open decision #1 in `docs/goals.md`.
+- **Decided 2026-08-06:** keep Warwickshire + Coventry and add the five new postcode areas on top. Expansion, not pivot — so the existing `/location/<region>/<town>/<service>` pattern is preserved and **no redirects are needed** for the 95 indexed pages. Combined target ≈ **410 pages**.
+- Two defects on the live site must be fixed in the rebuild: **duplicate Coventry slugs** (`south-coventry` *and* `coventry-south`) and a **service-slug mismatch** leaving 57 location pages with no parent service page.
+- The GBP pin appears to be in **Leamington Spa** — great for Warwickshire/Coventry, but one pin **cannot** rank in the map pack in the Black Country or Telford. Pin location still needs verifying.
 
 ## Build sequence
 
