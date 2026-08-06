@@ -7,3 +7,5 @@ dist/
 build/
 .vercel/
 .next/
+.impeccable/
+.claude/worktrees/
