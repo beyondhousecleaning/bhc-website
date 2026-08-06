@@ -15,8 +15,8 @@ Not the goal (for this project): booking-flow UX, admin tooling. Those live in P
 | Map-pack presence for `cleaner <town>` across target towns | unknown | top 3 in core towns |
 | Organic ranking for `<service> <town>` | Warwickshire only | page 1 across tier-1 post towns |
 | Indexed location×service pages | 95 (Warwickshire only) | ~336 (Warwickshire + Coventry + B/DY/TF/WS/WV) |
-| Google review count | **unknown — need from Sam** | grow continuously |
-| Review count shown on site | not shown anywhere | on every page |
+| Google review count | **175 at 4.9★** (read from the site's Trustmary widget payload, 2026-08-06) | grow continuously |
+| Review count shown on site | **JS-only** — inside a 516 KB Trustmary bundle, absent from HTML, titles, descriptions and schema | server-rendered on every page |
 
 ## Build sequence (Sam's plan)
 
@@ -66,6 +66,10 @@ So: **keep the Leamington pin.** Map pack is winnable near it (Warwickshire/Cove
 ## Defects on the current site to fix in the rebuild
 
 Found while auditing the live sitemap. Both must be resolved since we're keeping these pages.
+Both were **confirmed by measurement** in [`research/seo-audit-2026-08-06.md`](research/seo-audit-2026-08-06.md), which also
+found four more (broken H1s on 101 pages, a footer `tel:` link dialling the wrong number,
+no hub-and-spoke architecture, and zero schema) — and **refuted thin content as a scaling
+risk**: the 95 location pages are ~2× *less* similar to each other than Arbor Trail's.
 
 | Defect | Detail | Fix |
 |---|---|---|
