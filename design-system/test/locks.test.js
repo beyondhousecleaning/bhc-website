@@ -1,0 +1,159 @@
+/**
+ * Lock assertions.
+ *
+ * The design system's locks are written as assertions precisely so they can be
+ * tested rather than hoped for. The live site regressed silently on nearly all
+ * of them; guidance caught none.
+ *
+ *   node --test test/
+ */
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Import the PURE modules — node --test cannot parse JSX, and the locks are
+// deliberately implemented in plain JS so they are testable without a build.
+import { formatPhone, toDial } from '../src/components/NAPFooter/formatPhone.js';
+import { distanceMiles, nearestTowns, buildInterlinks } from '../src/components/InterlinkBlock/geo.js';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const digits = (s) => String(s).replace(/\D/g, '');
+
+/* --- Lock 4 — href digits must equal displayed digits -------------------- */
+
+test('Lock 4: display string is derived from the dial string', () => {
+  // Both input forms must converge on one displayed number.
+  assert.equal(formatPhone('+447861936533'), '+44 7861 936533');
+  assert.equal(formatPhone('07861936533'), '+44 7861 936533');
+  assert.equal(formatPhone('+44 7861 936533'), '+44 7861 936533');
+});
+
+test('Lock 4: the live-site bug is impossible through this API', () => {
+  // Live footer: DISPLAYS +44 7861 936533, DIALS 07441918832.
+  const wrong = '07441918832';
+  const display = formatPhone(wrong);
+
+  // Whatever is displayed always matches what is dialled, nationally.
+  assert.equal(digits(display).replace(/^44/, ''), digits(wrong).replace(/^0/, ''));
+
+  // And it is NOT the number the live site displays alongside it.
+  assert.notEqual(display, '+44 7861 936533');
+});
+
+test('Lock 4: NAPFooter markup contains exactly one tel: link', () => {
+  const html = readFileSync(
+    join(ROOT, 'src/components/NAPFooter/NAPFooter.html'),
+    'utf8'
+  );
+  const tels = html.match(/href="tel:[^"]+"/g) || [];
+  assert.equal(tels.length, 1, `expected 1 tel: link, found ${tels.length}`);
+
+  // …and its digits match the visible label.
+  const href = tels[0].match(/tel:([^"]+)/)[1];
+  const label = html.match(/class="bhc-footer__phone"[^>]*>([^<]+)</)[1];
+  assert.equal(digits(href).replace(/^44/, ''), digits(label).replace(/^44/, ''));
+});
+
+/* --- Lock 5 — no street address or postcode ------------------------------ */
+
+test('Lock 5: no UK postcode appears in any component output', () => {
+  const POSTCODE = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/;
+  const files = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.(jsx|html|css)$/.test(e.name)) files.push(p);
+    }
+  };
+  walk(join(ROOT, 'src'));
+  files.push(join(ROOT, 'styles.css'), join(ROOT, 'tokens.css'));
+
+  for (const f of files) {
+    const src = readFileSync(f, 'utf8');
+    // Strip comments — the docs legitimately reference CV32 6EQ as the thing NOT to ship.
+    const stripped = src
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/^\s*\/\/.*$/gm, '')
+      .replace(/<!--[\s\S]*?-->/g, '');
+    assert.ok(!POSTCODE.test(stripped), `postcode found in rendered output of ${f}`);
+  }
+});
+
+/* --- Lock 7 — every <img> has non-empty alt ------------------------------ */
+
+test('Lock 7: every <img> in a preview has non-empty alt', () => {
+  const walk = (dir, out = []) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p, out);
+      else if (e.name.endsWith('.html')) out.push(p);
+    }
+    return out;
+  };
+  for (const f of walk(join(ROOT, 'src'))) {
+    const html = readFileSync(f, 'utf8');
+    for (const tag of html.match(/<img\b[^>]*>/g) || []) {
+      const alt = tag.match(/\balt="([^"]*)"/);
+      assert.ok(alt && alt[1].trim().length, `<img> without usable alt in ${f}: ${tag}`);
+    }
+  }
+});
+
+/* --- Preview cards ------------------------------------------------------- */
+
+test('every preview declares a @dsCard group on line 1', () => {
+  const walk = (dir, out = []) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p, out);
+      else if (e.name.endsWith('.html')) out.push(p);
+    }
+    return out;
+  };
+  const previews = walk(join(ROOT, 'src'));
+  assert.ok(previews.length >= 6, 'expected a preview per component');
+  for (const f of previews) {
+    const first = readFileSync(f, 'utf8').split('\n')[0];
+    assert.match(first, /^<!--\s*@dsCard group="[^"]+"\s*-->$/, `bad @dsCard marker in ${f}`);
+  }
+});
+
+/* --- Interlink geometry -------------------------------------------------- */
+
+test('nearestTowns is ordered by real distance and excludes self', () => {
+  const towns = [
+    { slug: 'warwick', name: 'Warwick', region: 'warwickshire', lat: 52.2819, lon: -1.5849 },
+    { slug: 'leamington-spa', name: 'Leamington Spa', region: 'warwickshire', lat: 52.2852, lon: -1.5201 },
+    { slug: 'kenilworth', name: 'Kenilworth', region: 'warwickshire', lat: 52.3417, lon: -1.5822 },
+    { slug: 'coventry', name: 'Coventry', region: 'west-midlands', lat: 52.4068, lon: -1.5197 },
+    { slug: 'telford', name: 'Telford', region: 'shropshire', lat: 52.6784, lon: -2.4453 },
+  ];
+  const near = nearestTowns(towns[0], towns, 3);
+
+  assert.equal(near.length, 3);
+  assert.ok(!near.some((n) => n.town.slug === 'warwick'), 'must exclude itself');
+  assert.deepEqual(
+    near.map((n) => n.town.slug),
+    ['leamington-spa', 'kenilworth', 'coventry']
+  );
+  // Telford is ~55 miles away and must never surface as "nearby" for Warwick.
+  assert.ok(distanceMiles(towns[0], towns[4]) > 40);
+  // Ordering is strictly ascending.
+  for (let i = 1; i < near.length; i++) {
+    assert.ok(near[i].miles >= near[i - 1].miles);
+  }
+});
+
+test('the audited pin distances reproduce', () => {
+  const pin = { lat: 52.29358, lon: -1.55378 }; // 84 Acacia Road, CV32 6EQ
+  const birmingham = { lat: 52.4797, lon: -1.9026 };
+  const telford = { lat: 52.6784, lon: -2.4453 };
+
+  // The SEO audit reports 18.8 and 46.2 miles. Allow a mile of geocoding slack.
+  assert.ok(Math.abs(distanceMiles(pin, birmingham) - 18.8) < 1.5);
+  assert.ok(Math.abs(distanceMiles(pin, telford) - 46.2) < 1.5);
+});

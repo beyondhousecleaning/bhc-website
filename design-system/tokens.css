@@ -1,0 +1,121 @@
+/* ============================================================================
+   Beyond House Cleaning — design tokens
+   Single source of truth. Spec: docs/design/design-system.md §1
+   Every contrast ratio below was computed from hex, not eyeballed.
+   ========================================================================= */
+
+:root {
+  /* --- Ink & structure ---------------------------------------------------
+     The logo's "navy" (#2064B1) is really a mid-blue and reads weak as body
+     text, so --ink extends the family downward rather than replacing it.   */
+  --bhc-ink:            #0B2340;   /* body, headings — 15.81:1 on white */
+  --bhc-ink-muted:      #4A5A72;   /* secondary text, captions — 7.01:1 */
+
+  /* --- Brand blue -------------------------------------------------------- */
+  --bhc-navy:           #2064B1;   /* surfaces; white text OK at 5.97:1 */
+  --bhc-blue:           #197EC7;   /* white is 4.33:1 — LARGE TEXT ONLY */
+  --bhc-cyan:           #0DA6E8;   /* ink on top OK (5.75:1); NEVER white (2.75:1) */
+
+  /* --- Action: orange ----------------------------------------------------
+     Orange fills take --bhc-ink labels. White on --bhc-action is 3.05:1
+     against a 4.5:1 requirement — the bug most cleaning sites ship.        */
+  --bhc-action:         #F06C24;   /* CTAs, links, active. Ink label = 5.17:1 */
+  --bhc-action-hover:   #C2410C;   /* hover/press; safe with white at 5.18:1 */
+  --bhc-sponge:         #F78C34;   /* the mark, warm tints. Ink on top = 6.59:1 */
+
+  /* --- Warm neutrals -----------------------------------------------------
+     Arbor Trail bands sections in #eef7ff, a COLD blue tint. Warm off-white
+     against the same blues is most of what separates "warm local team" from
+     "cleaning corp". Do not substitute neutral greys.                      */
+  --bhc-paper:          #FFFFFF;
+  --bhc-paper-warm:     #FBF8F5;   /* section bands — ink is 14.94:1 */
+  --bhc-paper-tint:     #F5EFE8;   /* cards, quiet blocks — ink is 13.84:1 */
+  --bhc-line:           #E4DAD0;   /* borders */
+
+  /* --- Feedback ---------------------------------------------------------- */
+  --bhc-success:        #1B7A4C;
+  --bhc-warning:        #B45309;
+  --bhc-danger:         #B42318;
+
+  /* --- Type --------------------------------------------------------------
+     Humanist, NOT geometric. Not Poppins (Arbor Trail's face, and the most
+     templated choice in the trades category). Not Inter. Two families max,
+     self-hosted variable woff2, subset to Latin — never a webfont CDN.
+     Final faces are Claude Design's call; these are the fallback stacks.   */
+  --bhc-font-body:    'Public Sans', ui-sans-serif, system-ui, -apple-system,
+                      'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --bhc-font-display: 'Figtree', var(--bhc-font-body);
+
+  /* Fluid 375 → 1280px, 1.25 ratio */
+  --bhc-text-xs:   clamp(0.75rem,   0.724rem + 0.11vw, 0.8125rem);  /* 12 → 13 */
+  --bhc-text-sm:   clamp(0.875rem,  0.849rem + 0.11vw, 0.9375rem);  /* 14 → 15 */
+  --bhc-text-base: clamp(1rem,      0.974rem + 0.11vw, 1.0625rem);  /* 16 → 17 */
+  --bhc-text-lg:   clamp(1.125rem,  1.073rem + 0.22vw, 1.25rem);    /* 18 → 20 */
+  --bhc-text-xl:   clamp(1.375rem,  1.297rem + 0.33vw, 1.5625rem);  /* 22 → 25 */
+  --bhc-text-2xl:  clamp(1.6875rem, 1.584rem + 0.44vw, 1.9375rem);  /* 27 → 31 */
+  --bhc-text-3xl:  clamp(2.125rem,  1.866rem + 1.11vw, 2.75rem);    /* 34 → 44 */
+
+  --bhc-weight-normal:   400;
+  --bhc-weight-medium:   500;
+  --bhc-weight-semibold: 600;
+  --bhc-weight-bold:     700;
+
+  --bhc-leading-tight: 1.15;   /* headings */
+  --bhc-leading-snug:  1.35;   /* leads */
+  --bhc-leading-body:  1.65;   /* body — these are 800–1,100 word pages */
+  --bhc-tracking-tight: -0.02em;  /* display sizes only */
+
+  /* --- Spacing: 4px base -------------------------------------------------- */
+  --bhc-space-1:   4px;
+  --bhc-space-2:   8px;
+  --bhc-space-3:  12px;
+  --bhc-space-4:  16px;
+  --bhc-space-6:  24px;
+  --bhc-space-8:  32px;
+  --bhc-space-12: 48px;
+  --bhc-space-16: 64px;
+  --bhc-space-24: 96px;
+  --bhc-space-32: 128px;
+
+  /* Section padding sits at the generous end — whitespace is half of "warm" */
+  --bhc-section-y: clamp(var(--bhc-space-16), 8vw, var(--bhc-space-24));
+
+  /* --- Radii: rounded is part of "warm" ----------------------------------- */
+  --bhc-radius-sm:   6px;
+  --bhc-radius-md:  10px;
+  --bhc-radius-lg:  16px;
+  --bhc-radius-xl:  24px;
+  --bhc-radius-full: 9999px;
+
+  /* --- Elevation ---------------------------------------------------------- */
+  --bhc-shadow-sm: 0 1px 2px rgba(11, 35, 64, 0.06);
+  --bhc-shadow-md: 0 4px 12px rgba(11, 35, 64, 0.08);
+  --bhc-shadow-lg: 0 12px 32px rgba(11, 35, 64, 0.10);
+
+  /* --- Containers ---------------------------------------------------------
+     --container-prose is a measure, not a width. 800–1,100 word pages are
+     the one metric already beating the competition; unreadable prose wastes
+     that advantage.                                                        */
+  --bhc-container-prose:  68ch;
+  --bhc-container-narrow: 800px;
+  --bhc-container:       1200px;
+  --bhc-container-wide:  1440px;
+
+  /* --- Motion -------------------------------------------------------------- */
+  --bhc-dur-fast: 120ms;
+  --bhc-dur:      200ms;
+  --bhc-dur-slow: 320ms;
+  --bhc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* --- Focus --------------------------------------------------------------- */
+  --bhc-focus-ring: 3px solid var(--bhc-action-hover);
+  --bhc-focus-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --bhc-dur-fast: 0ms;
+    --bhc-dur:      0ms;
+    --bhc-dur-slow: 0ms;
+  }
+}

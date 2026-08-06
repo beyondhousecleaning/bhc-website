@@ -4,7 +4,8 @@ The new **Beyond House Cleaning** website — an SEO-first rebuild covering the 
 
 The primary goal is **online visibility**: organic ranking and Google Maps / map-pack ranking. Every choice — markup, framework, hosting, content — is made for SEO first. Booking and admin are out of scope; they live in `project-bk-v3`.
 
-Status: **research & design phase.** No site code yet.
+Status: **design phase.** Research and the SEO audit are done; the design system is built and
+ready to sync to Claude Design. No site code yet.
 
 ## Repo layout
 
@@ -13,8 +14,9 @@ Status: **research & design phase.** No site code yet.
 | `docs/goals.md` | Goals, success measures, build sequence, and the open decisions awaiting Sam |
 | `docs/research/` | Competitor teardown, service-area data, sitemap snapshots, the live-site SEO audit |
 | `docs/seo/` | SEO tooling install log and the audit kickoff prompt |
-| `docs/design/` | The design system — tokens, components, page templates, SEO locks |
+| `docs/design/` | The design system spec — tokens, components, page templates, SEO locks |
 | `docs/brand/` | Brand brief, logo audit, photo spec |
+| `design-system/` | **The package Claude Design reads.** `tokens.css` + React components + the locks as tests |
 | `assets/logo/` | Current logo source files (raster only — needs SVG rebuild) |
 
 ## Documents
@@ -59,13 +61,14 @@ Status: **research & design phase.** No site code yet.
 | # | Step | Tool | Status |
 |---|---|---|---|
 | 0 | Design system — tokens, components, templates, locks | Claude Code | ✅ **specced** — [`docs/design/design-system.md`](docs/design/design-system.md) |
-| 1 | Build the `design-system/` package and `/design-sync` it | Claude Code → Claude Design | next |
-| 2 | Clean up the logo (SVG rebuild + lockup family) | Claude Design | brief ready |
-| 3 | Design the site — look & feel only | Claude Design | blocked on photos |
-| 4 | Architect the build | Opus 5 | |
-| 5 | Build it | Claude Code | |
-| 6 | SEO-optimise | Claude Code | |
-| 7 | Ongoing SEO/content system | stack TBD | |
+| 1 | Build the [`design-system/`](design-system/) package | Claude Code | ✅ **built** — tokens + 6 components, 8 lock tests passing |
+| 2 | `/design-sync` it into Claude Design | **Sam** | next — see below |
+| 3 | Clean up the logo (SVG rebuild + lockup family) | Claude Design | brief ready |
+| 4 | Design the site — look & feel only | Claude Design | blocked on photos |
+| 5 | Architect the build | Opus 5 | |
+| 6 | Build it | Claude Code | |
+| 7 | SEO-optimise | Claude Code | |
+| 8 | Ongoing SEO/content system | stack TBD | |
 
 **The Claude Design handoff.** `/design-sync` reads a local package of tokens + React
 components and pushes it into a Claude Design project. It is **user-invoked only** — it must be

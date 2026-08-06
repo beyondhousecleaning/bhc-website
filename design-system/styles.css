@@ -1,0 +1,304 @@
+/* ============================================================================
+   Beyond House Cleaning — base + component styles
+   Depends on tokens.css. Spec: docs/design/design-system.md
+   ========================================================================= */
+
+@import './tokens.css';
+
+/* --- Base ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--bhc-font-body);
+  font-size: var(--bhc-text-base);
+  line-height: var(--bhc-leading-body);
+  color: var(--bhc-ink);
+  background: var(--bhc-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--bhc-font-display);
+  line-height: var(--bhc-leading-tight);
+  letter-spacing: var(--bhc-tracking-tight);
+  font-weight: var(--bhc-weight-bold);
+  margin: 0 0 var(--bhc-space-4);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--bhc-text-3xl); }
+h2 { font-size: var(--bhc-text-2xl); }
+h3 { font-size: var(--bhc-text-xl); }
+h4 { font-size: var(--bhc-text-lg); }
+
+p { margin: 0 0 var(--bhc-space-4); }
+
+a { color: var(--bhc-action-hover); text-underline-offset: 0.15em; }
+a:hover { color: var(--bhc-action); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: var(--bhc-focus-ring);
+  outline-offset: var(--bhc-focus-offset);
+  border-radius: var(--bhc-radius-sm);
+}
+
+.bhc-skip-link {
+  position: absolute;
+  left: var(--bhc-space-4);
+  top: calc(-1 * var(--bhc-space-16));
+  z-index: 100;
+  padding: var(--bhc-space-3) var(--bhc-space-4);
+  background: var(--bhc-ink);
+  color: var(--bhc-paper);
+  border-radius: var(--bhc-radius-md);
+  transition: top var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-skip-link:focus { top: var(--bhc-space-4); }
+
+.bhc-visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --- Layout -------------------------------------------------------------- */
+
+.bhc-container {
+  width: 100%;
+  max-width: var(--bhc-container);
+  margin-inline: auto;
+  padding-inline: var(--bhc-space-6);
+}
+.bhc-container--narrow { max-width: var(--bhc-container-narrow); }
+.bhc-container--wide   { max-width: var(--bhc-container-wide); }
+
+.bhc-section { padding-block: var(--bhc-section-y); }
+.bhc-section--warm { background: var(--bhc-paper-warm); }
+.bhc-section--tint { background: var(--bhc-paper-tint); }
+.bhc-section--navy { background: var(--bhc-navy); color: var(--bhc-paper); }
+.bhc-section--navy :where(h1, h2, h3, h4) { color: var(--bhc-paper); }
+
+/* --- Button --------------------------------------------------------------
+   Orange fills take INK labels, never white. White on --bhc-action is
+   3.05:1 against a 4.5:1 requirement.                                     */
+
+.bhc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bhc-space-2);
+  font-family: var(--bhc-font-body);
+  font-weight: var(--bhc-weight-semibold);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  border-radius: var(--bhc-radius-full);
+  cursor: pointer;
+  transition: background-color var(--bhc-dur) var(--bhc-ease),
+              border-color var(--bhc-dur) var(--bhc-ease),
+              color var(--bhc-dur) var(--bhc-ease),
+              transform var(--bhc-dur-fast) var(--bhc-ease);
+}
+.bhc-btn:active { transform: translateY(1px); }
+.bhc-btn[aria-disabled='true'] { opacity: 0.5; pointer-events: none; }
+
+.bhc-btn--sm { font-size: var(--bhc-text-sm);  padding: var(--bhc-space-2) var(--bhc-space-4); }
+.bhc-btn--md { font-size: var(--bhc-text-base); padding: var(--bhc-space-3) var(--bhc-space-6); }
+.bhc-btn--lg { font-size: var(--bhc-text-lg);  padding: var(--bhc-space-4) var(--bhc-space-8); }
+
+/* Primary — the CTA pairing. Ink on orange = 5.17:1 */
+.bhc-btn--primary {
+  background: var(--bhc-action);
+  color: var(--bhc-ink);
+}
+.bhc-btn--primary:hover {
+  background: var(--bhc-action-hover);
+  color: var(--bhc-paper);            /* 5.18:1 on the darker orange */
+}
+
+/* Secondary — outlined ink */
+.bhc-btn--secondary {
+  background: transparent;
+  color: var(--bhc-ink);
+  border-color: var(--bhc-ink);
+}
+.bhc-btn--secondary:hover { background: var(--bhc-ink); color: var(--bhc-paper); }
+
+/* Ghost — for use on navy surfaces */
+.bhc-btn--ghost {
+  background: transparent;
+  color: currentColor;
+  border-color: currentColor;
+}
+.bhc-btn--ghost:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* --- Hero ----------------------------------------------------------------
+   The eyebrow is decoration. The <h1> is ALWAYS the keyword line.
+   See Hero.prompt.md for why this is enforced structurally.               */
+
+.bhc-hero { position: relative; overflow: hidden; background: var(--bhc-paper-warm); }
+.bhc-hero__grid {
+  display: grid;
+  gap: var(--bhc-space-12);
+  align-items: center;
+  padding-block: var(--bhc-section-y);
+}
+@media (min-width: 900px) {
+  .bhc-hero__grid { grid-template-columns: 1fr 1fr; gap: var(--bhc-space-16); }
+}
+
+.bhc-hero__eyebrow {
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-lg);
+  font-weight: var(--bhc-weight-semibold);
+  color: var(--bhc-action-hover);
+  margin: 0 0 var(--bhc-space-2);
+  line-height: var(--bhc-leading-tight);
+}
+.bhc-hero__heading { margin-bottom: var(--bhc-space-4); }
+.bhc-hero__lead {
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+  max-width: 48ch;
+}
+.bhc-hero__actions {
+  display: flex; flex-wrap: wrap; gap: var(--bhc-space-3);
+  margin-top: var(--bhc-space-8);
+}
+.bhc-hero__rating { margin-bottom: var(--bhc-space-6); }
+.bhc-hero__media img {
+  width: 100%;
+  border-radius: var(--bhc-radius-xl);
+  box-shadow: var(--bhc-shadow-lg);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* --- Breadcrumbs ---------------------------------------------------------- */
+
+.bhc-breadcrumbs { padding-block: var(--bhc-space-4); }
+.bhc-breadcrumbs__list {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--bhc-space-2);
+  list-style: none; margin: 0; padding: 0;
+  font-size: var(--bhc-text-sm);
+  color: var(--bhc-ink-muted);
+}
+.bhc-breadcrumbs__sep { color: var(--bhc-line); }
+.bhc-breadcrumbs a { color: var(--bhc-ink-muted); text-decoration: none; }
+.bhc-breadcrumbs a:hover { color: var(--bhc-action-hover); text-decoration: underline; }
+.bhc-breadcrumbs__current { color: var(--bhc-ink); font-weight: var(--bhc-weight-medium); }
+
+/* --- RatingBadge ----------------------------------------------------------
+   Server-rendered. The live site locks 4.9/175 inside a 516 KB JS bundle. */
+
+.bhc-rating {
+  display: inline-flex; align-items: center; gap: var(--bhc-space-3);
+  padding: var(--bhc-space-2) var(--bhc-space-4);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-full);
+  box-shadow: var(--bhc-shadow-sm);
+  font-size: var(--bhc-text-sm);
+}
+.bhc-rating--bare {
+  padding: 0; background: none; border: 0; box-shadow: none;
+}
+.bhc-rating__stars { display: inline-flex; gap: 2px; color: var(--bhc-action); }
+.bhc-rating__value { font-weight: var(--bhc-weight-bold); color: var(--bhc-ink); }
+.bhc-rating__count { color: var(--bhc-ink-muted); }
+
+/* --- InterlinkBlock -------------------------------------------------------
+   The critical path. Must look deliberate, not like an SEO footer dump.   */
+
+.bhc-interlink { padding-block: var(--bhc-space-12); }
+.bhc-interlink__heading {
+  font-size: var(--bhc-text-xl);
+  margin-bottom: var(--bhc-space-6);
+}
+.bhc-interlink__list {
+  display: grid; gap: var(--bhc-space-3);
+  list-style: none; margin: 0; padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.bhc-interlink__link {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: var(--bhc-space-4);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-md);
+  text-decoration: none;
+  color: var(--bhc-ink);
+  transition: border-color var(--bhc-dur) var(--bhc-ease),
+              box-shadow var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-interlink__link:hover {
+  border-color: var(--bhc-action);
+  box-shadow: var(--bhc-shadow-md);
+  color: var(--bhc-ink);
+}
+.bhc-interlink__label { font-weight: var(--bhc-weight-semibold); }
+.bhc-interlink__meta  { font-size: var(--bhc-text-sm); color: var(--bhc-ink-muted); }
+
+/* --- NAPFooter ------------------------------------------------------------
+   Exactly one tel:. href digits MUST equal displayed digits — the live
+   footer shows +44 7861 936533 and dials 07441918832. No street address. */
+
+.bhc-footer {
+  background: var(--bhc-ink);
+  color: var(--bhc-paper-warm);
+  padding-block: var(--bhc-section-y) var(--bhc-space-8);
+}
+.bhc-footer a { color: var(--bhc-paper-warm); text-decoration: none; }
+.bhc-footer a:hover { color: var(--bhc-sponge); text-decoration: underline; }
+
+.bhc-footer__grid {
+  display: grid; gap: var(--bhc-space-12);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px)  { .bhc-footer__grid { grid-template-columns: 1.4fr 1fr 1fr; } }
+
+.bhc-footer__nap { max-width: 42ch; }
+.bhc-footer__name {
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-lg);
+  font-weight: var(--bhc-weight-bold);
+  margin: 0 0 var(--bhc-space-2);
+}
+.bhc-footer__area { color: #C9D4E4; margin-bottom: var(--bhc-space-4); }
+.bhc-footer__phone {
+  display: inline-block;
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-bold);
+  margin-bottom: var(--bhc-space-3);
+}
+.bhc-footer__hours { font-size: var(--bhc-text-sm); color: #C9D4E4; margin: 0; }
+
+.bhc-footer__col-heading {
+  font-size: var(--bhc-text-sm);
+  font-weight: var(--bhc-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bhc-sponge);
+  margin: 0 0 var(--bhc-space-4);
+}
+.bhc-footer__links { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--bhc-space-2); }
+
+.bhc-footer__bottom {
+  margin-top: var(--bhc-space-12);
+  padding-top: var(--bhc-space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex; flex-wrap: wrap; gap: var(--bhc-space-4);
+  justify-content: space-between;
+  font-size: var(--bhc-text-sm);
+  color: #C9D4E4;
+}
