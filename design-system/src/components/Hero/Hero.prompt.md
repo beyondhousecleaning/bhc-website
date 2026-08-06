@@ -1,3 +1,7 @@
+---
+category: Content
+---
+
 # Hero
 
 **Lock 1: exactly one `<h1>` per page, carrying the service and/or town.**

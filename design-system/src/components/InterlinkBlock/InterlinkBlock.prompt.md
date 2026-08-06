@@ -1,3 +1,7 @@
+---
+category: Navigation
+---
+
 # InterlinkBlock
 
 **Lock 6: present on the service, town-hub and combo templates.**

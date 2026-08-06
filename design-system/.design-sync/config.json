@@ -1,0 +1,32 @@
+{
+  "projectId": "ddb1c2c9-fbc0-4805-897b-d9c1b207c3f5",
+  "shape": "package",
+  "pkg": "@bhc/design-system",
+  "globalName": "BHCDesignSystem",
+  "srcDir": "src",
+  "buildCmd": "./node_modules/.bin/esbuild styles.css --bundle --outfile=dist/styles.css",
+  "cssEntry": "dist/styles.css",
+  "tokensPkg": "@bhc/design-system",
+  "tokensGlob": "tokens.css",
+  "extraFonts": ["fonts/fonts.css"],
+  "readmeHeader": ".design-sync/conventions.md",
+  "componentSrcMap": {
+    "Button": "src/components/Button/Button.jsx",
+    "Hero": "src/components/Hero/Hero.jsx",
+    "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.jsx",
+    "RatingBadge": "src/components/RatingBadge/RatingBadge.jsx",
+    "NAPFooter": "src/components/NAPFooter/NAPFooter.jsx",
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx"
+  },
+  "overrides": {
+    "NAPFooter": { "cardMode": "column" }
+  },
+  "docsMap": {
+    "Button": "src/components/Button/Button.prompt.md",
+    "Hero": "src/components/Hero/Hero.prompt.md",
+    "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.prompt.md",
+    "RatingBadge": "src/components/RatingBadge/RatingBadge.prompt.md",
+    "NAPFooter": "src/components/NAPFooter/NAPFooter.prompt.md",
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md"
+  }
+}

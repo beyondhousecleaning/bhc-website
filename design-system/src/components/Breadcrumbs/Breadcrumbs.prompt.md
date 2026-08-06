@@ -1,3 +1,7 @@
+---
+category: Navigation
+---
+
 # Breadcrumbs
 
 **Lock 2: visible trail + `BreadcrumbList` JSON-LD on every non-home page.**
