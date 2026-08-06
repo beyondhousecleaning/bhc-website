@@ -61,7 +61,17 @@ Keeping Warwickshire rules out moving the pin. The Leamington pin is the **stron
 
 So: **keep the Leamington pin.** Map pack is winnable near it (Warwickshire/Coventry) and *not* winnable in the Black Country or Telford from one pin. To win map pack there you need a second genuinely staffed premises with its own GBP — otherwise accept organic-only in the new areas and treat map pack as a Warwickshire/Coventry win.
 
-⚠️ The Leamington pin is **inferred**, not verified — Google served a consent wall. Confirm the real GBP pin and review count before acting.
+✅ **VERIFIED 2026-08-06.** The pin is the registered office: **84 Acacia Road, Milverton, Royal Leamington Spa, CV32 6EQ** (`BEYOND HOUSE CLEANING LTD`, company 15995647; geocoded 52.29358, −1.55378). Review count also now known: **175 at 4.9★**.
+
+Measured straight-line distances confirm the call above — and the earlier estimates were all slightly over:
+
+| | Leamington | Warwick | Coventry | Solihull | Birmingham | Dudley | Walsall | Wolverhampton | Telford |
+|---|---|---|---|---|---|---|---|---|---|
+| Miles from pin | 0.8 | 1.7 | 8.1 | 12.5 | **18.8** | 26.9 | 27.0 | **31.4** | **46.2** |
+
+Every one of the five new postcode areas is ≥18.8 miles out. **They are organic-only** — which makes the missing site architecture, not anything local, the critical path. Full table in [`research/seo-audit-2026-08-06.md`](research/seo-audit-2026-08-06.md) §7.
+
+🔒 **Address handling — decided 2026-08-06: hide it everywhere.** CV32 6EQ is residential, so the GBP must be a **service-area business with the address hidden** (Google requires this where customers aren't served on site, and a visible home address is both an exposure and a suspension risk). The footer carries a service-area statement + one phone; schema uses `areaServed` with **no `streetAddress`** — JSON-LD ships in the HTML of every page, so putting it there is publishing it across ~336 pages.
 
 ## Defects on the current site to fix in the rebuild
 

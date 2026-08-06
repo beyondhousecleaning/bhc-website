@@ -40,7 +40,7 @@ Status: **research & design phase.** No site code yet.
 - They carry **zero structured data** and **four competing URL patterns** that cannibalise each other. Both are cheap wins for us.
 - **Decided 2026-08-06:** keep Warwickshire + Coventry and add the five new postcode areas on top. Expansion, not pivot — so the existing `/location/<region>/<town>/<service>` pattern is preserved and **no redirects are needed** for the 95 indexed pages. Combined target ≈ **410 pages**.
 - Two defects on the live site must be fixed in the rebuild: **duplicate Coventry slugs** (`south-coventry` *and* `coventry-south`) and a **service-slug mismatch** leaving 57 location pages with no parent service page. Both **confirmed by measurement** in the SEO audit.
-- The GBP pin appears to be in **Leamington Spa** — great for Warwickshire/Coventry, but one pin **cannot** rank in the map pack in the Black Country or Telford. Pin location still needs verifying.
+- **GBP pin verified 2026-08-06:** 84 Acacia Road, Leamington Spa **CV32 6EQ** — the registered office. Great for Warwickshire/Coventry (0.8–8.1 mi), but Birmingham is **18.8 mi** out and Telford **46.2 mi**, so one pin **cannot** reach the map pack in the new areas. They are **organic-only**. Address is residential, so it stays hidden on GBP, in the footer and in schema.
 
 ### From the SEO audit (2026-08-06)
 
