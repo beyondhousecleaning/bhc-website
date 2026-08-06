@@ -14,11 +14,20 @@ Living index of the SEO/marketing tooling loaded into Claude for this project. A
 | Contents | 49 skills, 199 markdown files, 2.7MB |
 | Executable code | **None** — pure markdown + one CSV and one HTML template |
 | Install method | Claude Code plugin marketplace (not vendored) |
+| Status | ✅ **Installed 2026-08-06**, user scope, enabled |
+| Agents / Hooks / MCP servers | **0 / 0 / 0** — on-demand skills only, no background behaviour |
+| Token cost | **~13,000 tokens always-on, added to every session** |
 
+Installed via CLI:
+
+```bash
+claude plugin marketplace add coreyhaines31/marketingskills
+claude plugin install marketing-skills@marketingskills
 ```
-/plugin marketplace add coreyhaines31/marketingskills
-/plugin install marketing-skills@marketingskills
-```
+
+Registered in `~/.claude/settings.json` under `extraKnownMarketplaces.marketingskills` and `enabledPlugins["marketing-skills@marketingskills"]`.
+
+⚠️ **The ~13k always-on cost applies to every session, not just marketing work** — all 49 skill descriptions load even in unrelated projects. We use about 9 of the 49. If that overhead becomes annoying, the alternative is `claude plugin disable marketing-skills` and vendoring just the relevant skills into `.claude/skills/`, accepting that they then stop tracking upstream.
 
 **Why plugin, not vendored:** actively maintained, so vendoring would fork and freeze it, and it would dump 2.7MB of unrelated marketing skills into a website repo. Plugin install auto-updates and is available across projects.
 
