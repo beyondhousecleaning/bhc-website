@@ -71,7 +71,7 @@ Measured straight-line distances confirm the call above — and the earlier esti
 
 Every one of the five new postcode areas is ≥18.8 miles out. **They are organic-only** — which makes the missing site architecture, not anything local, the critical path. Full table in [`research/seo-audit-2026-08-06.md`](research/seo-audit-2026-08-06.md) §7.
 
-🔒 **Address handling — decided 2026-08-06: hide it everywhere.** CV32 6EQ is residential, so the GBP must be a **service-area business with the address hidden** (Google requires this where customers aren't served on site, and a visible home address is both an exposure and a suspension risk). The footer carries a service-area statement + one phone; schema uses `areaServed` with **no `streetAddress`** — JSON-LD ships in the HTML of every page, so putting it there is publishing it across ~336 pages.
+🔒 **Address handling — decided 2026-08-06: hide it everywhere.** CV32 6EQ is residential. The GBP is ✅ **already set as a service-area business with the address suppressed** (confirmed by Sam 2026-08-06) — correct, and nothing to change. The footer carries a service-area statement + one phone; schema uses `areaServed` with **no `streetAddress`** — JSON-LD ships in the HTML of every page, so putting it there is publishing it across ~336 pages.
 
 ## Defects on the current site to fix in the rebuild
 
