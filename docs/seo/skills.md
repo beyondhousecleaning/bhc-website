@@ -116,6 +116,27 @@ Local SEO / map pack is now **covered** by `claude-seo` (`seo-maps` + `seo-local
 
 ⚠️ `directory-submissions` (marketing-skills) looks like it covers citations but does **not** — it targets SaaS/startup/AI directories (Product Hunt, G2, Capterra, AlternativeTo). Wrong vertical for a cleaning company.
 
+## Gotcha: plugin skills do not appear in `/skills`
+
+`/skills` manages skills in `~/.claude/skills/` and project `.claude/skills/` only. **Plugin-provided skills are not listed there** — running it after installing a plugin reports "No changes", which looks like a failed install but isn't.
+
+Verified 2026-08-06 that the install was fine by spawning a fresh process:
+
+```bash
+claude -p "list every skill available to you containing 'seo'"
+# -> claude-seo:seo-programmatic, marketing-skills:programmatic-seo
+```
+
+Where to look instead:
+
+| Want | Use |
+|---|---|
+| Plugin skill inventory | `claude plugin details <plugin>` |
+| Installed plugins | `claude plugin list` or `/plugin` |
+| Own/project skills | `/skills` |
+
+Also note: a session that was already running when a plugin is installed **cannot invoke the new skills** — the skill list is built at session start. Restart to pick them up.
+
 ## Combined always-on cost
 
 | Plugin | Always-on tokens |
