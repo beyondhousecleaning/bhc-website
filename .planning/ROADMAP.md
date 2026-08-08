@@ -36,7 +36,13 @@ ships with a placeholder state in Phase 2 and gets backfilled with real photos i
   2. Every rendered page uses a single shared NAPFooter showing exactly one phone number, and the `tel:` link's digits match the displayed digits exactly — no street address or postcode anywhere.
   3. The design-system's existing lock tests (`design-system/test/locks.test.js`) run as part of this project's build/CI pipeline.
   4. Hero, Breadcrumbs, RatingBadge, InterlinkBlock and Button render correctly from the design-system package on at least one real page (proof of integration, not just import).
-**Plans**: TBD
+**Plans**: 5 plans across 4 waves
+Plans:
+- [ ] 01-01-PLAN.md — Design-system package hardening: expose `fonts/` through the exports map, add the `safeJsonLd` escaping helper and apply it at all 3 JSON-LD call-sites (wave 1)
+- [ ] 01-02-PLAN.md — npm workspace, Next.js app, root layout with the single NAPFooter, proof-of-integration page, D-15 crawl block (wave 2)
+- [ ] 01-03-PLAN.md — Zero-dependency built-HTML lock suite, gzip transfer-weight budget gate, GitHub Actions CI (wave 3)
+- [ ] 01-04-PLAN.md — Vercel project connection and live-URL verification, canonical phone-number confirmation (wave 3, has checkpoints)
+- [ ] 01-05-PLAN.md — Prove the CI gate turns red on a failing lock, then make both jobs required status checks (wave 4, has checkpoint)
 **UI hint**: yes
 
 ### Phase 2: Component Library Completion & Core Templates
@@ -106,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation & Design System Integration | 0/TBD | Not started | - |
+| 1. Platform Foundation & Design System Integration | 0/5 | Planned | - |
 | 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
