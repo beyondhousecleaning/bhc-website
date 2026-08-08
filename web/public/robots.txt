@@ -1,0 +1,27 @@
+# Beyond House Cleaning — pre-cutover crawl block
+#
+# D-15: this deployment must NOT be indexable until domain cutover.
+#
+# The live Webflow site at https://www.beyondhousecleaning.com holds all 95
+# pages' ranking equity. Letting Google index a second, complete copy of the
+# same content at a *.vercel.app URL risks duplicate-content dilution against
+# the exact keywords this project exists to win.
+#
+# EXPIRY: this file is flipped at domain cutover. ROADMAP Phase 5's criterion
+# "robots.txt allows crawling (User-agent: * present)" applies to the
+# PRODUCTION APEX after cutover, not to this pre-cutover deployment. The two
+# are not in conflict; the cutover phase is what flips it.
+#
+# D-15 is enforced at two independent levels:
+#   1. <meta name="robots" content="noindex, nofollow"> in every page's
+#      server-rendered HTML, from web/app/layout.jsx's metadata.
+#   2. this host-level crawl block.
+# Both are asserted by Plan 03's check script.
+#
+# Static file under public/ rather than an app/robots.js metadata route: it is
+# served verbatim at /robots.txt, always exists on disk, and is therefore
+# assertable by a zero-dependency check that does not have to know where
+# Next.js chose to write a prerendered metadata route.
+
+User-agent: *
+Disallow: /
