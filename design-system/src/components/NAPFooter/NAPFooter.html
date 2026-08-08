@@ -1,0 +1,61 @@
+<!-- @dsCard group="Navigation" -->
+<link rel="stylesheet" href="../../../styles.css" />
+
+<footer class="bhc-footer">
+  <div class="bhc-container">
+    <div class="bhc-footer__grid">
+
+      <div class="bhc-footer__nap">
+        <p class="bhc-footer__name">Beyond House Cleaning</p>
+        <p class="bhc-footer__area">Serving Warwickshire, Coventry and the West Midlands</p>
+        <!-- href digits === displayed digits. Both derived from one value. -->
+        <a class="bhc-footer__phone" href="tel:+447861936533">+44 7861 936533</a>
+        <p class="bhc-footer__hours">Mon–Sat, 8am–7pm</p>
+        <p class="bhc-footer__hours" style="margin-top:12px"><a href="#">Find us on Google</a></p>
+      </div>
+
+      <nav aria-label="Services">
+        <p class="bhc-footer__col-heading">Services</p>
+        <ul class="bhc-footer__links">
+          <li><a href="#">Domestic Cleaning</a></li>
+          <li><a href="#">Deep Cleaning</a></li>
+          <li><a href="#">End of Tenancy Cleaning</a></li>
+          <li><a href="#">Apartment Cleaning</a></li>
+          <li><a href="#">Move-Out Cleaning</a></li>
+          <li><a href="#">Short-Term Rental Cleaning</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Company">
+        <p class="bhc-footer__col-heading">Company</p>
+        <ul class="bhc-footer__links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Areas We Cover</a></li>
+          <li><a href="#">What We Clean</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Work With Us</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="bhc-footer__bottom">
+      <span>© 2026 Beyond House Cleaning</span>
+      <span style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Service Agreement</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<div style="padding:32px 48px;background:var(--bhc-paper)">
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">The live-site bug this prevents</p>
+  <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+    The footer on all 115 live pages displays <code>+44 7861 936533</code> and dials
+    <code>07441918832</code>. A third number sits on <code>/get-a-quote</code>. Here the href and the label are
+    both derived from one value, so they cannot diverge. No street address — the registered
+    office is residential and the GBP address is suppressed.
+  </p>
+</div>

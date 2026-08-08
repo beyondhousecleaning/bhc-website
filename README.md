@@ -4,7 +4,8 @@ The new **Beyond House Cleaning** website — an SEO-first rebuild covering the 
 
 The primary goal is **online visibility**: organic ranking and Google Maps / map-pack ranking. Every choice — markup, framework, hosting, content — is made for SEO first. Booking and admin are out of scope; they live in `project-bk-v3`.
 
-Status: **research & design phase.** No site code yet.
+Status: **design phase.** Research and the SEO audit are done; the design system is built and
+ready to sync to Claude Design. No site code yet.
 
 ## Repo layout
 
@@ -13,7 +14,9 @@ Status: **research & design phase.** No site code yet.
 | `docs/goals.md` | Goals, success measures, build sequence, and the open decisions awaiting Sam |
 | `docs/research/` | Competitor teardown, service-area data, sitemap snapshots, the live-site SEO audit |
 | `docs/seo/` | SEO tooling install log and the audit kickoff prompt |
-| `docs/brand/` | Logo audit and brand direction |
+| `docs/design/` | The design system spec — tokens, components, page templates, SEO locks |
+| `docs/brand/` | Brand brief, logo audit, photo spec |
+| `design-system/` | **The package Claude Design reads.** `tokens.css` + React components + the locks as tests |
 | `assets/logo/` | Current logo source files (raster only — needs SVG rebuild) |
 
 ## Documents
@@ -25,6 +28,8 @@ Status: **research & design phase.** No site code yet.
 | [`docs/research/service-area-coverage.md`](docs/research/service-area-coverage.md) | All 135 postcode districts and **39 post towns** across B/DY/TF/WS/WV, with covered localities |
 | [`docs/research/seo-audit-2026-08-06.md`](docs/research/seo-audit-2026-08-06.md) | **Full SEO audit of the live site.** All 115 URLs crawled, measured against Arbor Trail as a control. Severity-ranked findings, then a fix list split into *do now* / *do in the rebuild* / *ignore* |
 | [`docs/seo/skills.md`](docs/seo/skills.md) | Which SEO plugins are installed, what they cost per session, and the remaining gaps |
+| [`docs/design/design-system.md`](docs/design/design-system.md) | **The design contract.** Colour tokens with measured contrast, type scale, component inventory, the 6 page templates, and **11 SEO locks written as CI assertions** |
+| [`docs/brand/brand-brief.md`](docs/brand/brand-brief.md) | **For Claude Design.** Positioning, the chosen visual direction, the logo brief and lockup family, photography direction, and what not to do |
 | [`docs/brand/logo-audit.md`](docs/brand/logo-audit.md) | Measured palette, geometry problems, and the lockup family the logo needs |
 
 ## Snapshots
@@ -53,14 +58,27 @@ Status: **research & design phase.** No site code yet.
 
 ## Build sequence
 
-| # | Step | Tool |
-|---|---|---|
-| 1 | Clean up the logo (SVG rebuild + lockup family) | — |
-| 2 | Design the site — look & feel only | Claude Design |
-| 3 | Architect the build | Opus 5 |
-| 4 | Build it | Claude Code |
-| 5 | SEO-optimise | Claude Code |
-| 6 | Ongoing SEO/content system | stack TBD |
+| # | Step | Tool | Status |
+|---|---|---|---|
+| 0 | Design system — tokens, components, templates, locks | Claude Code | ✅ **specced** — [`docs/design/design-system.md`](docs/design/design-system.md) |
+| 1 | Build the [`design-system/`](design-system/) package | Claude Code | ✅ **built** — tokens + 6 components, 8 lock tests passing |
+| 2 | `/design-sync` it into Claude Design | **Sam** | next — see below |
+| 3 | Clean up the logo (SVG rebuild + lockup family) | Claude Design | brief ready |
+| 4 | Design the site — look & feel only | Claude Design | blocked on photos |
+| 5 | Architect the build | Opus 5 | |
+| 6 | Build it | Claude Code | |
+| 7 | SEO-optimise | Claude Code | |
+| 8 | Ongoing SEO/content system | stack TBD | |
+
+**The Claude Design handoff.** `/design-sync` reads a local package of tokens + React
+components and pushes it into a Claude Design project. It is **user-invoked only** — it must be
+run by Sam, from the package directory, and cannot be run on his behalf:
+
+```
+$ cd ~/projects/bhc-website/design-system
+$ claude
+› /design-sync
+```
 
 ## Related
 

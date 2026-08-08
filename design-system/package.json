@@ -1,0 +1,22 @@
+{
+  "name": "@bhc/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Beyond House Cleaning design system — tokens and React components. Synced to Claude Design with /design-sync.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./tokens.css": "./tokens.css",
+    "./styles.css": "./styles.css"
+  },
+  "files": ["src", "tokens.css", "styles.css"],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "keywords": ["design-system", "beyond-house-cleaning"],
+  "license": "UNLICENSED"
+}
