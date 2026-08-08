@@ -46,8 +46,10 @@ that compiles is not proof; a rendered page is.
 - **D-01** — Next.js on Vercel. Not Webflow, not any other host. (Restates PROJECT.md D5.)
   The design-system package was built assuming this stack.
 - **D-02** — The app is a new Next.js application inside this existing repo, consuming
-  `design-system/` as a local workspace package (`@bhc/design-system`, already named and
-  `private: true`). The design-system package is **not** republished, restructured, or moved.
+  `design-system/` as a local **npm workspace** package (`@bhc/design-system`, already named
+  and `private: true`) — not a relative-path import, not a copied directory. The design-system
+  package is **not** republished, restructured, or moved. *(Confirmed empirically in
+  01-RESEARCH.md: npm workspaces + Turbopack builds the raw `.jsx` with no build step.)*
 - **D-03** — Phase 1 deploys to a Vercel-assigned preview/production URL only. The apex domain
   `www.beyondhousecleaning.com` stays pointed at the live Webflow site until a later cutover
   phase. Nothing in Phase 1 may take the live site down.
@@ -101,6 +103,21 @@ that compiles is not proof; a rendered page is.
 - **D-14** — The performance budget is live from the first commit: <500 KB JS, <1 MB total page
   weight, no third-party script >50 KB without explicit sign-off. The current site ships 1.9 MB
   of JS. Phase 1 must not import Trustmary, GTM, or any analytics/tag manager by default.
+- **D-14a** — **The budget is measured as transfer weight (gzip/brotli over the wire), not
+  uncompressed bytes on disk.** Evidence: the audit's own 1.9 MB benchmark for the live site was
+  measured as transfer weight (`docs/research/seo-audit-2026-08-06.md:75`), so comparing
+  uncompressed bytes against it is not like-for-like. Measured in 01-RESEARCH.md: a bare App
+  Router page is 550.9 KB uncompressed but **168.5 KB gzip = 34% of the 500 KB budget**. Read as
+  uncompressed, Phase 1 would fail the budget on a blank page, which is obviously not the intent.
+  Note Next.js 16 removed `First Load JS` from build output, so budget enforcement must be an
+  explicit check — there is no free signal.
+- **D-15** — **The Vercel deployment must not be indexable until domain cutover.** The live
+  Webflow site holds all 95 pages' ranking equity; letting Google index a second, complete copy
+  of the same content at a `*.vercel.app` URL risks duplicate-content dilution against the exact
+  keywords the whole project exists to win. Phase 1 ships `Disallow: /` (or an equivalent
+  noindex) on the Vercel deployment. ROADMAP Phase 5's "robots.txt allows crawling
+  (`User-agent: *` present)" criterion applies to the **production apex domain after cutover** —
+  the two are not in conflict, and the cutover phase is what flips it.
 
 ### Canonical facts (corrections, not decisions)
 
@@ -115,11 +132,11 @@ that compiles is not proof; a rendered page is.
 ### Claude's Discretion
 
 Not specified by any locked decision — the planner and executor choose:
-- Next.js version and router specifics, TypeScript vs JavaScript for the app, and the exact
-  `next.config` shape.
-- Package manager and whether the repo becomes a formal workspace/monorepo or the app consumes
-  the design system by relative path.
-- Directory name and location of the Next.js app within the repo.
+- Next.js version and router specifics, and the exact `next.config` shape.
+- TypeScript vs JavaScript for the app. 01-RESEARCH.md recommends **JavaScript**, because the
+  package's `exports` map has no `types` condition and TS would force a further package change;
+  the planner may still choose TS if it accepts that cost.
+- Directory name and location of the Next.js app within the repo (research used `web/`).
 - Which single page serves as the proof-of-integration page, and its content (it is a
   scaffold, not final copy — real templates are Phase 2).
 - CI runner (GitHub Actions vs Vercel build step vs both) and how lint/typecheck are wired.
@@ -177,6 +194,19 @@ Not specified by any locked decision — the planner and executor choose:
   that way; wiring it into CI should be a one-line invocation, not a toolchain.
 - `assets/` and `design-system/fonts/` already exist in the repo — check them before adding any
   new font or image pipeline.
+- **Known required package change (measured, not speculative).** `design-system/package.json`'s
+  `exports` map does not expose `fonts/`, so `import '@bhc/design-system/fonts/fonts.css'` fails
+  with `ERR_PACKAGE_PATH_NOT_EXPORTED` (surfacing as a Turbopack `Module not found`). Fix:
+  add `"./fonts/*"` to `exports` and `"fonts"` to `files`. Verified in 01-RESEARCH.md — build
+  succeeds, all 8 `.woff2` emit to `.next/static/media/`, lock tests stay 8/8. This is the one
+  sanctioned edit to the package under D-05.
+- **Import `styles.css` only.** It already pulls in `tokens.css`; importing both duplicates every
+  token declaration.
+- **`claude-seo` hook collision (real, will fire).** Its PostToolUse hook blocks `.jsx`/`.tsx`
+  writes containing the case-insensitive substring `REPLACE` — which means any `.replace(` call,
+  including the standard JSON-LD escaping idiom. Mitigation: keep string-manipulation logic in
+  `.js` files, which is already this package's own convention (`formatPhone.js`, `geo.js`). Do
+  not disable the plugin as a first resort.
 - `.claude/worktrees/` is gitignored; work for this phase happens on branch
   `worktree-phase-1-platform-foundation`.
 
@@ -210,6 +240,14 @@ Not specified by any locked decision — the planner and executor choose:
 2. **Analytics.** Phase 1 ships with no tag manager or analytics by default (D-14). If GA4 /
    GSC / a lightweight analytics tool should be present from day one, say so — otherwise it
    gets added in a later phase under the 50 KB third-party rule.
+
+3. **Vercel project — the one true external dependency.** No Vercel project exists for this
+   repo yet. Success Criterion 1 ("deployed to Vercel and reachable at a live URL") cannot be
+   satisfied by an agent alone: Sam must connect the repo to Vercel and set **Root Directory =
+   the app directory**. This must appear in the plan as an explicit human checkpoint, not as an
+   autonomous task. Every other Phase 1 success criterion is verifiable locally against the
+   built HTML on disk with no browser and no deployment — so this gates exactly one criterion,
+   and the rest of the phase can complete without it.
 
 </open_questions>
 
