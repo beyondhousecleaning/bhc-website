@@ -15,8 +15,8 @@ Not the goal (for this project): booking-flow UX, admin tooling. Those live in P
 | Map-pack presence for `cleaner <town>` across target towns | unknown | top 3 in core towns |
 | Organic ranking for `<service> <town>` | Warwickshire only | page 1 across tier-1 post towns |
 | Indexed location×service pages | 95 (Warwickshire only) | ~336 (Warwickshire + Coventry + B/DY/TF/WS/WV) |
-| Google review count | **unknown — need from Sam** | grow continuously |
-| Review count shown on site | not shown anywhere | on every page |
+| Google review count | **175 at 4.9★** (read from the site's Trustmary widget payload, 2026-08-06) | grow continuously |
+| Review count shown on site | **JS-only** — inside a 516 KB Trustmary bundle, absent from HTML, titles, descriptions and schema | server-rendered on every page |
 
 ## Build sequence (Sam's plan)
 
@@ -61,11 +61,25 @@ Keeping Warwickshire rules out moving the pin. The Leamington pin is the **stron
 
 So: **keep the Leamington pin.** Map pack is winnable near it (Warwickshire/Coventry) and *not* winnable in the Black Country or Telford from one pin. To win map pack there you need a second genuinely staffed premises with its own GBP — otherwise accept organic-only in the new areas and treat map pack as a Warwickshire/Coventry win.
 
-⚠️ The Leamington pin is **inferred**, not verified — Google served a consent wall. Confirm the real GBP pin and review count before acting.
+✅ **VERIFIED 2026-08-06.** The pin is the registered office: **84 Acacia Road, Milverton, Royal Leamington Spa, CV32 6EQ** (`BEYOND HOUSE CLEANING LTD`, company 15995647; geocoded 52.29358, −1.55378). Review count also now known: **175 at 4.9★**.
+
+Measured straight-line distances confirm the call above — and the earlier estimates were all slightly over:
+
+| | Leamington | Warwick | Coventry | Solihull | Birmingham | Dudley | Walsall | Wolverhampton | Telford |
+|---|---|---|---|---|---|---|---|---|---|
+| Miles from pin | 0.8 | 1.7 | 8.1 | 12.5 | **18.8** | 26.9 | 27.0 | **31.4** | **46.2** |
+
+Every one of the five new postcode areas is ≥18.8 miles out. **They are organic-only** — which makes the missing site architecture, not anything local, the critical path. Full table in [`research/seo-audit-2026-08-06.md`](research/seo-audit-2026-08-06.md) §7.
+
+🔒 **Address handling — decided 2026-08-06: hide it everywhere.** CV32 6EQ is residential. The GBP is ✅ **already set as a service-area business with the address suppressed** (confirmed by Sam 2026-08-06) — correct, and nothing to change. The footer carries a service-area statement + one phone; schema uses `areaServed` with **no `streetAddress`** — JSON-LD ships in the HTML of every page, so putting it there is publishing it across ~336 pages.
 
 ## Defects on the current site to fix in the rebuild
 
 Found while auditing the live sitemap. Both must be resolved since we're keeping these pages.
+Both were **confirmed by measurement** in [`research/seo-audit-2026-08-06.md`](research/seo-audit-2026-08-06.md), which also
+found four more (broken H1s on 101 pages, a footer `tel:` link dialling the wrong number,
+no hub-and-spoke architecture, and zero schema) — and **refuted thin content as a scaling
+risk**: the 95 location pages are ~2× *less* similar to each other than Arbor Trail's.
 
 | Defect | Detail | Fix |
 |---|---|---|
