@@ -1,3 +1,7 @@
+---
+category: Navigation
+---
+
 # NAPFooter
 
 **Lock 4: exactly one `tel:`, and the `href` digits must equal the displayed digits.**

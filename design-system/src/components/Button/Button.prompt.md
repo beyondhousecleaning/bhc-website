@@ -1,3 +1,7 @@
+---
+category: Actions
+---
+
 # Button
 
 The single action primitive. Every CTA on the site converges on the quote flow, so `href` is

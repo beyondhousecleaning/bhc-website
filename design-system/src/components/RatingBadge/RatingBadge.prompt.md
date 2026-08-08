@@ -1,3 +1,7 @@
+---
+category: Trust
+---
+
 # RatingBadge
 
 **Lock 3: this must appear in server-rendered HTML on every template.**
