@@ -44,7 +44,7 @@ ships with a placeholder state in Phase 2 and gets backfilled with real photos i
 Plans:
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Design-system package hardening: expose `fonts/` through the exports map, add the `safeJsonLd` escaping helper and apply it at all 3 JSON-LD call-sites (wave 1)
+- [x] 01-01-PLAN.md — Design-system package hardening: expose `fonts/` through the exports map, add the `safeJsonLd` escaping helper and apply it at all 3 JSON-LD call-sites (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation & Design System Integration | 0/5 | Planned | - |
+| 1. Platform Foundation & Design System Integration | 1/5 | In Progress|  |
 | 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |

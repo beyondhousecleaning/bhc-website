@@ -61,7 +61,7 @@ renumbered, to preserve traceability back to source docs during a fresh-session 
 
 ### Site Integrity
 
-- [ ] **REQ-nap-consistency**: Site-wide footer displays `+44 7861 936533` but the `tel:` link
+- [x] **REQ-nap-consistency**: Site-wide footer displays `+44 7861 936533` but the `tel:` link
   dials `07441918832`; `/get-a-quote` dials a third number.
   - Exactly one `tel:` in the footer, `href` digits equal displayed digits (CI Lock #4).
   - Publish a consistent NAP block (name, service-area statement, one phone, hours) — no street
@@ -119,7 +119,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| REQ-nap-consistency | Phase 1 | Pending |
+| REQ-nap-consistency | Phase 1 | Complete |
 | REQ-programmatic-page-scale | Phase 3 | Pending |
 | REQ-fix-duplicate-coventry | Phase 3 | Pending |
 | REQ-canonical-service-taxonomy (D14) | Phase 3 | Pending |

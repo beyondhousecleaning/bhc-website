@@ -226,7 +226,19 @@ remains an open Sam-gated item for a later plan in this phase, per 01-CONTEXT.md
   `.planning/STATE.md` and `01-CONTEXT.md` D-12, all of which currently say 8.
 - **Phase 3 inherits a safe serialiser.** When ~56 town names and 8 service names start feeding these
   three components from a data file, the `</script>` breakout is already closed and locked.
+- **Caveat on REQ-nap-consistency.** This plan's frontmatter maps to `REQ-nap-consistency`, so
+  `requirements.mark-complete` has ticked it in REQUIREMENTS.md. Read that as *phase-level mapping,
+  not delivery*: this plan touched none of the NAP mechanism. The requirement is genuinely satisfied
+  only once Plan 02 puts a single `<NAPFooter />` in the root layout (with no `phone` prop) and Plan
+  03's built-HTML locks assert exactly one `tel:` sitewide with href digits equal to displayed
+  digits. The phase verifier should confirm those before treating the tick as evidence.
 - No blockers.
+
+## Self-Check: PASSED
+
+All 4 claimed files verified present on disk (`design-system/src/jsonLd.js`,
+`design-system/package.json`, `design-system/test/locks.test.js`, this SUMMARY).
+All 4 claimed commits verified in `git log` (`bc72977`, `d16011c`, `e9a32e7`, `3931dc0`).
 
 ---
 *Phase: 01-platform-foundation-design-system-integration*
