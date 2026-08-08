@@ -1,0 +1,9 @@
+{
+  "name": "bhc-website",
+  "private": true,
+  "workspaces": ["web", "design-system"],
+  "scripts": {
+    "test:locks": "npm run test --workspace @bhc/design-system",
+    "build": "npm run build --workspace @bhc/web"
+  }
+}
