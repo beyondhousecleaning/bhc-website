@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 // deliberately implemented in plain JS so they are testable without a build.
 import { formatPhone, toDial } from '../src/components/NAPFooter/formatPhone.js';
 import { distanceMiles, nearestTowns, buildInterlinks } from '../src/components/InterlinkBlock/geo.js';
+import { safeJsonLd } from '../src/jsonLd.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const digits = (s) => String(s).replace(/\D/g, '');
@@ -156,4 +157,24 @@ test('the audited pin distances reproduce', () => {
   // The SEO audit reports 18.8 and 46.2 miles. Allow a mile of geocoding slack.
   assert.ok(Math.abs(distanceMiles(pin, birmingham) - 18.8) < 1.5);
   assert.ok(Math.abs(distanceMiles(pin, telford) - 46.2) < 1.5);
+});
+
+/* --- JSON-LD escaping — no </script> breakout ---------------------------- */
+
+test('JSON-LD escaping: a </script> in a value cannot break out of the block', () => {
+  // Bare JSON.stringify emits </script> verbatim, which terminates the inline
+  // script element and hands the remainder to the HTML parser as markup. Every
+  // value is hardcoded today; from Phase 3 they come from a data file.
+  const out = safeJsonLd({ name: 'a</script><script>alert(1)</script>' });
+  assert.ok(!out.includes('</script>'), `unescaped </script> survived serialisation: ${out}`);
+});
+
+test('JSON-LD escaping: the escape does not corrupt the JSON payload', () => {
+  // Escaping < is lossless — it is a valid JSON string escape, so the payload
+  // still parses and round-trips to the exact input.
+  const obj = {
+    name: 'Beyond <House> Cleaning',
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9' },
+  };
+  assert.deepEqual(JSON.parse(safeJsonLd(obj)), obj);
 });
