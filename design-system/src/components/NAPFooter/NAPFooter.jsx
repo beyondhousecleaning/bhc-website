@@ -22,6 +22,7 @@
  */
 
 import { formatPhone, toDial } from './formatPhone.js';
+import { safeJsonLd } from '../../jsonLd.js';
 
 const SITE = 'https://www.beyondhousecleaning.com';
 
@@ -115,7 +116,7 @@ export function NAPFooter({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
     </footer>
   );

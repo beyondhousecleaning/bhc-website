@@ -13,6 +13,8 @@
  * so is third-party-widget review data. Use it once per page at most.
  */
 
+import { safeJsonLd } from '../../jsonLd.js';
+
 function Star({ filled }) {
   return (
     <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -57,7 +59,7 @@ export function RatingBadge({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               '@context': 'https://schema.org',
               '@type': 'LocalBusiness',
               name: businessName,

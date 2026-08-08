@@ -12,6 +12,8 @@
  * Schema is emitted inline and server-rendered (Lock 9) — never JS-injected.
  */
 
+import { safeJsonLd } from '../../jsonLd.js';
+
 const SITE = 'https://www.beyondhousecleaning.com';
 
 export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
@@ -58,7 +60,7 @@ export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
       </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
     </nav>
   );
