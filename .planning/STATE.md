@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: ROADMAP.md, PROJECT.md, REQUIREMENTS.md written and ready for user approval; no plans created yet
+last_updated: "2026-08-08T20:54:48.704Z"
+last_activity: 2026-08-08 -- Phase 1 planning complete
+progress:
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 5
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -11,14 +27,15 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 
 Phase: 1 of 6 (Platform Foundation & Design System Integration)
 Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-08-08 — ROADMAP.md, PROJECT.md, REQUIREMENTS.md created from doc ingest (`.planning/intel/`); handed off for `/gsd:plan-phase 1` in a fresh session
+Status: Ready to execute
+Last activity: 2026-08-08 -- Phase 1 planning complete
 
 Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0
 - Average duration: - min
 - Total execution time: 0 hours
@@ -30,6 +47,7 @@ Progress: [░░░░░░░░░░] 0%
 | - | - | - | - |
 
 **Recent Trend:**
+
 - Last 5 plans: none yet
 - Trend: n/a
 
@@ -45,6 +63,7 @@ Highlights a fresh session needs immediately:
 - D5: Next.js on Vercel. D2: URL pattern `/location/<region>/<town>/<service>` preserved, zero
   redirects for the 95 existing pages; new `/locations`/`/locations/<town>` index/hub layer uses
   a different (plural) prefix to avoid collision.
+
 - D4: no street address/postcode anywhere, ever (CI Lock #5).
 - D14: canonical UK-vocabulary service taxonomy locked — 8 concepts, 4 slugs need 301s.
 - The design-system package (`design-system/`) already exists: `tokens.css` + 6 built components
@@ -62,12 +81,14 @@ None yet.
   needs to pull originals from canva.com → Projects → Uploads. Phase 2 ships BeforeAfterSlider
   with a placeholder state so this never blocks the critical path; Phase 4 backfills real photos
   once available. Re-check with Sam before Phase 4 starts.
+
 - **Fresh-session handoff:** this roadmap was produced for a new Opus 5 session to execute.
   PROJECT.md's Context section is the condensed version of 5 source docs
   (`docs/goals.md`, `docs/design/design-system.md`, `docs/brand/brand-brief.md`,
   `docs/brand/photo-spec.md`, `docs/research/seo-audit-2026-08-06.md`) — read PROJECT.md +
   ROADMAP.md + REQUIREMENTS.md first; only fall back to `.planning/intel/` source files if a
   specific detail is missing.
+
 - **claude-seo plugin hook:** `PostToolUse` on `.jsx/.tsx/.html/...` writes blocks (exit 2) on the
   case-insensitive substring `REPLACE`. Watch for false positives during schema/copy work
   (e.g. legitimate text containing "replacement"); `claude plugin disable claude-seo` if it
