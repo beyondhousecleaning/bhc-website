@@ -4,6 +4,9 @@
   "workspaces": ["web", "design-system"],
   "scripts": {
     "test:locks": "npm run test --workspace @bhc/design-system",
-    "build": "npm run build --workspace @bhc/web"
+    "build": "npm run build --workspace @bhc/web",
+    "check:html": "node --test web/scripts/check-html-locks.mjs",
+    "check:budget": "node web/scripts/check-budget.mjs",
+    "verify": "npm run test:locks && npm run build && npm run check:html && npm run check:budget"
   }
 }
