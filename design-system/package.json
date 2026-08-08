@@ -8,9 +8,10 @@
   "exports": {
     ".": "./src/index.js",
     "./tokens.css": "./tokens.css",
-    "./styles.css": "./styles.css"
+    "./styles.css": "./styles.css",
+    "./fonts/*": "./fonts/*"
   },
-  "files": ["src", "tokens.css", "styles.css"],
+  "files": ["src", "tokens.css", "styles.css", "fonts"],
   "scripts": {
     "test": "node --test test/*.test.js"
   },
