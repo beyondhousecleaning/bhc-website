@@ -1,0 +1,24 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/research/competitor-arbor-trail.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Competitor teardown — Arbor Trail Cleaning Co",
+  "summary": "Competitive SEO/site teardown of Arbor Trail Cleaning Co to inform BHC's own site structure, templates, and design tokens.",
+  "scope": [
+    "Arbor Trail Cleaning Co",
+    "competitor SEO analysis",
+    "Webflow site structure",
+    "programmatic location x service pages",
+    "structured data / schema markup",
+    "combo-page template",
+    "meta title/description patterns",
+    "design tokens (fonts, colors)",
+    "CTA language",
+    "BHC website design direction"
+  ],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": ""
+}

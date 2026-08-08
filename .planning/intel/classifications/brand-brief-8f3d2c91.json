@@ -1,0 +1,29 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/brand/brand-brief.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Brand brief — Beyond House Cleaning",
+  "summary": "Design brief for Claude Design covering positioning, colour palette, logo rebuild direction, and photography for the BHC website.",
+  "scope": [
+    "brand identity",
+    "positioning",
+    "visual design direction",
+    "colour palette tokens",
+    "logo rebuild and lockup family",
+    "accessibility contrast requirements",
+    "photography direction",
+    "Claude Design agent guidance",
+    "Beyond House Cleaning website"
+  ],
+  "cross_refs": [
+    "../design/design-system.md",
+    "logo-audit.md",
+    "photo-spec.md",
+    "../research/competitor-arbor-trail.md",
+    "goals.md"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "Reads as a prose creative/design brief (hallmark of DOC) but embeds several locked-sounding design decisions with trade-off analysis against rejected alternatives (positioning, palette split, warm neutrals, logo lockup priority) that resemble ADR-style reasoning without ADR structure (no Status field, no Context/Decision/Consequences headers, not numbered/path-scoped as an ADR). Classified DOC per ambiguity rule favoring hallmark match over decision language strength; synthesizer may want to promote specific decisions (e.g. palette split, accessibility contrast rules) into locked constraints."
+}

@@ -1,0 +1,30 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/seo/audit-kickoff-prompt.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Kickoff prompt — SEO audit of the current site",
+  "summary": "Instructional prompt for a fresh Claude Code session to run a Tier-0 SEO audit of the current BHC Webflow site and report findings.",
+  "scope": [
+    "SEO audit",
+    "Beyond House Cleaning website",
+    "claude-seo plugin",
+    "location pages",
+    "structured data (JSON-LD)",
+    "internal linking",
+    "thin/duplicate content",
+    "Google Business Profile / maps",
+    "URL slug mismatches",
+    "site rebuild scoping"
+  ],
+  "cross_refs": [
+    "docs/goals.md",
+    "docs/research/competitor-arbor-trail.md",
+    "docs/research/service-area-coverage.md",
+    "docs/seo/skills.md",
+    "docs/research/seo-audit-2026-08-06.md"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": ""
+}

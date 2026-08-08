@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/seo/skills.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "SEO skills — install log and gap analysis",
+  "summary": "Living log tracking installed Claude Code SEO/marketing skill plugins, their token costs, caveats, and remaining coverage gaps for the BHC website project.",
+  "scope": ["SEO skills", "Claude Code plugins", "marketing-skills plugin", "claude-seo plugin", "programmatic SEO", "local SEO / map pack", "JSON-LD schema", "BHC website", "vetting checklist"],
+  "cross_refs": ["https://github.com/coreyhaines31/marketingskills", "https://github.com/AgriciDaniel/claude-seo"],
+  "locked": false,
+  "precedence": null,
+  "notes": ""
+}

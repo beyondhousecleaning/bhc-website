@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/research/service-area-coverage.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Service area coverage — B / DY / TF / WS / WV",
+  "summary": "Reference data mapping 135 postcode districts across 5 postcode areas to post towns and localities for BHC's service coverage.",
+  "scope": ["service area coverage", "postcode areas (B, DY, TF, WS, WV)", "postcode districts", "post towns", "location pages"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": "Primarily raw research/reference data (postcode-to-post-town tables) rather than prose documentation, but contains one directive-like statement ('Location pages must therefore target post towns and named suburbs, never postcode districts') that reads like a requirement/constraint for a website feature. No ADR/PRD/SPEC structural signals (no Decision/Consequences, no user stories, no API/schema definitions) present, so classified as DOC (supporting research context) with medium confidence; synthesizer may want to promote the location-page targeting rule into REQUIREMENTS.md or a constraint."
+}

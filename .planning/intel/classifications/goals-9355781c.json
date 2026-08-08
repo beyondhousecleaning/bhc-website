@@ -1,0 +1,27 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/goals.md",
+  "type": "PRD",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Goals — Beyond House Cleaning website rebuild",
+  "summary": "Defines the SEO-first primary goal, success metrics, service-area scope expansion, site defects to fix, and platform choice for the BHC website rebuild.",
+  "scope": [
+    "website rebuild",
+    "SEO strategy",
+    "map-pack ranking",
+    "service area expansion (Warwickshire/Coventry plus B/DY/TF/WS/WV)",
+    "location×service programmatic pages",
+    "Google Business Profile / pin location",
+    "review count display",
+    "URL slug and service taxonomy",
+    "platform selection (Next.js on Vercel)"
+  ],
+  "cross_refs": [
+    "research/competitor-arbor-trail.md",
+    "research/service-area-coverage.md",
+    "research/seo-audit-2026-08-06.md"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "Living planning doc mixes PRD-style goals/success-metrics/scope with several inline ADR-like locked decisions (e.g. 'DECIDED 2026-08-06' service area call, the 🔒-marked address-handling decision, and the Next.js/Vercel platform recommendation). No frontmatter, no Accepted/Proposed status field, and not filed under an adr/ path, so classified as PRD rather than ADR; synthesizer may want to lift the embedded decisions separately as locked constraints."
+}
