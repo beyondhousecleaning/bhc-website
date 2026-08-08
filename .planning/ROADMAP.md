@@ -52,7 +52,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-03-PLAN.md — Zero-dependency built-HTML lock suite, gzip transfer-weight budget gate, GitHub Actions CI (wave 3)
+- [x] 01-03-PLAN.md — Zero-dependency built-HTML lock suite, gzip transfer-weight budget gate, GitHub Actions CI (wave 3)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation & Design System Integration | 2/5 | In Progress|  |
+| 1. Platform Foundation & Design System Integration | 3/5 | In Progress|  |
 | 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
