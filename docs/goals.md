@@ -14,7 +14,7 @@ Not the goal (for this project): booking-flow UX, admin tooling. Those live in P
 |---|---|---|
 | Map-pack presence for `cleaner <town>` across target towns | unknown | top 3 in core towns |
 | Organic ranking for `<service> <town>` | Warwickshire only | page 1 across tier-1 post towns |
-| Indexed location×service pages | 95 (all Warwickshire) | ~234 (B/DY/TF/WS/WV) |
+| Indexed location×service pages | 95 (Warwickshire only) | ~336 (Warwickshire + Coventry + B/DY/TF/WS/WV) |
 | Google review count | **unknown — need from Sam** | grow continuously |
 | Review count shown on site | not shown anywhere | on every page |
 
@@ -37,35 +37,49 @@ Model **Arbor Trail Cleaning Co** layout closely (see `research/competitor-arbor
 
 Assets we have: logo (`assets/logo/`), before/after photo library (Sam to supply).
 
-## Service area
+## Service area — DECIDED 2026-08-06: keep Warwickshire + Coventry, add the five new areas
 
-Five postcode areas: **B** (Birmingham), **DY** (Dudley), **TF** (Telford), **WS** (Walsall), **WV** (Wolverhampton).
-135 districts, **39 post towns**. Full breakdown in `research/service-area-coverage.md`.
+Sam's call: this is an **expansion, not a pivot**. Existing coverage stays and the new postcode areas are added on top.
 
-Target page maths: 39 post towns × 6 services = **234 combo pages** + 39 town hubs + 6 service pages ≈ **290 pages**. Tier-2 suburb pages could multiply this.
+| Region layer | Towns | Source |
+|---|---|---|
+| Existing (Warwickshire + Coventry + Solihull South) | 19 town slugs, 95 live pages | current sitemap |
+| New: **B / DY / TF / WS / WV** | 39 post towns, 135 districts | `research/service-area-coverage.md` |
+| Combined unique towns | **~56** (Solihull appears in both) | |
+
+Target page maths: ~56 towns × 6 services = **~336 combo pages** + ~56 town hubs + 6 service pages + utility ≈ **410 pages**.
+
+### Consequence 1: keep the existing URL pattern
+
+The live site already uses `/location/<region>/<town>/<service>`. That pattern **extends cleanly to new regions** — so keeping Warwickshire means **zero redirects for the 95 indexed pages**. Do not invent a new pattern.
+
+New region slugs needed: `west-midlands`, `staffordshire`, `shropshire`, `worcestershire` (alongside the existing `warwickshire`).
+
+### Consequence 2: the map-pack answer changed
+
+Keeping Warwickshire rules out moving the pin. The Leamington pin is the **strongest asset for Warwickshire/Coventry** and relocating it would forfeit the region we're keeping.
+
+So: **keep the Leamington pin.** Map pack is winnable near it (Warwickshire/Coventry) and *not* winnable in the Black Country or Telford from one pin. To win map pack there you need a second genuinely staffed premises with its own GBP — otherwise accept organic-only in the new areas and treat map pack as a Warwickshire/Coventry win.
+
+⚠️ The Leamington pin is **inferred**, not verified — Google served a consent wall. Confirm the real GBP pin and review count before acting.
+
+## Defects on the current site to fix in the rebuild
+
+Found while auditing the live sitemap. Both must be resolved since we're keeping these pages.
+
+| Defect | Detail | Fix |
+|---|---|---|
+| **Duplicate Coventry** | `south-coventry` **and** `coventry-south` both exist, 5 pages each — 10 pages competing for identical intent | Pick one slug, 301 the other. Add a proper `coventry` town page |
+| **Service slugs don't match between layers** | Location pages use `domestic-cleaning`, `apartment-cleaning`, `end-of-tenancy-cleaning`; service pages are `standard-home-cleaning`, `move-in-cleaning`, `short-term-rental-cleaning`, `post-construction-cleaning`. Only `deep-cleaning` + `move-out-cleaning` exist in both → **57 location pages have no parent service page; 4 service pages have no location coverage** | Define one canonical service taxonomy and generate both layers from it |
+| **Geographic misfiling** (low priority) | Banbury (Oxfordshire), Daventry (Northamptonshire) and Evesham (Worcestershire) all sit under `/location/warwickshire/` | Leave for now — fixing costs redirects for little gain |
+
+### Canonical service taxonomy — to settle before build
+
+Merging both layers gives 8 concepts with two genuine overlaps: `domestic-cleaning` ≈ `standard-home-cleaning`, and `end-of-tenancy-cleaning` ≈ `move-out-cleaning`. Needs a decision on one slug per concept, since it multiplies across ~56 towns.
 
 ## Open decisions
 
-These three came out of the research and need Sam's call — each changes the architecture.
-
-### 1. The map-pack problem (most important)
-
-Map-pack ranking is driven overwhelmingly by **proximity of the business pin to the searcher**, plus review prominence. The GBP is registered in **Leamington Spa (CV32)** — roughly 25 miles from Birmingham, 35 from Wolverhampton, 50 from Telford.
-
-**One pin in Leamington Spa cannot rank in the map pack across B/DY/TF/WS/WV.** No amount of website work changes that.
-
-Options:
-- **a.** Move the GBP pin to a central Black Country address (Dudley/Walsall/West Brom area) — best map-pack outcome, forfeits Warwickshire map presence.
-- **b.** Keep Leamington pin, treat map pack as winnable only near it, and let organic location pages carry the new areas.
-- **c.** Multiple GBP listings — only legitimate with genuinely staffed distinct premises; otherwise a suspension risk.
-
-### 2. Warwickshire — abandon or keep?
-
-95 existing location×service pages all target Warwickshire towns (Banbury, Kenilworth, Rugby, Evesham, Daventry, Leamington Spa…). If we pivot fully to B/DY/TF/WS/WV those pages become dead weight and need a redirect map.
-
-Options: full pivot (redirect the 95) · keep Warwickshire as a secondary region and add the new areas on top · phased.
-
-### 3. Content priority
+### 1. Content priority
 
 Sam's step 6 assumes blog posts matter. **The reference company has exactly one blog post** and does ~$200k/mo. Evidence says sequence should be:
 
@@ -76,6 +90,8 @@ Sam's step 6 assumes blog posts matter. **The reference company has exactly one 
 
 ## Platform recommendation
 
-**Next.js on Vercel, not Webflow.** 234+ programmatic pages generated from a data file (towns × services) is trivial in code and painful in a page builder. Gives full control of schema, canonicals, Core Web Vitals, and redirects — the exact areas Arbor Trail fails. Sam already intends to build in Claude Code.
+**Next.js on Vercel, not Webflow.** ~336 programmatic pages generated from a data file (towns × services) is trivial in code and painful in a page builder. Gives full control of schema, canonicals, Core Web Vitals, and redirects — the exact areas Arbor Trail fails. Sam already intends to build in Claude Code.
+
+The expansion decision strengthens this: one `towns.ts` data file carrying region + town + postcode districts, crossed with a canonical services list, generates every combo page, every town hub, and the internal-linking mesh — and guarantees the slug consistency the current site lacks.
 
 Current site is Webflow; so is Arbor Trail's.
