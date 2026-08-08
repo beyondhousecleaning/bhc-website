@@ -41,7 +41,7 @@ Plans:
 - [ ] 01-01-PLAN.md — Design-system package hardening: expose `fonts/` through the exports map, add the `safeJsonLd` escaping helper and apply it at all 3 JSON-LD call-sites (wave 1)
 - [ ] 01-02-PLAN.md — npm workspace, Next.js app, root layout with the single NAPFooter, proof-of-integration page, D-15 crawl block (wave 2)
 - [ ] 01-03-PLAN.md — Zero-dependency built-HTML lock suite, gzip transfer-weight budget gate, GitHub Actions CI (wave 3)
-- [ ] 01-04-PLAN.md — Vercel project connection and live-URL verification, canonical phone-number confirmation (wave 3, has checkpoints)
+- [ ] 01-04-PLAN.md — Vercel project connection and live-URL verification, canonical phone-number confirmation (wave 4, has checkpoints)
 - [ ] 01-05-PLAN.md — Prove the CI gate turns red on a failing lock, then make both jobs required status checks (wave 4, has checkpoint)
 **UI hint**: yes
 

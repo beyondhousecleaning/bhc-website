@@ -819,7 +819,10 @@ block a merge is not a gate, which is exactly what D-13 forbids.
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
+
+*All five questions below were settled during planning on 2026-08-08. Resolutions are recorded
+inline so no later phase re-litigates them.*
 
 1. **Is D-14's budget transfer weight or uncompressed?** (See A3.)
    - What we know: the 1.9 MB figure the budget is benchmarked against was explicitly measured as
@@ -828,6 +831,11 @@ block a merge is not a gate, which is exactly what D-13 forbids.
    - Recommendation: **plan for transfer weight**, state it explicitly in the plan and in
      `check-budget.mjs` comments, and surface it to Sam as a one-line confirmation. Do not block
      on it.
+   - **RESOLVED: transfer weight.** Promoted to a locked decision as CONTEXT.md **D-14a** and
+     implemented in `01-03-PLAN.md` Task 2, which mandates `gzipSync` measurement, bans
+     `statSync().size` and `du`, and requires the `seo-audit-2026-08-06.md:75` evidence to be cited
+     in a comment at the point of measurement. Still worth one line of confirmation from Sam, but it
+     no longer blocks anything.
 
 2. **JavaScript or TypeScript for the app?** (Claude's Discretion.)
    - What we know: the design-system ships hand-written `.d.ts` per component, but its
@@ -837,6 +845,10 @@ block a merge is not a gate, which is exactly what D-13 forbids.
      removes a class of resolution friction, and TS can be adopted in Phase 3 where the towns data
      file makes it genuinely valuable. If TS is preferred anyway, budget a task for adding a
      `types` condition to the package `exports`.
+   - **RESOLVED: plain JavaScript.** Adopted in `01-02-PLAN.md` Task 1, whose acceptance criteria
+     forbid a `devDependencies` block in `web/` and forbid adding a `types` condition to the
+     design-system `exports` map. Revisit in Phase 3, where the towns data file makes typing
+     genuinely valuable.
 
 3. **Does the `fonts/` exports-map addition need Sam's sign-off?**
    - What we know: D-05 explicitly permits package changes when a component "genuinely cannot
@@ -846,12 +858,26 @@ block a merge is not a gate, which is exactly what D-13 forbids.
      cover a `package.json` metadata addition.
    - Recommendation: proceed; it is additive, reversible, and the alternative (copying fonts into
      `web/public/`) forks a design-system asset, which D-04's spirit forbids.
+   - **RESOLVED: proceed, no sign-off needed.** Implemented as `01-01-PLAN.md` Task 1 — the single
+     sanctioned manifest change under D-05. Its acceptance criteria pin the change to exactly two
+     lines and assert that no `types` condition, `dependencies` or `devDependencies` block, or extra
+     npm script rides along with it, and that the 8 existing lock tests still pass.
 
 4. **Analytics.** Carried forward from CONTEXT.md Open Question 2 — Phase 1 ships with none (D-14).
    Non-blocking.
+   - **RESOLVED: none in Phase 1.** `01-02-PLAN.md` Task 2 forbids any analytics, tag manager, GA4,
+     GTM or Trustmary import, and `01-03-PLAN.md` Task 1 turns that into a permanent CI gate (D-14b)
+     asserting no external-origin `<script src="http` in the built HTML. Adding one in a later phase
+     therefore requires a deliberate, visible change plus the 50 KB third-party sign-off.
 
 5. **Who owns domain cutover?** CONTEXT.md flags that no phase currently owns it. Out of scope for
    Phase 1, but it should be added to ROADMAP.md before Phase 5 completes.
+   - **RESOLVED for Phase 1 scope only: explicitly out of scope.** D-03 keeps the apex on Webflow and
+     `01-04-PLAN.md` asserts `www.beyondhousecleaning.com` still does not resolve to Vercel after
+     deployment. **The underlying roadmap gap is still open**: no phase owns cutover, and the planner
+     has deliberately NOT added it to Phase 1 or edited ROADMAP.md. It is surfaced to Sam as a
+     roadmap decision. Note the interaction with D-15: the cutover phase is what flips
+     `robots.txt` from `Disallow: /` to the crawl-allowing form ROADMAP Phase 5 requires.
 
 ---
 
