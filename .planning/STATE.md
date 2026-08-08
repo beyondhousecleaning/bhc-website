@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-08-08T21:08:17.331Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-08-08T21:19:47.206Z"
 last_activity: 2026-08-08
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 5
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 01 (platform-foundation-design-system-integration) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-08-08
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [██░░░░░░░░] 20%
 
 *Updated after each plan completion*
 | Phase 01 P01 | 4 | 3 tasks | 6 files |
+| Phase 01 P02 | 6min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 01-01: safeJsonLd escapes < in all JSON-LD payloads; package-internal, deliberately NOT exported from design-system/src/index.js
 - [Phase ?]: 01-01: design-system exports map now exposes wildcard ./fonts/* (not a single fonts.css entry) so the 8 sibling .woff2 files resolve through the package boundary
 - [Phase ?]: 01-01: design-system lock suite is now 10 tests, not 8 — update any doc or CI job that hardcodes 8
+- [Phase 01]: 01-02: repo is an npm workspace [web, design-system] with a committed root package-lock.json; @bhc/design-system resolves via symlink and needs no build step
+- [Phase 01]: 01-02: the app passes NO phone prop to NAPFooter — the canonical +447861936533 stays single-sourced as the package default; that is what makes REQ-nap-consistency structural
+- [Phase 01]: 01-02: CI gates in this project are plain substring greps over web/app, so explanatory comments must NOT contain the substring they describe (use client, tokens.css) — carry this into Plan 03's check script
 
 ### Pending Todos
 
@@ -108,6 +112,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-08T21:08:17.321Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-08-08T21:19:47.194Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
