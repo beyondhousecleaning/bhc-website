@@ -185,12 +185,60 @@ test('SC-1b: --bhc-ink is declared exactly once across the built CSS', () => {
 
 /* --- D-14b / D-15 — no third-party script, no indexing ------------------- */
 
+/**
+ * Every <script> tag whose src is not a root-relative same-origin asset.
+ *
+ * The previous form was `/<script src="http[^"]*"/g`, which only matched when
+ * `src` was the FIRST attribute. React renders DOM attributes in JSX source
+ * order, so the idiomatic analytics snippet — `<script async src="…gtm.js">` —
+ * put `async` first and scored zero matches. The assertion's own comment
+ * claimed "Adding GTM, GA4 or Trustmary without sign-off fails here"; it did
+ * not. Protocol-relative `//host/…` was missed too, and it is the form a
+ * copy-pasted vendor snippet is most likely to arrive in.
+ *
+ * Internal Next.js assets are always root-relative and never protocol-relative,
+ * so `/` followed by a non-`/` is the whole allowlist — no vendor host list to
+ * maintain, and no scheme to enumerate.
+ */
+const externalScriptTags = (source) =>
+  (source.match(/<script\b[^>]*>/g) || []).filter((tag) => {
+    const found = tag.match(/\bsrc="([^"]*)"/);
+    if (!found) return false; // inline script — a different assertion's job
+    return !/^\/(?!\/)/.test(found[1]);
+  });
+
 test('D-14b: no external-origin script tag in the built page', () => {
-  // Internal Next.js scripts are always root-relative /_next/… , so matching on
-  // the scheme covers both http: and https: with no allowlist to maintain.
-  // Adding GTM, GA4 or Trustmary without sign-off fails here.
-  const external = html.match(/<script src="http[^"]*"/g) || [];
+  const external = externalScriptTags(html);
   assert.equal(external.length, 0, `external-origin script tag: ${external.join(', ')}`);
+});
+
+test('D-14b: the external-script detector is attribute-order independent', () => {
+  // Regression guard for CR-03. Without this the assertion above can silently
+  // stop catching anything and the built page will still be clean, so the lock
+  // reads green for the wrong reason. Each case below is a real installation
+  // form: src-first, async-first, multi-attribute, and protocol-relative.
+  const mustCatch = [
+    '<script src="https://x.com/a.js">',
+    '<script async src="https://www.googletagmanager.com/gtm.js">',
+    '<script defer data-domain="x" src="https://plausible.io/js/script.js">',
+    '<script src="//cdn.x.com/a.js">',
+    '<script async src="//widget.trustmary.com/x">',
+    '<script src="http://x.com/a.js" async="">',
+  ];
+  for (const tag of mustCatch) {
+    assert.equal(externalScriptTags(tag).length, 1, `external script not caught: ${tag}`);
+  }
+
+  const mustAllow = [
+    '<script src="/_next/static/chunks/a.js" async="">',
+    '<script async="" src="/_next/static/chunks/a.js">',
+    '<script src="/_next/static/chunks/a.js" noModule="">',
+    '<script type="application/ld+json">',
+    '<script>',
+  ];
+  for (const tag of mustAllow) {
+    assert.equal(externalScriptTags(tag).length, 0, `false positive on an internal tag: ${tag}`);
+  }
 });
 
 test('D-15: the built page carries a noindex robots meta tag', () => {
