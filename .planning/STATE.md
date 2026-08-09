@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-04-PLAN.md — Phase 01 complete
-last_updated: "2026-08-09T14:08:01.464Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-08-09T19:03:03.819Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 20
+  completed_plans: 6
   percent: 17
 ---
 
@@ -21,17 +21,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-08)
 
 **Core value:** Every technical and content decision serves organic + Google Maps visibility for `cleaner <town>` and `<service> <town>` searches across Warwickshire, Coventry, and five new postcode areas (B, DY, TF, WS, WV).
-**Current focus:** Phase 01 — platform-foundation-design-system-integration
+**Current focus:** Phase 02 — component-library-completion-core-templates
 
 ## Current Position
 
-Phase: 01 (platform-foundation-design-system-integration) — **COMPLETE**
-Plan: 5 of 5 complete — 01-01, 01-02, 01-03, 01-04, 01-05 all done
-Status: Phase 01 delivered. Live at https://bhc-website-nine.vercel.app (noindex + Disallow: /);
+Phase: 02 (component-library-completion-core-templates) — EXECUTING
+Plan: 2 of 15
+Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [██████████] 100%
+Progress: [███░░░░░░░] 30%
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100%
 | Phase 01 P03 | 8min | 3 tasks | 4 files |
 | Phase 01 P05 | 65min | 2 tasks | 1 files |
 | Phase 01 P04 | 20min | 3 tasks | 1 files |
+| Phase 02 P01 | 32min | 3 tasks | 18 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,10 @@ Highlights a fresh session needs immediately:
 - [Phase 01]: 01-04: D-09 CLOSED — Sam confirmed 2026-08-09 that +447861936533 IS the number that reaches BHC; no code change taken, and 07441918832 / +447575709361 stay retired and asserted-against at check-html-locks.mjs:86
 - [Phase 01]: 01-04: Vercel Deployment Protection is ON (Standard, ssoProtection=all_except_custom_domains) — only the production alias bhc-website-nine.vercel.app is public (200); every generated/team/branch URL 302s to Vercel SSO, so no bypass token exists or is needed
 - [Phase 01]: 01-04: Vercel POST /v11/projects REJECTS nodeVersion and defaults new projects to Node 24.x — the follow-up PATCH /v9/projects/{id} to 22.x is mandatory, not cosmetic; link.productionBranch stays main deliberately (main has no web/, so an accidental build from it fails and cannot take the alias)
+- [Phase ?]: 02-01: explicitly-international phone values are exempt from toDial's national-length check — CR-04's no-fabricated-+44 guarantee depends on it
+- [Phase 02]: 02-01: styles.css was the deviation, not UI-SPEC — .bhc-interlink__heading moves to --bhc-text-2xl, the settled <h2> size for all 16 new components
+- [Phase 02]: 02-01: Button gains as?: ElementType despite not being one of the sixteen — UI-SPEC 13-J is scoped by 'link-bearing', not by 'new'
+- [Phase 02]: 02-01: node cannot import .jsx in this repo — component behaviour checks must assert over built HTML or compile through Next's bundled SWC binding (transformSync takes source, isModule, Buffer)
 
 ### Pending Todos
 
@@ -126,6 +131,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T14:07:30.504Z
-Stopped at: Completed 01-05-PLAN.md
+Last session: 2026-08-09T19:03:03.809Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None
