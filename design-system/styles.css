@@ -831,6 +831,107 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
    this block, and --bhc-ink is the only ground it is measured against.    */
 .bhc-trustbar--ink .bhc-trustbar__icon { color: var(--bhc-sponge); }
 
+/* --- ReviewCard -----------------------------------------------------------
+   The tint card, at the same radius and padding as ServiceCard.
+
+   THERE IS NO CLAMP RULE HERE AND THERE MAY NOT BE ONE. With no client
+   JavaScript there is no "read more", so a CSS clamp hides text from sighted
+   readers that screen readers still receive, and 200% zoom widens the loss
+   (WCAG 1.4.4). The quote is capped at 320 characters at the DATA layer,
+   which is why nothing in this block truncates anything.
+
+   The stars set no colour, so they inherit --bhc-ink at 13.85:1 on this
+   ground. --bhc-action — the colour the same glyph takes in RatingBadge,
+   where it sits on white at 3.05:1 — measures 2.68:1 here and fails the 3:1
+   a graphic that carries meaning needs.
+
+   The quote is --bhc-text-lg / 1.35, the lead step, and the attribution is
+   --bhc-text-sm, the meta step. Both are direct --bhc-ink and
+   --bhc-ink-muted, so this card belongs on paper, warm or tint and never on
+   the one navy band.                                                       */
+
+.bhc-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  height: 100%;
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper-tint);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+  color: var(--bhc-ink);
+}
+
+.bhc-review__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.bhc-review__quote {
+  margin: 0;
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+}
+.bhc-review__quote p { margin: 0; }
+
+.bhc-review__by {
+  margin: 0;
+  margin-block-start: auto;
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+.bhc-review__by cite { font-style: normal; font-weight: var(--bhc-weight-semibold); }
+
+/* --- ReviewRail -----------------------------------------------------------
+   A rail below 1024px, a three-column grid at and above it. The horizontal
+   browse is CSS only: overflow-x plus scroll-snap. Arrow buttons would need
+   a pointer handler, which needs a client component, for a control the
+   platform already provides.
+
+   The track carries tabindex="0", role="group" and an aria-label in the
+   markup so a keyboard user can reach and scroll it. That is correct ONLY
+   because ReviewCard has no focusable children — Chrome's automatic
+   keyboard-focusable-scroller behaviour applies only to a scroller that
+   contains none.
+
+   overflow-x is returned to `visible` in the grid form, because a scroll
+   container that cannot scroll still clips a focus ring at its edge.      */
+
+.bhc-reviewrail__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-reviewrail__track {
+  display: flex;
+  gap: var(--bhc-space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bhc-space-6);
+}
+
+.bhc-reviewrail__item {
+  scroll-snap-align: start;
+  flex: none;
+  min-width: min(320px, 80vw);
+}
+
+@media (min-width: 1024px) {
+  .bhc-reviewrail__track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bhc-space-6);
+    overflow-x: visible;
+  }
+  .bhc-reviewrail__item { min-width: 0; }
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base
