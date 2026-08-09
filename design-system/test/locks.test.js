@@ -10,7 +10,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -253,6 +253,185 @@ test('every preview declares a @dsCard group on line 1', () => {
     const first = readFileSync(f, 'utf8').split('\n')[0];
     assert.match(first, /^<!--\s*@dsCard group="[^"]+"\s*-->$/, `bad @dsCard marker in ${f}`);
   }
+});
+
+/* --- Delta 9 — component shape and .design-sync registration ------------- */
+
+/*
+  Delta 9. `.design-sync/NOTES.md`, "Re-sync risks" item 3: a new component needs a
+  `componentSrcMap` entry, a `docsMap` entry and `category:` frontmatter, and NONE of
+  the three is auto-discovered in this repo. A component missing any of them is
+  skipped by /design-sync **with no error at all** — it simply is not in the design
+  project, and the next person to look assumes it is.
+
+  Sixteen components are authored across waves 2 to 5 of this phase, so a half-shipped
+  one has to fail here or it disappears quietly.
+
+  Self-collision note, because this class of defect has bitten the repo repeatedly:
+  every source scan in this suite walks `ROOT/src`, and this file lives in `ROOT/test`.
+  The fixtures below therefore cannot be matched by the matchers they guard. That is
+  belt and braces, not a licence — a scan added over `test/` would break it.
+*/
+
+// The converter cards components by these four group values only. A fifth would leave
+// the component silently uncategorised — the same failure shape as not registering it.
+const DS_GROUPS = ['Navigation', 'Content', 'Trust', 'Actions'];
+
+/*
+  The exact shipped form: no leading whitespace, straight quotes, a non-empty group,
+  nothing after the comment. Deliberately identical to the inline matcher in the
+  'every preview declares a @dsCard group' test above — change both or neither.
+*/
+const DS_CARD_LINE = /^<!--\s*@dsCard group="([^"]+)"\s*-->$/;
+
+// The .prompt.md files are `---\ncategory: X\n---` by convention (NOTES.md, "Component
+// grouping comes from @dsCard, via frontmatter"). Parsed with a plain regex on purpose:
+// the `locks` CI job runs with no `npm ci`, so this suite stays on node: built-ins (D-12).
+const frontmatterCategory = (src) => {
+  const block = src.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!block) return null;
+  const line = block[1].match(/^category:[ \t]*(.*?)[ \t]*$/m);
+  return line ? line[1] : null;
+};
+
+test('delta 9: every component ships four files and is registered in both .design-sync maps', () => {
+  const componentsDir = join(ROOT, 'src/components');
+  const names = readdirSync(componentsDir, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .sort();
+
+  // Anti-vacuity floor: six components shipped in Phase 1. Plan 02-14 raises the
+  // preview floor to 22; this one tracks the same set and is raised with it.
+  assert.ok(names.length >= 6, `expected at least 6 components, found ${names.length}`);
+
+  const cfg = JSON.parse(readFileSync(join(ROOT, '.design-sync/config.json'), 'utf8'));
+  const { componentSrcMap, docsMap } = cfg;
+  assert.ok(componentSrcMap, '.design-sync/config.json declares no componentSrcMap');
+  assert.ok(docsMap, '.design-sync/config.json declares no docsMap');
+
+  const has = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+  for (const name of names) {
+    const dir = join(componentsDir, name);
+    const entries = readdirSync(dir, { withFileTypes: true });
+    assert.ok(
+      !entries.some((e) => e.isDirectory()),
+      `${name}/ contains a subdirectory — component directories are flat`
+    );
+    const files = entries.filter((e) => e.isFile()).map((e) => e.name);
+
+    const canonical = [`${name}.jsx`, `${name}.html`, `${name}.d.ts`, `${name}.prompt.md`];
+    for (const f of canonical) {
+      assert.ok(
+        files.includes(f),
+        `${name} is missing ${f} — a component ships the implementation, the preview, the types and the doc, or it is half-shipped`
+      );
+    }
+
+    /*
+      NOT "exactly four files". `InterlinkBlock/geo.js` and `NAPFooter/formatPhone.js`
+      are the package's documented pure-logic convention — plain .js so `node --test`
+      can import them with no JSX build, the same reason `src/phone.js` is a .js one
+      level up. A file-count rule would fail two shipped components on day one.
+      Do not "tighten" this to a count; the rule is: the four canonical files, plus
+      plain-.js siblings only.
+    */
+    for (const f of files) {
+      if (canonical.includes(f)) continue;
+      assert.ok(
+        f.endsWith('.js'),
+        `${name}/${f} is neither one of the four canonical files nor a plain .js pure-logic sibling`
+      );
+    }
+
+    const firstLine = readFileSync(join(dir, `${name}.html`), 'utf8').split('\n')[0].replace(/\r$/, '');
+    const marker = firstLine.match(DS_CARD_LINE);
+    assert.ok(marker, `bad or missing @dsCard marker on line 1 of ${name}.html: ${JSON.stringify(firstLine)}`);
+    const group = marker[1];
+
+    assert.ok(
+      DS_GROUPS.includes(group),
+      `${name}.html declares group "${group}", which is not one of ${DS_GROUPS.join(', ')} — the component would card as uncategorised`
+    );
+
+    const category = frontmatterCategory(readFileSync(join(dir, `${name}.prompt.md`), 'utf8'));
+    assert.ok(category, `${name}.prompt.md has no category: frontmatter — it would land in the converter's "general" group`);
+    assert.equal(
+      category,
+      group,
+      `${name}: @dsCard group "${group}" and prompt frontmatter category "${category}" disagree; the frontmatter is generated FROM the marker and the two cannot be allowed to drift`
+    );
+
+    assert.ok(has(componentSrcMap, name), `${name} is absent from componentSrcMap — /design-sync will skip it with no error`);
+    assert.ok(has(docsMap, name), `${name} is absent from docsMap — its .prompt.md will not be uploaded, with no error`);
+    assert.ok(
+      existsSync(join(ROOT, componentSrcMap[name])),
+      `componentSrcMap.${name} points at ${componentSrcMap[name]}, which does not exist`
+    );
+    assert.ok(
+      existsSync(join(ROOT, docsMap[name])),
+      `docsMap.${name} points at ${docsMap[name]}, which does not exist`
+    );
+  }
+
+  // …and the other direction, so a renamed or deleted component leaves no stale entry
+  // pointing at a directory that is gone.
+  for (const [mapName, map] of [['componentSrcMap', componentSrcMap], ['docsMap', docsMap]]) {
+    for (const key of Object.keys(map)) {
+      assert.ok(
+        names.includes(key),
+        `${mapName} registers "${key}", but src/components/${key}/ does not exist — a stale entry from a rename or delete`
+      );
+    }
+  }
+});
+
+test('delta 9: the @dsCard line matcher still matches the shipped form and rejects near-misses', () => {
+  /*
+    Regression guard, the convention Lock 5's guard at :156-185 establishes: delta 9
+    passes today because all six components are correct, so a matcher that quietly
+    stopped matching would still read green — and would then wave through sixteen new
+    components. Both halves are asserted: what it must accept, and what it must reject.
+  */
+  for (const line of [
+    '<!-- @dsCard group="Actions" -->',
+    '<!-- @dsCard group="Navigation" -->',
+    '<!--@dsCard group="Trust"-->', // the surrounding whitespace is optional
+    '<!--   @dsCard group="Content"   -->',
+  ]) {
+    assert.match(line, DS_CARD_LINE, `shipped @dsCard form not matched: ${JSON.stringify(line)}`);
+  }
+  assert.equal('<!-- @dsCard group="Trust" -->'.match(DS_CARD_LINE)[1], 'Trust');
+
+  /*
+    The curly-quote fixture is built from codepoints rather than typed. A literal smart
+    quote in source is invisible in review, and a raw U+00A0 typed in place of an escape
+    has already slipped into this repo's sibling lock script once.
+  */
+  const CURLY_OPEN = String.fromCharCode(0x201c);
+  const CURLY_CLOSE = String.fromCharCode(0x201d);
+
+  for (const line of [
+    ' <!-- @dsCard group="Actions" -->', // leading whitespace — line 1 must start with the comment
+    `<!-- @dsCard group=${CURLY_OPEN}Actions${CURLY_CLOSE} -->`, // curly quotes
+    '<!-- @dsCard -->', // no group= at all
+    '<!-- @dsCard group="" -->', // empty group
+    '<!-- @dsCard group="Actions" --><div>', // trailing content
+    '<!-- @dsCard group="Actions" -->  extra', // trailing copy
+    '<!-- dsCard group="Actions" -->', // missing the @ sigil
+  ]) {
+    assert.doesNotMatch(line, DS_CARD_LINE, `near-miss @dsCard form wrongly accepted: ${JSON.stringify(line)}`);
+  }
+
+  // The four groups are a closed set, not a suggestion.
+  assert.deepEqual(DS_GROUPS, ['Navigation', 'Content', 'Trust', 'Actions']);
+  assert.ok(!DS_GROUPS.includes('general'));
+
+  // …and the frontmatter parser reads the value it is meant to, not the heading below it.
+  assert.equal(frontmatterCategory('---\ncategory: Actions\n---\n\n# Button\n'), 'Actions');
+  assert.equal(frontmatterCategory('---\ncategory: Navigation  \n---\n'), 'Navigation');
+  assert.equal(frontmatterCategory('# Button\n\ncategory: Actions\n'), null);
 });
 
 /* --- Interlink geometry -------------------------------------------------- */
