@@ -278,3 +278,58 @@ test('JSON-LD escaping: the escape does not corrupt the JSON payload', () => {
   };
   assert.deepEqual(JSON.parse(safeJsonLd(obj)), obj);
 });
+
+test('JSON-LD escaping: every emitter in the package routes through safeJsonLd', () => {
+  /*
+    WR-13. The escaping is correct and all three current emitters use it — but
+    nothing MADE them. safeJsonLd is deliberately not re-exported from
+    src/index.js, so a Phase-3 component author reaching for JSON.stringify
+    directly reintroduces the exact </script> breakout this module exists to
+    prevent, and every other lock in this file stays green while they do it.
+
+    The marker is assembled rather than written literally: a source scan that
+    matches its own scanner is how the `use client` and retired-phone-digit
+    collisions in this phase happened twice already. (This file lives outside
+    src/ so it is not walked today — the split is belt and braces.)
+  */
+  const LD_MARKER = ['application', '/', 'ld+json'].join('');
+  const HELPER = 'jsonLd.js';
+
+  const walk = (dir, out = []) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p, out);
+      else if (/\.(jsx?|mjs)$/.test(e.name)) out.push(p);
+    }
+    return out;
+  };
+
+  const sources = walk(join(ROOT, 'src'));
+  const emitters = [];
+
+  for (const f of sources) {
+    const src = readFileSync(f, 'utf8');
+
+    // The helper itself is the one place a raw serialiser call belongs.
+    if (f.endsWith(HELPER)) continue;
+
+    assert.ok(
+      !src.includes('JSON.' + 'stringify'),
+      `${f} serialises JSON-LD itself — import safeJsonLd from jsonLd.js instead`
+    );
+
+    if (!src.includes(LD_MARKER)) continue;
+    emitters.push(f);
+    assert.ok(
+      src.includes('safeJsonLd('),
+      `${f} emits a ${LD_MARKER} block without safeJsonLd — a </script> in any value breaks out`
+    );
+  }
+
+  // If the scan finds nothing it is asserting nothing; the package has three
+  // emitters today (NAPFooter, Breadcrumbs, RatingBadge).
+  assert.ok(
+    emitters.length >= 3,
+    `expected at least 3 JSON-LD emitters, found ${emitters.length}: ${emitters.join(', ')}`
+  );
+});

@@ -41,7 +41,7 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
   a shrinking lock suite is precisely the regression this file exists to catch,
   and lowering the floor to make a red run green defeats the whole mechanism.
 */
-const MIN_TESTS = 10;
+const MIN_TESTS = 14;
 
 const files = readdirSync(TEST_DIR)
   .filter((name) => name.endsWith('.test.js'))
