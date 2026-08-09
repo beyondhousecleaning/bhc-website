@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-10-PLAN.md
-last_updated: "2026-08-09T23:29:21.795Z"
+stopped_at: Completed 02-11-PLAN.md
+last_updated: "2026-08-09T23:40:24.438Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 15
+  completed_plans: 16
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 10 of 15
+Plan: 11 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [████████░░] 75%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Progress: [████████░░] 75%
 | Phase 02 P08 | 45min | 3 tasks | 9 files |
 | Phase 02 P09 | 6min | 2 tasks tasks | 5 files files |
 | Phase 02 P10 | 38min | 3 tasks tasks | 19 files files |
+| Phase Phase 02 PP11 | 15min | 2 tasks tasks | 2 files files |
 
 ## Accumulated Context
 
@@ -142,6 +143,11 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-10: Header's phone + CTA show from 768px, not UI-SPEC 7.1's 1024px — StickyCallBar leaves at exactly 768px, so a literal reading left 768-1023 with no one-tap call action; the two are now exactly complementary
 - [Phase ?]: 02-10: all sixteen Phase 2 components now exist — delta 9 walks TWENTY-TWO component directories and both .design-sync maps hold 22 keys; 02-14 should raise the previews floor against that number
 - [Phase ?]: 02-10: the fifth consecutive plan blocked by node having no JSX loader — the SWC probe (await loadBindings, jsc.transform.react.runtime='automatic', .jsx specifiers rewritten to .js) is now the standing route for any component-behaviour criterion
+- [Phase ?]: 02-11: Home's band sequence measured on the built markup half is paper -> warm -> paper -> tint -> paper -> navy; Hero is bhc-hero, NOT a bhc-section, so its paper-warm ground sits outside the modifier list and the sequence correctly opens on paper
+- [Phase ?]: 02-11: a null-rendering component gets NO SectionBand wrapper — banding ReviewRail would emit a headless empty section and put two paper grounds adjacent until Phase 4; rendered bare it contributes nothing and still needs no template change when the data lands
+- [Phase ?]: 02-11: home.js owns section headings, CTA labels AND metadata, not just body copy — page.jsx carries no copy literal at all, which is what keeps the claude-seo .jsx substring ban from ever binding on a template
+- [Phase ?]: 02-11: check:html is 29/30 until 02-12 lands — delta 6 fails on the six /services/* hrefs by design (wave-mate dependency stated in the plan objective); PAGE_EXPECTATIONS already holds all six entries, so no harness change is needed, only the routes
+- [Phase ?]: 02-11: ROADMAP SC-3 is now demonstrably satisfied — data-bhc-photo-state="pending" renders exactly once on /, and the same attribute is Phase 4's machine-readable hand-off when it backfills real pairs
 
 ### Pending Todos
 
@@ -176,6 +182,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T23:29:21.780Z
-Stopped at: Completed 02-10-PLAN.md
+Last session: 2026-08-09T23:40:24.428Z
+Stopped at: Completed 02-11-PLAN.md
 Resume file: None

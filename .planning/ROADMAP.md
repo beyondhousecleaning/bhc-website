@@ -107,7 +107,7 @@ Plans:
 **Wave 5** *(blocked on Wave 4)*
 
 - [x] 02-10-PLAN.md — Navigation shell: SkipLink, Footer, Header (zero-JS disclosure), StickyCallBar (wave 5)
-- [ ] 02-11-PLAN.md — Home page + `home.js` (wave 5)
+- [x] 02-11-PLAN.md — Home page + `home.js` (wave 5)
 - [ ] 02-12-PLAN.md — Service dynamic route + `services.js`, six pages at ≥800 words each (wave 5)
 
 **Wave 6** *(blocked on Wave 5)*
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 10/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 11/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
