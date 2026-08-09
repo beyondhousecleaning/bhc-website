@@ -530,6 +530,419 @@ export const SERVICES = [
     ],
     faqs: serviceFaqs('move-in-cleaning'),
   },
+
+  {
+    slug: 'move-out-cleaning',
+    h1: `Move-Out Cleaning in ${AREA_LONG}`,
+    eyebrow: 'Get the deposit back',
+    title: titleFor('Move-Out Cleaning in Warwickshire'),
+    description: describe('Move-out cleaning'),
+    lead:
+      'An empty property cleaned to the standard a check-out report is written against, so ' +
+      'cleaning is not the reason any of your deposit gets held back.',
+    prose: [
+      {
+        type: 'p',
+        text:
+          'Cleaning is the single most common reason money is held back at the end of a tenancy. ' +
+          'Not damage, not missing keys, not the garden — cleaning. It is also the only one of ' +
+          'those you can still do something about on the last weekend, which is why this job exists ' +
+          'and why it is worth doing properly rather than at eleven at night with a bottle of spray ' +
+          'and a roll of kitchen paper.',
+      },
+
+      { type: 'h2', text: 'What a check-out report is written against' },
+      {
+        type: 'p',
+        text:
+          'An inventory clerk is not judging your housekeeping. They are comparing the property ' +
+          'against the check-in inventory that was taken the day you moved in, photograph by ' +
+          'photograph, and writing down every difference. That is a much narrower and much harsher ' +
+          'test than "it looks tidy", and it is why a property that feels perfectly clean to live ' +
+          'in can still come back with a list.',
+      },
+      {
+        type: 'p',
+        text:
+          'The differences they write down are almost always the same handful. Grease inside the ' +
+          'oven and on the extractor. Limescale on the shower screen and round the taps. Mould in ' +
+          'the sealant. Dust on the tops of doors and in the light fittings. Crumbs in the cutlery ' +
+          'drawer and marks inside the cupboards. Skirting boards. The inside of the windows. Every ' +
+          'one of those is somewhere a person living in a home has no particular reason to look, ' +
+          'and every one is on the report.',
+      },
+
+      { type: 'h2', text: 'What we clean on a move-out' },
+      {
+        type: 'p',
+        text:
+          'The whole property, empty, top to bottom. There is no "we skipped the spare room" ' +
+          'version of this job, because the clerk is not going to skip it either.',
+      },
+      {
+        type: 'ul',
+        text: [
+          'Inside the oven, the grill, the racks and the door glass',
+          'The extractor hood and its filter, degreased',
+          'Inside the fridge and freezer, defrosted and left dry with the door ajar',
+          'Inside and outside every cupboard, drawer, wardrobe and airing cupboard',
+          'Limescale off shower screens, taps, shower heads, tiles and the toilet',
+          'Sealant and grout scrubbed, and mould treated where it will lift',
+          'Skirting boards, door frames, tops of doors, switches, sockets and radiators',
+          'Windows cleaned on the inside, with the sills, the tracks and the handles',
+          'Light fittings, extractor vents and the tops of the kitchen units',
+          'Floors hoovered and mopped throughout, including the stairs and under where the furniture was',
+        ],
+      },
+
+      { type: 'h2', text: 'The oven, every single time' },
+      {
+        type: 'p',
+        text:
+          'If one item accounts for more withheld deposits than any other, it is the oven. It gets ' +
+          'flagged because it is easy to photograph, easy to score and impossible to argue with. It ' +
+          'is also the job most people underestimate: a year of roasting tins leaves carbon that ' +
+          'does not come off with a sponge, and the door glass has two or three panes with the mess ' +
+          'sitting between them.',
+      },
+      {
+        type: 'p',
+        text:
+          'So we treat it as its own piece of work rather than as one line on a list. Racks and ' +
+          'trays come out and soak, the interior is stripped rather than wiped, and the glass gets ' +
+          'done from both sides. If your oven has been sitting untouched for two years, tell us ' +
+          'before we quote — it changes the hours, and finding out on the day is bad for everyone.',
+      },
+
+      { type: 'h2', text: 'How this differs from a deep clean' },
+      {
+        type: 'p',
+        text:
+          'They overlap heavily and they are not the same job. A deep clean happens in a home that ' +
+          'is being lived in: furniture stays, we work around it, and the aim is a house that feels ' +
+          'reset. A move-out happens in an empty property and the aim is an inventory that comes ' +
+          'back clear. Everything that furniture was hiding is in scope, nothing is being worked ' +
+          'around, and the finish is measured against a document rather than against how it feels.',
+      },
+      {
+        type: 'p',
+        text:
+          'That is also why the two are quoted differently. Ask for whichever fits what you are ' +
+          'trying to achieve, and if you describe the situation we will tell you which one you ' +
+          'actually want.',
+      },
+
+      { type: 'h2', text: 'Timing, and what the property should look like when we arrive' },
+      {
+        type: 'p',
+        text:
+          'Empty, please — furniture and boxes out, and the electricity and water still on. We can ' +
+          'work around a few odds and ends in one room, but anything we cannot move is somewhere we ' +
+          'cannot clean, and that gap is exactly what ends up in the report. Book us after the ' +
+          'removal van and before the check-out appointment, ideally with a day in hand.',
+      },
+      {
+        type: 'p',
+        text:
+          'End-of-tenancy dates cluster hard at the end of the month, so the last few days book up ' +
+          'first across Leamington Spa, Warwick and Coventry alike. A week or two of notice is ' +
+          'comfortable. Less than that is worth asking about anyway — we would rather tell you ' +
+          'honestly what we can do than have you assume we cannot.',
+      },
+
+      { type: 'h2', text: 'If the agent comes back with something' },
+      {
+        type: 'p',
+        text:
+          'Send us the check-out report. It lists exactly what was flagged and where, which is far ' +
+          'more useful than a message saying the agent was not happy. If it is something we missed, ' +
+          'we come back and put it right — that is the point of using a cleaner rather than doing ' +
+          'it yourself at midnight. What we cannot do is speak for wear, marks on the walls or ' +
+          'anything else that was never a cleaning problem, and we will not pretend otherwise.',
+      },
+    ],
+    faqs: serviceFaqs('move-out-cleaning'),
+  },
+
+  {
+    slug: 'short-term-rental-cleaning',
+    h1: `Short-Term Rental Cleaning in ${AREA_LONG}`,
+    eyebrow: 'Guest-ready between stays',
+    title: titleFor('Rental Cleaning in Warwickshire'),
+    description: describe('Short-term rental cleaning'),
+    lead:
+      'Changeovers worked to your booking calendar, so the next guest walks into the property the ' +
+      'listing photos promised them.',
+    prose: [
+      {
+        type: 'p',
+        text:
+          'A holiday let is not a home with guests in it. It is a small hospitality business where ' +
+          'the product is a room that looks exactly the way it looked in the photographs, every ' +
+          'single time, for a stranger who will score it publicly within a week. That is a ' +
+          'different job from cleaning a house, and the difference is mostly about repeatability ' +
+          'and about the clock.',
+      },
+
+      { type: 'h2', text: 'What a changeover involves' },
+      {
+        type: 'p',
+        text:
+          'The property is reset rather than tidied. Every guest leaves a slightly different mess ' +
+          'in a slightly different place, and the finish has to be identical regardless.',
+      },
+      {
+        type: 'ul',
+        text: [
+          'Beds stripped, mattress protectors checked, fresh linen on and made to a set standard',
+          'Towels changed and folded the same way each visit',
+          'Bathrooms cleaned through, including the shower screen and the toilet',
+          'Kitchen reset: worktops, hob, sink, kettle, toaster, and the fridge emptied and wiped',
+          'Crockery and cutlery checked, counted and put back where the guide says it lives',
+          'Bins emptied, liners on, and the outside bins put out for the right collection day',
+          'Floors hoovered and mopped, sofa cushions straightened, remotes back on the table',
+          'Windows and mirrors checked for marks at guest eye level',
+          'A final walk-through against your own checklist, room by room',
+        ],
+      },
+
+      { type: 'h2', text: 'Linen, and why two sets is the answer' },
+      {
+        type: 'p',
+        text:
+          'The single biggest cause of a late changeover is a washing machine. If the beds cannot ' +
+          'be made until a load has finished, the turnaround is hostage to a cycle time, and a ' +
+          'same-day booking is then impossible. Most owners we work with keep two or three full ' +
+          'sets of linen and towels per bed, so the dirty set leaves with us or goes into the ' +
+          'machine after the property is already guest-ready.',
+      },
+      {
+        type: 'p',
+        text:
+          'We work to whatever system you already have rather than insisting on ours. Hired linen ' +
+          'delivered on a schedule, your own sets laundered on site, a mix of the two — all of it ' +
+          'is normal. What matters is that the system is written down somewhere and that the person ' +
+          'in the property knows it.',
+      },
+
+      { type: 'h2', text: 'The window between check-out and check-in' },
+      {
+        type: 'p',
+        text:
+          "Most listings run an eleven o'clock check-out and a three or four o'clock check-in. That " +
+          'is a genuine four hours only if the last guest leaves on time and the cleaner is already ' +
+          'nearby, and a back-to-back booking on a busy weekend in Warwick or Kenilworth is tighter ' +
+          'still.',
+      },
+      {
+        type: 'p',
+        text:
+          'So we plan around your calendar rather than around a fixed round. Send it over and we ' +
+          'will tell you which turnarounds are comfortable, which are tight and which you should ' +
+          'think twice about accepting — before you accept them, which is the only moment that ' +
+          'information is worth anything. If a guest overstays and the window collapses, you get a ' +
+          'message rather than a surprise.',
+      },
+
+      { type: 'h2', text: 'Consistency is what guests actually score' },
+      {
+        type: 'p',
+        text:
+          'Nobody writes a review about an excellent clean. They write one about the hair in the ' +
+          'plughole, the crumbs in the toaster or the mug with lipstick on it, and they write it ' +
+          'about a property that was spotless on their last three stays. One inconsistent ' +
+          'changeover undoes a season of good ones, and the cost of it is a rating rather than a ' +
+          'complaint.',
+      },
+      {
+        type: 'p',
+        text:
+          'That is the argument for the same small team doing your property each time and for a ' +
+          'written property guide rather than a shared instinct: where the spare duvet lives, which ' +
+          'way the cushions face, how the welcome tray is laid out, which door sticks. We will help ' +
+          'you build that guide from the first few visits if you have not got one.',
+      },
+
+      { type: 'h2', text: 'Consumables, breakages and what we report' },
+      {
+        type: 'p',
+        text:
+          'We restock whatever your welcome pack includes — tea, coffee, sugar, loo roll, hand ' +
+          'soap, dishwasher tablets, bin liners. Leave a stock cupboard on site, tell us what goes ' +
+          'in it, and we will tell you when it is running low rather than when it has run out.',
+      },
+      {
+        type: 'p',
+        text:
+          'Anything broken, stained or missing gets reported the same day, with photographs. ' +
+          'Finding a chipped glass or an absent towel yourself, three guests later, is no use to ' +
+          'anybody: you cannot raise it with the guest who did it and you cannot claim for it. A ' +
+          'photograph on the day is worth more than a careful note a fortnight afterwards.',
+      },
+
+      { type: 'h2', text: 'Owners, agencies and the properties we take on' },
+      {
+        type: 'p',
+        text:
+          'We work for owners who manage their own listing and for agencies running several ' +
+          'properties across Leamington Spa, Warwick, Kenilworth and Coventry. What we need in ' +
+          'either case is access we can rely on, a calendar we can see, and someone who answers ' +
+          'when the boiler stops working an hour before a check-in.',
+      },
+      {
+        type: 'p',
+        text:
+          'A key safe or a smart lock is far easier than a handover, and it means a delayed guest ' +
+          'never costs you a whole changeover. If the property is in a block with a concierge or a ' +
+          'shared entrance, tell us how that works before the first visit rather than on the ' +
+          'morning of it.',
+      },
+      {
+        type: 'p',
+        text:
+          'Deep cleans still have their place in a let. Twice a year is about right for the jobs a ' +
+          'changeover never has time for: inside the oven, limescale on the shower screen, mattress ' +
+          'protectors washed, skirting boards and window tracks done properly, and the linen ' +
+          'cupboard sorted out. Booking those into quiet weeks is the cheapest way to keep a ' +
+          'property looking like its photographs into a second season.',
+      },
+    ],
+    faqs: serviceFaqs('short-term-rental-cleaning'),
+  },
+
+  {
+    slug: 'post-construction-cleaning',
+    h1: `Post-Construction Cleaning in ${AREA_LONG}`,
+    eyebrow: 'After the builders leave',
+    title: titleFor('Builders Clean in Warwickshire'),
+    description: describe('Builders cleans'),
+    lead:
+      'Fine dust out of the tracks, the fittings and the sockets, then out again once it has ' +
+      'settled — the two-pass builders clean that turns a finished site into a home.',
+    prose: [
+      {
+        type: 'p',
+        text:
+          'A builders clean is a dust job before it is a cleaning job. Plaster dust and sawdust are ' +
+          'so fine that they behave more like smoke than like dirt: they get through closed doors, ' +
+          'settle into every horizontal surface in the property including the ones nobody thinks ' +
+          'of as surfaces, and then lift again the moment somebody walks through the room. That is ' +
+          'why the work is structured the way it is.',
+      },
+
+      { type: 'h2', text: 'Why it takes two passes' },
+      {
+        type: 'p',
+        text:
+          'Clean a room once and it looks perfect. Come back four hours later and there is a fresh ' +
+          'grey film on the windowsill, because the dust that was in the air when you started has ' +
+          'been coming down the whole time. One thorough pass is therefore not a finished job — it ' +
+          'is the first half of one.',
+      },
+      {
+        type: 'p',
+        text:
+          'We work top down so that everything we disturb falls onto something we have not done ' +
+          'yet, take the bulk out first, and then go back over the whole property at the end for ' +
+          'the settled layer. The second pass is quicker than the first and it is the one that ' +
+          'makes the difference between a property that looks clean in the moment and one that is ' +
+          'still clean when you move in.',
+      },
+
+      { type: 'h2', text: 'What we clean once the trades are off site' },
+      {
+        type: 'p',
+        text:
+          'Everywhere the dust went, which is everywhere. The list below is the part people do not ' +
+          'expect rather than the obvious floors and worktops.',
+      },
+      {
+        type: 'ul',
+        text: [
+          'Window tracks, frames, hinges and trickle vents, where the grit collects',
+          'The tops of doors, architraves, picture rails and every internal ledge',
+          'Inside light fittings, downlight bezels, extractor grilles and smoke alarms',
+          'Sockets, switches, thermostats and the recesses around them',
+          'Radiators, including between the fins and behind the brackets',
+          'Inside every new cupboard, drawer and wardrobe before anything goes in it',
+          'Stickers, protective film and labels off appliances, glass and sanitaryware',
+          'Bathrooms taken back: grout haze off tiles, sealant checked, new fittings polished',
+          'Staircases, spindles and handrails, where dust sits on every edge',
+          'Hard floors hoovered and then washed more than once, because the first wash lifts a haze',
+        ],
+      },
+
+      { type: 'h2', text: 'Paint, adhesive and the residue nobody warns you about' },
+      {
+        type: 'p',
+        text:
+          'Dust is the volume of the job; residue is the fiddly half. Paint flecks on glass and on ' +
+          'chrome, silicone smears on tiles, adhesive from protective tape on skirting boards and ' +
+          'door frames, grout haze that only shows when the light is at the right angle, plaster ' +
+          'splashes on a new stair spindle, the ghost of a sticker on a shower screen.',
+      },
+      {
+        type: 'p',
+        text:
+          'Each one wants a different approach and most of them want a blade, a solvent or a bit of ' +
+          'patience rather than more elbow. Getting it wrong scratches a finish that was installed ' +
+          'last week, so where something is genuinely at risk — a soft-coated worktop, a lacquered ' +
+          'tap, a painted surface that has not fully cured — we will tell you what we can see and ' +
+          'leave it rather than gamble with your kitchen.',
+      },
+
+      { type: 'h2', text: 'When to book it, and when not to' },
+      {
+        type: 'p',
+        text:
+          'After the last trade is off site. Not before. If the decorator is coming back on Monday ' +
+          'or the flooring is going down next week, we will be cleaning up after them twice and you ' +
+          'will be paying for it twice. The one exception is a long project where a room has been ' +
+          'signed off and sealed away from the rest of the work — that can be done on its own.',
+      },
+      {
+        type: 'p',
+        text:
+          'Snagging is the other piece of the timing. It is usually easier to book the clean first ' +
+          'and walk the snagging list afterwards, because dust hides exactly the sort of small ' +
+          'defect a snagging list exists to catch: a chipped edge, a mark in a painted surface, a ' +
+          'hinge that has been fitted proud. If the snagging works are going to be substantial, ' +
+          'wait and do both at the end.',
+      },
+
+      { type: 'h2', text: 'One room, one extension, or the whole property' },
+      {
+        type: 'p',
+        text:
+          'A new kitchen, a loft conversion or a single-room refit is an entirely normal job for ' +
+          'us. What surprises people is that the rest of the house usually needs a run through as ' +
+          'well, because the dust travels down a hallway and up a staircase however carefully the ' +
+          'doors were taped. We will quote the works area properly and the rest of the property ' +
+          'lightly, which is almost always what is actually wanted.',
+      },
+      {
+        type: 'p',
+        text:
+          'We cover new builds, extensions, refurbishments and renovation projects across ' +
+          'Leamington Spa, Warwick, Kenilworth, Coventry and the villages between them. Tell us the ' +
+          'size of the property, what stage the works are at and whether anyone is living in it, ' +
+          'and you will get a fixed price before we start.',
+      },
+
+      { type: 'h2', text: 'What we need on site' },
+      {
+        type: 'p',
+        text:
+          'Water, power, light and access — a builders clean without running water is not a ' +
+          'builders clean. It helps enormously if the rubbish, the offcuts and the packaging have ' +
+          'gone before we arrive: we are not a waste removal firm, and a skip run is a different ' +
+          'trade with a different licence. Tell us if the property is occupied, if there are ' +
+          'materials being stored anywhere, and if anything is not to be touched, and we will plan ' +
+          'the two passes around it.',
+      },
+    ],
+    faqs: serviceFaqs('post-construction-cleaning'),
+  },
 ];
 
 /**
