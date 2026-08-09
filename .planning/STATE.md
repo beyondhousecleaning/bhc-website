@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-08-09T19:03:03.819Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-08-09T19:23:59.296Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 6
+  completed_plans: 7
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 2 of 15
+Plan: 3 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 35%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [███░░░░░░░] 30%
 | Phase 01 P05 | 65min | 2 tasks | 1 files |
 | Phase 01 P04 | 20min | 3 tasks | 1 files |
 | Phase 02 P01 | 32min | 3 tasks | 18 files |
+| Phase 02 P02 | 25min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,10 @@ Highlights a fresh session needs immediately:
 - [Phase 02]: 02-01: styles.css was the deviation, not UI-SPEC — .bhc-interlink__heading moves to --bhc-text-2xl, the settled <h2> size for all 16 new components
 - [Phase 02]: 02-01: Button gains as?: ElementType despite not being one of the sixteen — UI-SPEC 13-J is scoped by 'link-bearing', not by 'new'
 - [Phase 02]: 02-01: node cannot import .jsx in this repo — component behaviour checks must assert over built HTML or compile through Next's bundled SWC binding (transformSync takes source, isModule, Buffer)
+- [Phase ?]: 02-02: RatingBadge.emitSchema is OFF on every Phase 2 template — the bare badge satisfies Lock 3 and 17 orphaned AggregateRating nodes would worsen the deferred CR-05
+- [Phase ?]: 02-02: Dormant locks are gated and assert the INVERSE (INTERLINK_LOCK_ACTIVE, NO_RATING_YET, NO_PRIMARY_CTA_YET) so the plan that should re-enable them finds the build red
+- [Phase ?]: 02-02: The tel: cap is 4 per page, not 3 — QuoteFormEntry's fallback is the fourth link; exactly one tel: inside <footer> remains the real NAP invariant
+- [Phase ?]: 02-02: The budget gates on the modern noModule-excluded JS figure and reports the legacy polyfill separately (WR-06); page weight is gzip JS + gzip HTML + gzip CSS + raw woff2 (WR-05)
 
 ### Pending Todos
 
@@ -131,6 +136,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T19:03:03.809Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-08-09T19:23:59.284Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

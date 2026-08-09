@@ -86,7 +86,7 @@ Plans:
 **Wave 1**
 
 - [x] 02-01-PLAN.md — Package hardening: `src/phone.js`, `toDial` throws (with the existing Lock 4 parity loop narrowed in the same change), NAPFooter literal deleted + WR-10 guard, Breadcrumbs WR-12 + §13-R, `Star` exported, `Button` gains `as`, three `styles.css` corrections, heading-doc remediation (wave 1)
-- [ ] 02-02-PLAN.md — Multi-page lock harness rewrite around `prerender-manifest.json` (deltas 1–7, 11, 12 + the four unlisted corrections), worst-page budget with WR-05 closed, honest two-route scaffold (wave 1)
+- [x] 02-02-PLAN.md — Multi-page lock harness rewrite around `prerender-manifest.json` (deltas 1–7, 11, 12 + the four unlisted corrections), worst-page budget with WR-05 closed, honest two-route scaffold (wave 1)
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 1/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 2/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
