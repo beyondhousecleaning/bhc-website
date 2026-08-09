@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-07-PLAN.md
-last_updated: "2026-08-09T21:16:01.415Z"
+stopped_at: Completed 02-08-PLAN.md
+last_updated: "2026-08-09T22:56:48.742Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 12
+  completed_plans: 13
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 7 of 15
+Plan: 8 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [██████░░░░] 60%
+Progress: [███████░░░] 65%
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Progress: [██████░░░░] 60%
 | Phase 02 P05 | 15min | 2 tasks tasks | 19 files files |
 | Phase 02 P06 | 22min | 2 tasks tasks | 6 files files |
 | Phase 02 P07 | 41min | 3 tasks | 19 files |
+| Phase 02 P08 | 45min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -125,6 +126,10 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-07: a focusable scroll track (tabindex=0 + role=group + aria-label) is correct only while it holds nothing focusable — ReviewRail depends on ReviewCard having no link, and BeforeAfterSlider keeps its one link outside the track in the figcaption
 - [Phase ?]: 02-07: delta 14's extractor reads raw source, so an explanatory comment naming the defective SVG form fails the file it explains — sixth scanner self-collision this phase, and the first inside a component header comment
 - [Phase ?]: 02-07: delta 9 now covers EIGHTEEN component directories, not the twelve the 02-07 plan's criterion carried forward — 02-14 should raise the preview floor against the real number
+- [Phase ?]: 02-08: utility titles that overrun Lock 8 are fixed with a shorter title SUBJECT, never a shorter <h1> — the <h1>s are Success Criterion 2 copy
+- [Phase ?]: 02-08: /customer-login and /gift-cards outbound hrefs default to the LIVE SITE's own page for that route — no portal or provider URL exists anywhere in the repo; both MUST be swapped before cutover or each becomes a link to itself, and delta 6 never inspects an absolute URL
+- [Phase ?]: 02-08: NO_PRIMARY_CTA_YET is down to /_not-found — the self-restoring inverse fired exactly as designed when /get-a-quote gained QuoteFormEntry's primary Button; 02-13 owns the last entry
+- [Phase ?]: 02-08: the ninth and tenth scanner self-collisions — an illustrative street line and the three banned CTA phrases both failed the greps their own comments explained; explanations must describe a banned shape, never instance it
 
 ### Pending Todos
 
@@ -159,6 +164,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T21:16:01.405Z
-Stopped at: Completed 02-07-PLAN.md
+Last session: 2026-08-09T22:56:48.729Z
+Stopped at: Completed 02-08-PLAN.md
 Resume file: None
