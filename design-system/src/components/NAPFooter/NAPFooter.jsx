@@ -22,6 +22,7 @@
  */
 
 import { formatPhone, toDial } from './formatPhone.js';
+import { CANONICAL_PHONE } from '../../phone.js';
 import { safeJsonLd } from '../../jsonLd.js';
 
 const SITE = 'https://www.beyondhousecleaning.com';
@@ -31,7 +32,7 @@ export { formatPhone, toDial };
 export function NAPFooter({
   businessName = 'Beyond House Cleaning',
   /** The ONE number. Everything displayed is derived from it. */
-  phone = '+447861936533',
+  phone = CANONICAL_PHONE,
   serviceArea = 'Serving Warwickshire, Coventry and the West Midlands',
   hours = 'Mon–Sat, 8am–7pm',
   /** The GBP place URL — not a link to the town. */
@@ -46,6 +47,16 @@ export function NAPFooter({
   const display = formatPhone(phone);
   const dial = toDial(phone);
 
+  /*
+    WR-10. `mapsUrl` is a literal today and a Phase-3 data-file value tomorrow,
+    and it is rendered straight into an href. A value that is not http(s) —
+    `javascript:`, `data:`, or a half-written relative path — has no useful
+    rendering here, so the whole block is dropped rather than shipped broken.
+    The same guarded value feeds schema `sameAs`: an origin Google is told the
+    business also lives at is a claim, not decoration.
+  */
+  const safeMapsUrl = /^https?:\/\//i.test(mapsUrl ?? '') ? mapsUrl : null;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'HomeAndConstructionBusiness',
@@ -57,8 +68,8 @@ export function NAPFooter({
     ...(areaServed.length
       ? { areaServed: areaServed.map((a) => ({ '@type': 'City', name: a })) }
       : {}),
-    ...(mapsUrl || social.length
-      ? { sameAs: [mapsUrl, ...social.map((s) => s.href)].filter(Boolean) }
+    ...(safeMapsUrl || social.length
+      ? { sameAs: [safeMapsUrl, ...social.map((s) => s.href)].filter(Boolean) }
       : {}),
   };
 
@@ -77,9 +88,14 @@ export function NAPFooter({
 
             <p className="bhc-footer__hours">{hours}</p>
 
-            {mapsUrl ? (
+            {safeMapsUrl ? (
               <p className="bhc-footer__hours" style={{ marginTop: 'var(--bhc-space-3)' }}>
-                <a href={mapsUrl} rel="noopener">
+                {/*
+                  `rel="noopener"` without `target="_blank"` is inert — the
+                  opener it severs is the one a new browsing context would have
+                  had. The two change together or neither does anything.
+                */}
+                <a href={safeMapsUrl} target="_blank" rel="noopener noreferrer">
                   Find us on Google
                 </a>
               </p>

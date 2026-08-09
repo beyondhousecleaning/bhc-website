@@ -50,24 +50,56 @@ test('Lock 4: the displayed string is never the raw input, on any branch', () =>
   // beside an href that dialled another — the live-site bug, reintroduced
   // through the very API written to prevent it. The invariant is unconditional:
   // whatever is displayed is a rendering of whatever is dialled.
-  const inputs = [
+  //
+  // Phase 2 narrows this test because it closes the OTHER half of the same
+  // hole. CR-04 closed DIVERGENCE — display and href naming two different
+  // numbers. It did not close DEGRADATION: both sides could still agree on
+  // something unrenderable, so `formatPhone('') === toDial('') === '+44'`
+  // passed the parity assertion while the page shipped
+  // `<a href="tel:+44"></a>` — an empty interactive element, a WCAG 2.4.4
+  // failure, across 17 pages x 4 tel: links in this phase alone. toDial now
+  // throws on those inputs, so they move from the parity loop into a paired
+  // rejection check. Parity is asserted for everything still renderable;
+  // rejection is asserted for everything that is not. Neither half is weaker.
+  const renderable = [
     '+447861936533', // canonical
     '07861936533', // national
     '+44 7861 936533', // spaced international
     '07441918832', // the number the live footer actually dials
-    '+1 415 555 2671', // explicit non-UK
-    '078619365333', // one digit too many
-    '0786193653', // one digit too few
-    '', // empty
-    '+44', // country code only
-    'call us', // not a number at all
+    '+1 415 555 2671', // explicit non-UK — length is not ours to police
   ];
-  for (const input of inputs) {
+  for (const input of renderable) {
     assert.equal(
       digits(formatPhone(input)),
       digits(toDial(input)),
       `display/href divergence for ${JSON.stringify(input)}: ` +
         `displays ${formatPhone(input)}, dials ${toDial(input)}`
+    );
+  }
+
+  // Both functions must reject, not just toDial — formatPhone inherits the
+  // throw by calling toDial first, and asserting only one of them would let a
+  // future "helpful" try/catch in formatPhone restore the degraded render
+  // while this test stayed green.
+  const unrenderable = [
+    '078619365333', // one digit too many
+    '0786193653', // one digit too few
+    '', // empty
+    '+44', // country code only
+    'call us', // not a number at all
+    undefined, // prop omitted with no default in scope
+    null, // data file with a missing field
+  ];
+  for (const input of unrenderable) {
+    assert.throws(
+      () => toDial(input),
+      TypeError,
+      `toDial accepted an unrenderable value: ${JSON.stringify(input)}`
+    );
+    assert.throws(
+      () => formatPhone(input),
+      TypeError,
+      `formatPhone accepted an unrenderable value: ${JSON.stringify(input)}`
     );
   }
 });

@@ -15,9 +15,10 @@
  * exactly that. That divergence between display and href is only expressible
  * when the two are separate inputs. `NAPFooter` derives
  * both from a single `phone` prop, and this layout passes NO `phone` prop at
- * all — the canonical number lives once, as the package default at
- * NAPFooter.jsx:33. An app-side restatement would be a second place the number
- * can be wrong, which is the exact defect REQ-nap-consistency exists to kill.
+ * all — the canonical number lives once, in the package's src/phone.js, which
+ * every phone-bearing component defaults from. An app-side restatement would be
+ * a second place the number can be wrong, which is the exact defect
+ * REQ-nap-consistency exists to kill.
  * (.design-sync/previews/NAPFooter.tsx:38 does pass it — that is a prop demo,
  * not app guidance.)
  *
