@@ -403,3 +403,112 @@ h3.bhc-section__heading { font-size: var(--bhc-text-xl); }
   font-size: var(--bhc-text-sm);
   color: #C9D4E4;
 }
+
+/* --- ProcessSteps ---------------------------------------------------------
+   Every numeral here comes from the list's own ordinal. counter-reset on the
+   <ol>, counter-increment on the item, content: counter() on the disc — so
+   reordering the data cannot desynchronise them, and no step object carries
+   a number. From Phase 3 the steps are a data file edited by copywriters.
+
+   Disc: --bhc-action fill with an --bhc-ink numeral, 5.17:1. White on
+   --bhc-action is 3.05:1 and is not an option.                            */
+
+.bhc-steps__heading { margin-bottom: var(--bhc-space-8); }
+
+.bhc-steps {
+  counter-reset: bhc-step;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--bhc-space-8);
+}
+@media (min-width: 768px) {
+  .bhc-steps {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bhc-space-6);
+  }
+}
+
+.bhc-steps__item { counter-increment: bhc-step; }
+.bhc-steps__item::before {
+  content: counter(bhc-step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px is UI-SPEC §2's minimum touch target, reused as the disc size so the
+     discs line up with every other affordance on the page.                */
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--bhc-space-4);
+  background: var(--bhc-action);
+  color: var(--bhc-ink);
+  border-radius: var(--bhc-radius-full);
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-lg);
+  font-weight: var(--bhc-weight-bold);
+  line-height: 1;
+}
+
+/* Tag-scoped for the same reason as .bhc-section__heading: headingLevel 3
+   steps the titles down to <h4>, and the type binding must follow.        */
+.bhc-steps__title { margin-bottom: var(--bhc-space-2); }
+h3.bhc-steps__title { font-size: var(--bhc-text-xl); }
+h4.bhc-steps__title { font-size: var(--bhc-text-lg); }
+
+.bhc-steps__body {
+  font-size: var(--bhc-text-base);
+  color: var(--bhc-ink-muted);
+  margin: 0;
+}
+
+/* --- CTABand --------------------------------------------------------------
+   The one dark band, always immediately above the footer. It composes
+   SectionBand, so there is no padding here — --bhc-section-y is declared in
+   one place and this is not the second one.
+
+   On navy the second action is `ghost` (currentColor, 5.97:1), never
+   `secondary`, which is outlined ink at 2.65:1.                           */
+
+.bhc-cta { text-align: center; }
+.bhc-cta .bhc-section__head { margin-bottom: var(--bhc-space-8); }
+.bhc-cta .bhc-section__intro { margin-inline: auto; }
+.bhc-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-4);
+  justify-content: center;
+}
+
+/* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
+   Every later plan appends its component block ABOVE this banner, never
+   below it. These two rules are scoped overrides of the base
+   :focus-visible rule at the top of the file; that base rule is not
+   touched, and nothing else in this package may change the indicator.
+   No rule anywhere may suppress the ring.
+
+   Rule 1 — dark grounds. --bhc-focus-ring is --bhc-action-hover, which
+   measures 1.15:1 on --bhc-navy: effectively invisible. --bhc-paper is
+   5.97:1 on navy, 15.81:1 on ink, and 3.05:1 on an orange fill, which
+   clears 1.4.11's 3:1 for a non-text indicator. Every page carries a navy
+   CTABand and an ink footer, so this is not an edge case.
+
+   The first selector exists because ink on navy is 2.65:1 — a primary
+   button inside the CTABand must take the white ring rather than the ink
+   one from rule 2, and at three compound parts it wins on specificity
+   against rule 2's two.
+
+   Rule 2 — primary buttons on light bands. An orange ring abutting an
+   orange fill reads as one blob, especially on hover, when the fill IS
+   --bhc-action-hover. Ink is 15.81:1 against the band and 5.17:1 against
+   the fill. Paper would be 1:1 on a white band, which is why it is ink. */
+
+.bhc-section--navy .bhc-btn--primary:focus-visible,
+.bhc-section--navy :focus-visible,
+.bhc-footer :focus-visible {
+  outline-color: var(--bhc-paper);
+}
+
+.bhc-btn--primary:focus-visible {
+  outline-color: var(--bhc-ink);
+}

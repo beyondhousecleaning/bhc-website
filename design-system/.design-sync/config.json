@@ -18,7 +18,9 @@
     "NAPFooter": "src/components/NAPFooter/NAPFooter.jsx",
     "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx",
     "SectionBand": "src/components/SectionBand/SectionBand.jsx",
-    "Prose": "src/components/Prose/Prose.jsx"
+    "Prose": "src/components/Prose/Prose.jsx",
+    "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.jsx",
+    "CTABand": "src/components/CTABand/CTABand.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -31,6 +33,8 @@
     "NAPFooter": "src/components/NAPFooter/NAPFooter.prompt.md",
     "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md",
     "SectionBand": "src/components/SectionBand/SectionBand.prompt.md",
-    "Prose": "src/components/Prose/Prose.prompt.md"
+    "Prose": "src/components/Prose/Prose.prompt.md",
+    "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.prompt.md",
+    "CTABand": "src/components/CTABand/CTABand.prompt.md"
   }
 }

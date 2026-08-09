@@ -11,3 +11,5 @@ export {
 } from './components/InterlinkBlock/InterlinkBlock.jsx';
 export { SectionBand } from './components/SectionBand/SectionBand.jsx';
 export { Prose } from './components/Prose/Prose.jsx';
+export { ProcessSteps } from './components/ProcessSteps/ProcessSteps.jsx';
+export { CTABand } from './components/CTABand/CTABand.jsx';

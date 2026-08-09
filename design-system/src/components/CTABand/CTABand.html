@@ -1,0 +1,55 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Navy — the default, and the one dark band on the page</p>
+  <section class="bhc-section bhc-section--navy bhc-cta">
+    <div class="bhc-container bhc-container--narrow">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">Ready for a properly clean home?</h2>
+        <p class="bhc-section__intro">A fixed price before we start, the same cleaner each visit, and an evening back to yourself.</p>
+      </div>
+      <div class="bhc-cta__actions">
+        <a class="bhc-btn bhc-btn--primary bhc-btn--lg" href="#">Get a Free Quote</a>
+        <a class="bhc-btn bhc-btn--ghost bhc-btn--lg" href="#">See What's Included</a>
+      </div>
+    </div>
+  </section>
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Tint — the quiet alternative, where secondary is the correct second action</p>
+  <section class="bhc-section bhc-section--tint bhc-cta">
+    <div class="bhc-container bhc-container--narrow">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">Ready for a properly clean home?</h2>
+        <p class="bhc-section__intro">A fixed price before we start, the same cleaner each visit, and an evening back to yourself.</p>
+      </div>
+      <div class="bhc-cta__actions">
+        <a class="bhc-btn bhc-btn--primary bhc-btn--lg" href="#">Get a Free Quote</a>
+        <a class="bhc-btn bhc-btn--secondary bhc-btn--lg" href="#">See What's Included</a>
+      </div>
+    </div>
+  </section>
+
+  <div style="border-top:1px solid var(--bhc-line);padding:32px 48px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 16px">Never — secondary on navy is outlined ink at 2.65:1</p>
+    <div style="background:var(--bhc-navy);padding:32px;border-radius:var(--bhc-radius-lg);color:var(--bhc-paper)">
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="bhc-btn bhc-btn--primary bhc-btn--lg" href="#">Get a Free Quote</a>
+        <a class="bhc-btn bhc-btn--secondary bhc-btn--lg" href="#">See What's Included</a>
+      </div>
+    </div>
+    <p style="font:400 14px/1.5 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:12px 0 0;max-width:70ch">Shown only so the failure is recognisable. The second button above is there — it is outlined in --bhc-ink, which is 2.65:1 against this ground. Ghost is currentColor, which on navy is --bhc-paper at 5.97:1. The component coerces a secondary to ghost on navy for exactly this reason.</p>
+  </div>
+
+  <div style="padding:32px 48px;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why this component exists</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Every one of the eighteen routes ends here, so this band is also where the site's focus
+      indicator stops working unless something is done about it: <strong>--bhc-focus-ring</strong> is
+      --bhc-action-hover, which measures <strong>1.15:1</strong> on navy. The two scoped overrides at
+      the end of styles.css swap it for --bhc-paper at <strong>5.97:1</strong>. This band is the
+      reason they exist, and it is why they must stay last in the file.
+    </p>
+  </div>
+
+</div>
