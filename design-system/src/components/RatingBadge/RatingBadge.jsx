@@ -15,7 +15,10 @@
 
 import { safeJsonLd } from '../../jsonLd.js';
 
-function Star({ filled }) {
+/* Exported because ReviewCard renders the same five-star row (UI-SPEC §7.13).
+   Keeping it module-local would put this path string in two files — the exact
+   second-source defect this phase is otherwise eliminating. */
+export function Star({ filled }) {
   return (
     <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
       <path

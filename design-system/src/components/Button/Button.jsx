@@ -25,6 +25,14 @@ export function Button({
   iconRight,
   disabled = false,
   className = '',
+  /*
+    UI-SPEC §13-J: every link-bearing component takes `as`, defaulting to 'a'.
+    It applies to the href branch only — the <button> branch is a <button>.
+    The escape hatch exists so a router link component can be substituted at
+    the composition layer rather than at sixteen call sites; nothing in Phase 2
+    passes it, because Next resolves plain <a> for a static export.
+  */
+  as: As = 'a',
   ...rest
 }) {
   const classes = [
@@ -46,14 +54,14 @@ export function Button({
 
   if (href) {
     return (
-      <a
+      <As
         className={classes}
         href={href}
         aria-disabled={disabled ? 'true' : undefined}
         {...rest}
       >
         {content}
-      </a>
+      </As>
     );
   }
 

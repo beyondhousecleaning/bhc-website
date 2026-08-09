@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
 export interface ButtonProps {
   children: ReactNode;
@@ -10,6 +10,15 @@ export interface ButtonProps {
   iconLeft?: ReactNode;
   iconRight?: ReactNode;
   disabled?: boolean;
+  /**
+   * The element rendered for the `href` branch. Defaults to `'a'`; the
+   * `<button>` branch ignores it.
+   *
+   * The escape hatch exists so a router link component can be substituted once,
+   * at the composition layer, instead of editing sixteen call sites when the
+   * site stops being a static export. Nothing in Phase 2 passes it.
+   */
+  as?: ElementType;
   className?: string;
 }
 

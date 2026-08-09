@@ -1,3 +1,10 @@
+/**
+ * The star glyph. Exported so `ReviewCard` can render the same five-star row
+ * without a second copy of the path data. `aria-hidden` — the meaning lives on
+ * the `role="img"` wrapper that groups the five.
+ */
+export declare function Star(props: { filled: boolean }): JSX.Element;
+
 export interface RatingBadgeProps {
   /** Current: 4.9. Read from the Trustmary payload 2026-08-06. */
   rating?: number;

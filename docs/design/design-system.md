@@ -331,7 +331,7 @@ Staffordshire, Shropshire, Worcestershire) · lazy-loaded static map.
 
 ### 2. Service
 
-Breadcrumb · `H1 Deep Cleaning Services in Warwickshire & the West Midlands` · what's included ·
+Breadcrumb · `H1 Deep Cleaning in Warwickshire & the West Midlands` · what's included ·
 before/after filtered to service · process · reviews · **towns we cover for this service**
 (InterlinkBlock into the combos) · FAQ · CTA.
 
