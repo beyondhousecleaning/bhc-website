@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-09-PLAN.md
-last_updated: "2026-08-09T23:09:29.324Z"
+stopped_at: Completed 02-10-PLAN.md
+last_updated: "2026-08-09T23:29:21.795Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 14
+  completed_plans: 15
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 9 of 15
+Plan: 10 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [███████░░░] 70%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Progress: [███████░░░] 70%
 | Phase 02 P07 | 41min | 3 tasks | 19 files |
 | Phase 02 P08 | 45min | 3 tasks | 9 files |
 | Phase 02 P09 | 6min | 2 tasks tasks | 5 files files |
+| Phase 02 P10 | 38min | 3 tasks tasks | 19 files files |
 
 ## Accumulated Context
 
@@ -135,6 +136,12 @@ Highlights a fresh session needs immediately:
 - [Phase 02]: 02-09: all ten UI-SPEC 5 utility routes now prerender — the footer Legal row cannot point at a 404 when 02-13 renders the Footer; 13 routes in the manifest, all static
 - [Phase 02]: 02-09: the satisfaction promise now lives in THREE places (process.js step 3, legal.js SATISFACTION, TrustBar's third claim) and all three move together on UI-SPEC 14-1; legal.js keeps a literal rather than importing process.js, so the agreement can diverge later
 - [Phase 02]: 02-09: the legal retention periods, cancellation notice and late-cancellation charge are conservative defaults nobody has signed off — each is one string in web/content/legal.js; confirm with Sam and get a solicitor read before cutover
+- [Phase ?]: 02-10: Footer forwards areaServed and hours UNDEFAULTED — an omission must produce JSON-LD with no areaServed key (visible) rather than a list the component invented (unfindable)
+- [Phase ?]: 02-10: Footer takes NO 'as' prop despite UI-SPEC 7.2 — it renders no anchors, so the prop could only be dropped silently; the substitution point is NAPFooter, and omitting it makes a typed caller's mistake a compile error
+- [Phase ?]: 02-10: Footer filters 'legal' and 'social' as well as 'columns' — NAPFooter maps those two UNGUARDED (NAPFooter.jsx:131 and the sameAs map), so those filters are the only thing between a null entry and a 500 on all 18 pages
+- [Phase ?]: 02-10: Header's phone + CTA show from 768px, not UI-SPEC 7.1's 1024px — StickyCallBar leaves at exactly 768px, so a literal reading left 768-1023 with no one-tap call action; the two are now exactly complementary
+- [Phase ?]: 02-10: all sixteen Phase 2 components now exist — delta 9 walks TWENTY-TWO component directories and both .design-sync maps hold 22 keys; 02-14 should raise the previews floor against that number
+- [Phase ?]: 02-10: the fifth consecutive plan blocked by node having no JSX loader — the SWC probe (await loadBindings, jsc.transform.react.runtime='automatic', .jsx specifiers rewritten to .js) is now the standing route for any component-behaviour criterion
 
 ### Pending Todos
 
@@ -169,6 +176,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T23:09:29.315Z
-Stopped at: Completed 02-09-PLAN.md
+Last session: 2026-08-09T23:29:21.780Z
+Stopped at: Completed 02-10-PLAN.md
 Resume file: None
