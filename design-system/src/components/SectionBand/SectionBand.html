@@ -1,0 +1,60 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Tone paper — the dominant surface, 60%</p>
+  <section class="bhc-section">
+    <div class="bhc-container">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">What we clean</h2>
+        <p class="bhc-section__intro">Six services, one local team. Every one of them is priced before we start, and the same cleaner comes back wherever we can manage it.</p>
+      </div>
+      <p style="margin:0;color:var(--bhc-ink-muted)">Children render here — a card grid, a rail, a run of prose.</p>
+    </div>
+  </section>
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Tone warm — the alternating band</p>
+  <section class="bhc-section bhc-section--warm">
+    <div class="bhc-container">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">Why people book us again</h2>
+        <p class="bhc-section__intro">DBS-checked cleaners, fully insured, and a satisfaction guarantee that means something.</p>
+      </div>
+      <p style="margin:0;color:var(--bhc-ink-muted)">Never two identical tones adjacent. That is the whole rhythm rule.</p>
+    </div>
+  </section>
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Tone tint — quiet blocks, width narrow, headingLevel 3</p>
+  <section class="bhc-section bhc-section--tint">
+    <div class="bhc-container bhc-container--narrow">
+      <div class="bhc-section__head">
+        <h3 class="bhc-section__heading">How it works</h3>
+        <p class="bhc-section__intro">A nested band takes headingLevel 3 so the page outline stays legal.</p>
+      </div>
+      <p style="margin:0;color:var(--bhc-ink-muted)">The heading steps down to --bhc-text-xl with it, per the type binding table.</p>
+    </div>
+  </section>
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Tone navy — at most one band per page, and it is the CTA</p>
+  <section class="bhc-section bhc-section--navy">
+    <div class="bhc-container">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">Ready for a properly clean home?</h2>
+        <p class="bhc-section__intro">The intro flips to white here. Left on its default it is --bhc-ink-muted, which measures 1.10:1 against this ground.</p>
+      </div>
+      <p style="margin:0">Any button inside this band is ghost, never secondary.</p>
+    </div>
+  </section>
+
+  <div style="padding:32px 48px;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why this component exists</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Seventeen routes are composed in waves 4 and 5, and roughly 336 more in Phase 3. Every one of
+      them alternates bands down the page. Vertical padding comes from <strong>--bhc-section-y</strong>
+      once, here, so a page cannot drift from the other sixteen by hand-rolling its own.
+      <strong>tone="paper"</strong> emits no modifier class at all — there is no
+      <strong>.bhc-section--paper</strong> rule, and there should not be one.
+    </p>
+  </div>
+
+</div>

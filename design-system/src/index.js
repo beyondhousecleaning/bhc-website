@@ -9,3 +9,5 @@ export {
   nearestTowns,
   distanceMiles,
 } from './components/InterlinkBlock/InterlinkBlock.jsx';
+export { SectionBand } from './components/SectionBand/SectionBand.jsx';
+export { Prose } from './components/Prose/Prose.jsx';

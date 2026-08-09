@@ -16,7 +16,9 @@
     "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.jsx",
     "RatingBadge": "src/components/RatingBadge/RatingBadge.jsx",
     "NAPFooter": "src/components/NAPFooter/NAPFooter.jsx",
-    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx"
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx",
+    "SectionBand": "src/components/SectionBand/SectionBand.jsx",
+    "Prose": "src/components/Prose/Prose.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -27,6 +29,8 @@
     "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.prompt.md",
     "RatingBadge": "src/components/RatingBadge/RatingBadge.prompt.md",
     "NAPFooter": "src/components/NAPFooter/NAPFooter.prompt.md",
-    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md"
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md",
+    "SectionBand": "src/components/SectionBand/SectionBand.prompt.md",
+    "Prose": "src/components/Prose/Prose.prompt.md"
   }
 }

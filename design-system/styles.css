@@ -276,6 +276,79 @@ img { max-width: 100%; height: auto; display: block; }
 .bhc-interlink__label { font-weight: var(--bhc-weight-semibold); }
 .bhc-interlink__meta  { font-size: var(--bhc-text-sm); color: var(--bhc-ink-muted); }
 
+/* --- SectionBand ----------------------------------------------------------
+   The band rhythm wrapper. .bhc-section, --warm, --tint and --navy all
+   shipped in Phase 1 and are NOT re-declared here; nor is
+   .bhc-section__intro, which plan 02-01 added. Only what is new.
+
+   The heading rules are tag-scoped rather than set on the class, because
+   headingLevel 3 must land on --bhc-text-xl and headingLevel 2 on
+   --bhc-text-2xl. A single class-level font-size would render a nested
+   band's <h3> at the <h2> step and silently break the type binding.     */
+
+.bhc-section__head { margin-bottom: var(--bhc-space-6); }
+
+.bhc-section__heading {
+  font-weight: var(--bhc-weight-bold);
+  line-height: 1.15;
+  margin-bottom: var(--bhc-space-4);
+}
+h2.bhc-section__heading { font-size: var(--bhc-text-2xl); }
+h3.bhc-section__heading { font-size: var(--bhc-text-xl); }
+
+/* Headings on navy already flip to paper via the shipped rule above. The
+   intro does not — it sets --bhc-ink-muted directly, which measures 1.10:1
+   against --bhc-navy. Paper on navy is 5.97:1. Every page carries one navy
+   band, so this is not an edge case.                                     */
+.bhc-section--navy .bhc-section__intro { color: var(--bhc-paper); }
+
+/* --- Prose ----------------------------------------------------------------
+   800 to 1,100 words on ~336 pages. Live service pages already median
+   1,183 words, which is the one metric beating the competition; setting
+   that at full container width throws it away.
+
+   Every descendant rule goes through :where() so specificity stays at
+   zero and a bhc- component dropped into the copy still wins.           */
+
+.bhc-prose {
+  max-width: var(--bhc-container-prose);
+  font-size: var(--bhc-text-base);
+  line-height: 1.65;
+}
+/* Wider than the default measure, not narrower — it is named for the
+   container token it uses. Reference copy only, never body copy.        */
+.bhc-prose--narrow { max-width: var(--bhc-container-narrow); }
+
+.bhc-prose :where(p) { margin-block-end: var(--bhc-space-4); }
+.bhc-prose :where(h2) {
+  margin-block-start: var(--bhc-space-12);
+  font-size: var(--bhc-text-2xl);
+}
+.bhc-prose :where(h3) {
+  margin-block-start: var(--bhc-space-8);
+  font-size: var(--bhc-text-xl);
+}
+.bhc-prose :where(ul, ol) {
+  line-height: 1.65;
+  margin-block-end: var(--bhc-space-4);
+  padding-inline-start: var(--bhc-space-6);
+}
+.bhc-prose :where(li) { margin-block-end: var(--bhc-space-2); }
+.bhc-prose :where(a) {
+  color: var(--bhc-action-hover);
+  text-underline-offset: 0.15em;
+}
+
+.bhc-prose__pullquote {
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+  background: var(--bhc-paper-tint);
+  border-inline-start: var(--bhc-space-1) solid var(--bhc-action);
+  border-radius: var(--bhc-radius-md);
+  padding: var(--bhc-space-6);
+  margin-block: var(--bhc-space-8);
+}
+
 /* --- NAPFooter ------------------------------------------------------------
    Exactly one tel:. href digits MUST equal displayed digits — the live
    footer shows +44 7861 936533 and dials 07441918832. No street address. */
