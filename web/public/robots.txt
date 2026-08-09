@@ -12,11 +12,24 @@
 # PRODUCTION APEX after cutover, not to this pre-cutover deployment. The two
 # are not in conflict; the cutover phase is what flips it.
 #
-# D-15 is enforced at two independent levels:
+# D-15 is enforced at two levels, both asserted by Plan 03's check script:
 #   1. <meta name="robots" content="noindex, nofollow"> in every page's
 #      server-rendered HTML, from web/app/layout.jsx's metadata.
 #   2. this host-level crawl block.
-# Both are asserted by Plan 03's check script.
+#
+# CORRECTION (WR-01): these are NOT independent, and an earlier version of this
+# comment claimed they were. They are layered in a specific order, and the order
+# matters at cutover. A crawler that obeys `Disallow: /` never fetches the page,
+# so it never reads the noindex meta — the block SUPPRESSES the meta rather than
+# backing it up. A URL discovered by other means can therefore still be indexed
+# as a URL-only listing. That risk is accepted pre-cutover: this Vercel URL is
+# not linked publicly, and the block is the layer doing the real work here.
+#
+# CUTOVER SEQUENCING — read before flipping either layer. Crawling must be
+# allowed BEFORE or AT THE SAME TIME as the noindex is removed, never after.
+# Removing the noindex first while the disallow stands leaves the site
+# unindexable but also un-de-indexable; allowing crawling first lets Googlebot
+# actually read whatever directive is in the HTML at that moment.
 #
 # Static file under public/ rather than an app/robots.js metadata route: it is
 # served verbatim at /robots.txt, always exists on disk, and is therefore
