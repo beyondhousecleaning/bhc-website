@@ -22,7 +22,9 @@
     "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.jsx",
     "CTABand": "src/components/CTABand/CTABand.jsx",
     "ServiceCard": "src/components/ServiceCard/ServiceCard.jsx",
-    "TownCard": "src/components/TownCard/TownCard.jsx"
+    "TownCard": "src/components/TownCard/TownCard.jsx",
+    "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.jsx",
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -39,6 +41,8 @@
     "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.prompt.md",
     "CTABand": "src/components/CTABand/CTABand.prompt.md",
     "ServiceCard": "src/components/ServiceCard/ServiceCard.prompt.md",
-    "TownCard": "src/components/TownCard/TownCard.prompt.md"
+    "TownCard": "src/components/TownCard/TownCard.prompt.md",
+    "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.prompt.md",
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.prompt.md"
   }
 }

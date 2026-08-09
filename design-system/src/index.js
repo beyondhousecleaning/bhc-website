@@ -15,3 +15,5 @@ export { ProcessSteps } from './components/ProcessSteps/ProcessSteps.jsx';
 export { CTABand } from './components/CTABand/CTABand.jsx';
 export { ServiceCard } from './components/ServiceCard/ServiceCard.jsx';
 export { TownCard } from './components/TownCard/TownCard.jsx';
+export { FAQAccordion } from './components/FAQAccordion/FAQAccordion.jsx';
+export { QuoteFormEntry } from './components/QuoteFormEntry/QuoteFormEntry.jsx';

@@ -629,6 +629,133 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   color: var(--bhc-ink-muted);
 }
 
+/* --- FAQAccordion ---------------------------------------------------------
+   Success Criterion 4, and it runs on ZERO JavaScript: <details>/<summary>
+   is native, so the user agent owns the open state.
+
+   The marker suppression is scoped to .bhc-faq__summary rather than declared
+   on the bare `summary` element. Header's mobile nav is a second <details>
+   consumer in a later wave and repeats these two lines in its own block; a
+   package-wide `summary` rule would reach into a component that does not
+   exist yet.
+
+   No :focus-visible rule here, and none may be added: `summary` is already
+   in the shipped base rule at :45-49, and nothing in this package changes
+   the indicator except the two scoped overrides at the end of this file.
+
+   The chevron rotates through --bhc-dur/--bhc-ease, so the token-level
+   prefers-reduced-motion override — which zeroes all three duration tokens
+   — applies with no second media query.
+
+   The question and the answer set NO colour of their own; they inherit
+   currentColor. The only direct colours here are the --bhc-action-hover
+   hover and open states, which are on that token's reserved-for list in
+   UI-SPEC §4.                                                             */
+
+.bhc-faq__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-faq__item { border-bottom: 1px solid var(--bhc-line); }
+
+.bhc-faq__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bhc-space-4);
+  /* UI-SPEC §2's minimum touch target, applied to the whole row. */
+  min-height: 44px;
+  padding-block: var(--bhc-space-3);
+  cursor: pointer;
+  transition: color var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-faq__summary:hover { color: var(--bhc-action-hover); }
+
+/* Both markers, per UI-SPEC §8 rule 2. lightningcss emits the pseudo-element
+   below with a single colon in the built stylesheet.                      */
+.bhc-faq__summary { list-style: none; }
+.bhc-faq__summary::-webkit-details-marker { display: none; }
+
+.bhc-faq__q {
+  margin: 0;
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-semibold);
+  line-height: var(--bhc-leading-snug);
+}
+
+.bhc-faq__chevron {
+  flex: none;
+  transition: transform var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-faq__item[open] .bhc-faq__chevron {
+  transform: rotate(180deg);
+  color: var(--bhc-action-hover);
+}
+
+.bhc-faq__a {
+  font-size: var(--bhc-text-base);
+  line-height: var(--bhc-leading-body);
+  padding-block-end: var(--bhc-space-4);
+  max-width: var(--bhc-container-prose);
+}
+.bhc-faq__a :where(p) { margin-block: 0 var(--bhc-space-4); }
+.bhc-faq__a :where(p:last-child) { margin-block-end: 0; }
+
+/* --- QuoteFormEntry -------------------------------------------------------
+   An entry point, not a form. There is no input styling here because there
+   is no input: a form needs validation state, which needs a client
+   boundary, which turns SC-4g red.
+
+   Tint ground with ink copy is 13.84:1. The second action is `secondary`
+   (outlined ink), which is correct here and is the variant that would
+   disappear on navy at 2.65:1 — this panel does not go on the navy band. */
+
+.bhc-quote-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-6);
+  padding: var(--bhc-space-8);
+  background: var(--bhc-paper-tint);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+}
+
+.bhc-quote-entry__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin: 0;
+}
+
+.bhc-quote-entry__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--bhc-text-base);
+}
+.bhc-quote-entry__bullets li {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+}
+/* The tick inherits currentColor. --bhc-action is a fill and its
+   reserved-for list (UI-SPEC §4) does not include a glyph on a tint
+   ground.                                                                */
+.bhc-quote-entry__tick { flex: none; }
+
+.bhc-quote-entry__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-4);
+  align-items: center;
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base
