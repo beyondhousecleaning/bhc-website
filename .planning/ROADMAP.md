@@ -85,7 +85,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — Package hardening: `src/phone.js`, `toDial` throws, NAPFooter literal deleted + WR-10 guard, Breadcrumbs WR-12 + §13-R, `Star` exported, `Button` gains `as`, three `styles.css` corrections, heading-doc remediation (wave 1)
+- [ ] 02-01-PLAN.md — Package hardening: `src/phone.js`, `toDial` throws (with the existing Lock 4 parity loop narrowed in the same change), NAPFooter literal deleted + WR-10 guard, Breadcrumbs WR-12 + §13-R, `Star` exported, `Button` gains `as`, three `styles.css` corrections, heading-doc remediation (wave 1)
 - [ ] 02-02-PLAN.md — Multi-page lock harness rewrite around `prerender-manifest.json` (deltas 1–7, 11, 12 + the four unlisted corrections), worst-page budget with WR-05 closed, honest two-route scaffold (wave 1)
 
 **Wave 2** *(blocked on Wave 1)*
@@ -96,7 +96,7 @@ Plans:
 **Wave 3** *(blocked on Wave 2)*
 
 - [ ] 02-05-PLAN.md — Cards & disclosure: ServiceCard, TownCard, FAQAccordion, QuoteFormEntry (wave 3)
-- [ ] 02-06-PLAN.md — App data foundation: `jsconfig.json` `@/*` alias, `site.js`, `nav.js`, `process.js`, `faqs.js` (wave 3)
+- [ ] 02-06-PLAN.md — App data foundation: `jsconfig.json` `@/*` alias, `site.js` (incl. `AREA_SERVED`), `nav.js`, `process.js`, `faqs.js`, and the shared `renderBlocks` (wave 3)
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -112,7 +112,7 @@ Plans:
 
 **Wave 6** *(blocked on Wave 5)*
 
-- [ ] 02-13-PLAN.md — Root layout composition, real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
+- [ ] 02-13-PLAN.md — Root layout composition (Footer replaces the direct NAPFooter call, `areaServed` threaded through), real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
 - [ ] 02-14-PLAN.md — Preview floor raised to 22, README and `.design-sync/NOTES.md` refresh (wave 6)
 
 **Wave 7** *(blocked on Wave 6)*

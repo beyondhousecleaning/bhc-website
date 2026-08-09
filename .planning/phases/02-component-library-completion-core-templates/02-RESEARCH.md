@@ -785,25 +785,46 @@ No framework install is needed. Nothing here adds a dependency.
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
+
+All five were settled during Phase 2 planning on 2026-08-09. Each answer is recorded below with the
+plan that encodes it, so nothing here is still open to an executor.
 
 1. **Does any Phase 2 template opt `RatingBadge` into `emitSchema`?**
-   - *Known:* the default is `false`; `Hero` renders it `bare`; `design-system.md`'s schema table says `AggregateRating` on "Home and about — entity graph only"; Phase 4 SC-1 wants the badge visible everywhere (which `bare` already gives); CR-05 (rating on an orphaned node) is deferred to Phase 5.
-   - *Unclear:* whether Phase 2 should emit it on `/` and `/about-us` only, or nowhere.
-   - *Recommendation:* **nowhere in Phase 2.** Emitting 17 orphaned `AggregateRating` nodes makes CR-05 seventeen times worse for Phase 5. Then SC-4f's replacement asserts a clean 1-on-home / 2-elsewhere. Confirm before writing the lock, because the lock encodes the answer.
+   **RESOLVED: no, nowhere.** The recommendation was taken. Emitting 17 orphaned `AggregateRating`
+   nodes would make the deferred CR-05 seventeen times worse for Phase 5 to unwind, and the visible
+   badge already satisfies Lock 3 in `bare` mode.
+   *Encoded in:* plan 02-02 task 2 — SC-4f's replacement is driven by `PAGE_EXPECTATIONS.ldJsonBlocks`
+   and asserts 1 block on `/`, 2 on every other app route, counted with the TAG-form regex. Plans
+   02-08, 02-09, 02-11 and 02-12 each carry a `grep -rc "emitSchema" web/app` returns 0 criterion.
 
 2. **Does `SC-4d` (InterlinkBlock present) get scoped or suspended?**
-   - *Known:* the component `return null`s on empty `links`, and Phase 2 has no town data, so the marker is absent on all 17 pages. Design-system.md Lock 6 scopes it to *"service, town-hub and combo"* templates — which in Phase 2 means the six service pages, where it will still be absent.
-   - *Recommendation:* keep the assertion in the file, gated on a `LOCK_6_ACTIVE_FROM_PHASE_3` constant with a written reason, rather than deleting it. A deleted lock is never restored; a gated one is a visible debt. Whichever is chosen must be stated in the plan, because a silent deletion is exactly the regression `MIN_TESTS` exists to catch.
+   **RESOLVED: gated, with a self-restoring inverse.** Neither deleted nor left dormant. A named
+   constant `INTERLINK_LOCK_ACTIVE = false` flips the assertion to its inverse — that NO page renders
+   `class="…bhc-interlink__list"`. The first page that renders one fails the suite and forces the
+   constant to be flipped, so the lock restores itself rather than relying on someone remembering.
+   *Encoded in:* plan 02-02 task 2; plan 02-13 task 3 asserts the constant is still `false` at the
+   close of the phase. Phase 3 flips it.
 
-3. **Do `/customer-login` and `/gift-cards` have real outbound destinations?** (UI-SPEC §14-2)
-   - *Recommendation:* proceed with the spec's default — a real page, a real `<h1>`, short `Prose`, one outbound action whose `href` is a **data value** in `web/content/utility.js`. Non-blocking; Sam swaps two strings later. Note the outbound `href` needs the WR-10 scheme guard.
+3. **Do `/customer-login` and `/gift-cards` have real outbound destinations?**
+   **RESOLVED: ship the default, make the href a data value.** Both are real pages with a real `<h1>`,
+   short `Prose`, and one outbound action whose href lives in `web/content/utility.js` so Sam swaps a
+   string. Both are scheme-guarded (`/^https?:\/\//i`) and rendered with
+   `target="_blank" rel="noopener noreferrer"` per WR-10.
+   *Encoded in:* plan 02-08 tasks 1, 2 and 3.
 
-4. **The satisfaction-guarantee wording** (UI-SPEC §14-1). Ships with a working default. Non-blocking.
+4. **The satisfaction-guarantee wording** (UI-SPEC §14-1).
+   **RESOLVED: ships with the working default**, deliberately stating no time window and no re-clean
+   commitment. It is declared once in `web/content/process.js` and mirrored in the Customer Service
+   Agreement, with a comment in each naming the other so they change together when Sam answers.
+   *Encoded in:* plan 02-06 task 2 and plan 02-09 task 1.
 
 5. **Is WR-05 (the budget's CSS/font omission) closed in this phase or deferred to Phase 5?**
-   - *Known:* Phase 2 grows CSS meaningfully for the first time and adds no fonts. Phase 5 SC-3 formally owns the budget.
-   - *Recommendation:* close it now while the file is already being rewritten for worst-page. If deferred, at minimum **fix the label** — a metric printed as `Page (gzip JS + HTML)` that adds raw HTML is worse than no metric.
+   **RESOLVED: closed now.** The recommendation was taken — the file is being rewritten for
+   worst-page measurement anyway. The page figure becomes `jsGz + gzip(html) + cssGz + fontBytes`
+   with a label that names all four, and WR-06 (the `noModule` polyfill, 23% of the reported figure)
+   is closed in the same change.
+   *Encoded in:* plan 02-02 task 3.
 
 ---
 
