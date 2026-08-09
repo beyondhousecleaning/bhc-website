@@ -56,7 +56,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createContext, runInContext } from 'node:vm';
 
@@ -834,14 +834,25 @@ test('SC-4g: no client-reference manifest declares a first-party client module',
 
     A readdirSync recursion rather than a shell glob: dynamic-segment
     directories contain literal `[` and `]`, which a glob may mangle.
+
+    THE TRIPWIRE COUNTS ROUTE ENTRIES, NOT PRERENDERED PAGES, and the
+    distinction only became visible when the first `generateStaticParams` route
+    landed. Next emits ONE manifest per route ENTRY — one `page.js` in
+    `.next/server/app` — so `app/services/[service]` contributes a single
+    manifest while contributing six prerendered pages. Comparing against
+    `APP_PAGES.length` therefore fails on a correct build the moment a dynamic
+    route exists (measured: 14 manifests, 18 pages), and would go on to
+    under-count by ~330 in Phase 3. Comparing against the built `page.js` files
+    is the invariant the paragraph above actually states, and it stays exact
+    rather than an inequality that happens to hold.
   */
-  const manifests = walk(join(ROOT, '.next/server/app')).filter((f) =>
-    f.endsWith('page_client-reference-manifest.js')
-  );
+  const built = walk(join(ROOT, '.next/server/app'));
+  const manifests = built.filter((f) => f.endsWith('page_client-reference-manifest.js'));
+  const routeEntries = built.filter((f) => f.endsWith(`${sep}page.js`));
 
   assert.ok(
-    manifests.length >= APP_PAGES.length,
-    `found ${manifests.length} client-reference manifest(s) for ${APP_PAGES.length} app page(s) — the build layout changed and this lock is no longer reading every route`
+    manifests.length >= routeEntries.length,
+    `found ${manifests.length} client-reference manifest(s) for ${routeEntries.length} route entr(ies) — the build layout changed and this lock is no longer reading every route`
   );
 
   for (const file of manifests) {

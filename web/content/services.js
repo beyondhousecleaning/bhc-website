@@ -87,17 +87,72 @@ import { serviceFaqs } from './faqs.js';
 import { AREA_LONG, describe, titleFor } from './site.js';
 
 /**
+ * The trail's first crumb. Two crumbs on a service page and no more — see
+ * `SERVICES[].crumb` below for why the middle one is absent.
+ */
+export const BREADCRUMB_HOME = { label: 'Home', href: '/' };
+
+/**
+ * UI-SPEC §5's `<h2>` deck for this template, in §9.3 band order.
+ *
+ * `SectionBand` supplies each one and every component underneath is composed
+ * WITHOUT its own heading prop, so the outline stays one `<h1>` and a flat run
+ * of `<h2>`s. The prose band is the exception in the other direction: it takes
+ * no heading at all, because the `<h2>`s inside each record's `prose` are the
+ * page's real outline and a band heading above them would add a seventh level
+ * that says nothing.
+ */
+export const SERVICE_HEADINGS = {
+  photos: 'The difference, on real jobs',
+  process: 'How it works',
+  faqs: 'Questions we get asked',
+};
+
+/**
+ * The Hero's two actions and the closing ask, both from §5's closed CTA set.
+ *
+ * The second action is `secondary` in the Hero and `ghost` in the band: an
+ * outlined ink button on `--bhc-navy` measures 2.65:1 and reads as nothing.
+ * `CTABand` coerces it either way; stating it correctly here means the coercion
+ * never has to fire. The two hrefs differ, which also keeps `CTABand`'s
+ * href-keyed action list free of a duplicate React key.
+ */
+export const SERVICE_ACTIONS = [
+  { label: 'Get a Free Quote', href: '/get-a-quote', variant: 'primary' },
+  { label: "See What's Included", href: '/checklist', variant: 'secondary' },
+];
+
+export const SERVICE_CTA = {
+  heading: 'Ready for a properly clean home?',
+  actions: [
+    { label: 'Get a Free Quote', href: '/get-a-quote', variant: 'primary' },
+    { label: "See What's Included", href: '/checklist', variant: 'ghost' },
+  ],
+};
+
+/**
  * The six records, in the order UI-SPEC §5 lists them and the order the nav
  * carries them.
  *
- * Each one: `slug`, `h1`, `eyebrow`, `title`, `description`, `lead` (the Hero's
- * supporting line), `prose` (the block array) and `faqs` (looked up from
- * `faqs.js` rather than restated, so one slug rename moves both).
+ * Each one: `slug`, `h1`, `crumb`, `eyebrow`, `title`, `description`, `lead`
+ * (the Hero's supporting line), `prose` (the block array) and `faqs` (looked up
+ * from `faqs.js` rather than restated, so one slug rename moves both).
+ *
+ * `crumb` IS THE SECOND AND LAST CRUMB, and the trail is `Home › {Service}`
+ * rather than `Home › Services › {Service}` (UI-SPEC §9.3, revision 1). Neither
+ * form of a middle crumb worked: `/services` 404s and Phase 2 ships no index, so
+ * a LINKED middle crumb fails delta 6, while an href-less one put two elements
+ * carrying `aria-current="page"` on all six pages. Plan 02-01 fixed the
+ * component so only the last crumb ever carries it, and Phase 3 reinstates the
+ * middle crumb when an index exists. Each label is the reader's word for the
+ * page and matches the `nav.js` label exactly — which is also why the sixth is
+ * `Builders Clean` while its slug is not.
  */
 export const SERVICES = [
   {
     slug: 'deep-cleaning',
     h1: `Deep Cleaning in ${AREA_LONG}`,
+    crumb: 'Deep Cleaning',
     eyebrow: 'Top to bottom, once',
     title: titleFor('Deep Cleaning in Warwickshire'),
     description: describe('Deep cleaning'),
@@ -246,6 +301,7 @@ export const SERVICES = [
   {
     slug: 'standard-home-cleaning',
     h1: `Regular House Cleaning in ${AREA_LONG}`,
+    crumb: 'Regular House Cleaning',
     eyebrow: 'Weekly or fortnightly',
     title: titleFor('Regular Cleaning in Warwickshire'),
     description: describe('Regular house cleaning'),
@@ -397,6 +453,7 @@ export const SERVICES = [
   {
     slug: 'move-in-cleaning',
     h1: `Move-In Cleaning in ${AREA_LONG}`,
+    crumb: 'Move-In Cleaning',
     eyebrow: 'Before the boxes arrive',
     title: titleFor('Move-In Cleaning in Warwickshire'),
     description: describe('Move-in cleaning'),
@@ -534,6 +591,7 @@ export const SERVICES = [
   {
     slug: 'move-out-cleaning',
     h1: `Move-Out Cleaning in ${AREA_LONG}`,
+    crumb: 'Move-Out Cleaning',
     eyebrow: 'Get the deposit back',
     title: titleFor('Move-Out Cleaning in Warwickshire'),
     description: describe('Move-out cleaning'),
@@ -667,6 +725,7 @@ export const SERVICES = [
   {
     slug: 'short-term-rental-cleaning',
     h1: `Short-Term Rental Cleaning in ${AREA_LONG}`,
+    crumb: 'Short-Term Rental Cleaning',
     eyebrow: 'Guest-ready between stays',
     title: titleFor('Rental Cleaning in Warwickshire'),
     description: describe('Short-term rental cleaning'),
@@ -813,6 +872,7 @@ export const SERVICES = [
   {
     slug: 'post-construction-cleaning',
     h1: `Post-Construction Cleaning in ${AREA_LONG}`,
+    crumb: 'Builders Clean',
     eyebrow: 'After the builders leave',
     title: titleFor('Builders Clean in Warwickshire'),
     description: describe('Builders cleans'),
