@@ -135,6 +135,65 @@ test('Lock 4: NAPFooter markup contains exactly one tel: link', () => {
   assert.equal(digits(href).replace(/^44/, ''), digits(label).replace(/^44/, ''));
 });
 
+/* --- Delta 13 — an unrenderable phone value throws, it does not degrade --- */
+
+/*
+  Delta 13. Phase 1 shipped ONE tel: link, in NAPFooter. From wave 2 there are three
+  more consumers — Header, StickyCallBar and QuoteFormEntry — so the blast radius of a
+  degraded render is 4 links x 17 pages this phase, and ~410 prerendered pages in
+  Phase 3. The alternative to throwing is `<a href="tel:+44"></a>`: an empty
+  interactive element, a WCAG 2.4.4 failure, on every one of them.
+
+  Failing at build time, where one person sees it once, is strictly better. Pattern S6.
+
+  The Lock 4 parity test above already exercises these inputs as part of its
+  display/href invariant. These two tests assert the throw on its own terms, per
+  function, so that narrowing or rewriting the parity test cannot take the rejection
+  half with it — and so the failure message says which function stopped rejecting.
+*/
+const UNDIALABLE = [
+  '', // empty — a data file with a blank field
+  undefined, // prop omitted with no default in scope
+  null, // data file with a missing field
+  '+44', // country code only — the exact value that used to render tel:+44
+  'call us', // not a number at all
+  '078619365333', // one digit too many
+  '0786193653', // one digit too few
+];
+
+test('delta 13: toDial throws on every unrenderable value', () => {
+  for (const input of UNDIALABLE) {
+    assert.throws(
+      () => toDial(input),
+      TypeError,
+      `toDial accepted an unrenderable value instead of throwing: ${JSON.stringify(input)}`
+    );
+  }
+
+  // The positive half, in the same test on purpose: a regression that threw on
+  // EVERYTHING would satisfy the loop above while breaking every page that has a phone.
+  assert.equal(toDial('+447861936533'), '+447861936533');
+  assert.equal(toDial('07861936533'), '+447861936533');
+});
+
+test('delta 13: formatPhone inherits the throw, so the display cannot degrade either', () => {
+  /*
+    formatPhone calls toDial first and has no guard of its own, which is the design —
+    but asserting only toDial would let a future "helpful" try/catch in formatPhone
+    restore the degraded render while the other test stayed green.
+  */
+  for (const input of UNDIALABLE) {
+    assert.throws(
+      () => formatPhone(input),
+      TypeError,
+      `formatPhone accepted an unrenderable value instead of throwing: ${JSON.stringify(input)}`
+    );
+  }
+
+  assert.equal(formatPhone('+447861936533'), '+44 7861 936533');
+  assert.equal(formatPhone('07861936533'), '+44 7861 936533');
+});
+
 /* --- Lock 5 — no street address or postcode ------------------------------ */
 
 /*
@@ -234,6 +293,140 @@ test('Lock 7: every <img> in a preview has non-empty alt', () => {
       assert.ok(alt && alt[1].trim().length, `<img> without usable alt in ${f}: ${tag}`);
     }
   }
+});
+
+/* --- Delta 14 — inline SVG accessibility --------------------------------- */
+
+/*
+  Delta 14. Lock 7 above greps `<img>` tags ONLY, and `alt` is not a valid attribute on
+  `<svg>` — the parser drops it silently. So an `<svg alt="…">` is an unlabelled graphic
+  that no lock in this suite could see, and the package has no icon library: every icon
+  in waves 2 to 5 is hand-authored inline SVG (UI-SPEC §1).
+
+  The rule, from UI-SPEC §1, with RatingBadge as the shipped precedent for both halves:
+
+    decorative (sits beside text that already says it)  -> aria-hidden="true"
+    meaningful (the only content of its figure or link) -> role="img" + aria-label
+
+  Every SVG in the package complies today, so this lock passes on landing. That is the
+  point: it is a guard for the fourteen SVGs waves 2 to 5 will author — the TrustBar
+  glyphs, the FAQAccordion chevron, the Header menu glyph and BeforeAfterSlider's two
+  `role="img"` panels (§7.16) — not a repair of anything shipped.
+*/
+
+// Opening tags only. `[^>]*` spans newlines, so a multi-line JSX <svg …> is one match.
+// Residual gap, stated rather than papered over: an attribute VALUE containing `>`
+// (a ternary like {a > b}) would truncate the tag. No shipped SVG has one, and the
+// consequence is a shorter tag, i.e. a false FAILURE, not a false pass.
+const SVG_OPEN_TAG = /<svg\b[^>]*>/g;
+const extractSvgTags = (src) => src.match(SVG_OPEN_TAG) || [];
+
+// Handles both the HTML form (aria-label="…") and the JSX expression form
+// (aria-label={label}), since BeforeAfterSlider builds its label into a const.
+const ariaLabelOf = (tag) => {
+  const quoted = tag.match(/\baria-label="([^"]*)"/);
+  if (quoted) return quoted[1];
+  const braced = tag.match(/\baria-label=\{([^}]*)\}/);
+  if (!braced) return null;
+  const expr = braced[1].trim();
+  // {''} and {""} are an empty label wearing a costume.
+  return /^(['"`])\s*\1$/.test(expr) ? '' : expr;
+};
+
+/** null when the tag is fine, otherwise the reason it is not. */
+const svgA11yProblem = (tag) => {
+  if (/\balt\s*=/.test(tag)) {
+    return 'carries alt, which is invalid on <svg>, silently dropped, and invisible to Lock 7';
+  }
+  if (/\baria-hidden="true"/.test(tag) || /\baria-hidden=\{true\}/.test(tag)) return null;
+
+  const label = ariaLabelOf(tag);
+  const labelled = label !== null && label.trim().length > 0;
+  if (/\brole="img"/.test(tag)) {
+    return labelled ? null : 'has role="img" but no non-empty aria-label';
+  }
+  return 'has neither aria-hidden="true" nor role="img" with a non-empty aria-label';
+};
+
+test('delta 14: every inline <svg> in package source is hidden or labelled', () => {
+  const walk = (dir, out = []) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p, out);
+      // .jsx and .html only — .d.ts is types and .prompt.md is prose, neither renders.
+      else if (/\.(jsx|html)$/.test(e.name)) out.push(p);
+    }
+    return out;
+  };
+
+  const files = walk(join(ROOT, 'src'));
+  assert.ok(
+    !files.some((f) => f.endsWith('.d.ts') || f.endsWith('.prompt.md')),
+    'the delta 14 walk must not scan type declarations or documentation'
+  );
+
+  let seen = 0;
+  for (const f of files) {
+    for (const tag of extractSvgTags(readFileSync(f, 'utf8'))) {
+      seen++;
+      const problem = svgA11yProblem(tag);
+      assert.equal(problem, null, `<svg> in ${f} ${problem}: ${tag}`);
+    }
+  }
+
+  // Anti-vacuity floor: 16 inline SVGs ship today (10 in RatingBadge.html, 5 in
+  // Hero.html, 1 in RatingBadge.jsx). An extractor that quietly stopped matching
+  // would otherwise assert nothing while sixteen new components landed.
+  assert.ok(seen >= 16, `expected at least 16 inline <svg> tags in package source, found ${seen}`);
+});
+
+test('delta 14: the <svg> a11y matcher still accepts compliant forms and rejects the rest', () => {
+  /*
+    Regression guard, per this file's strongest convention. Delta 14 is green on landing
+    because every shipped SVG already complies, which is exactly the condition under
+    which a broken matcher reads green — the same argument Lock 5's guard makes at :156.
+
+    The fixtures are written literally rather than assembled: every source scan in this
+    suite walks ROOT/src and this file is in ROOT/test, so nothing here can be matched
+    by the scan it guards. See the delta 9 self-collision note above.
+  */
+  const compliant = [
+    '<svg aria-hidden="true" focusable="false">', // decorative, UI-SPEC §1 row 1
+    '<svg role="img" aria-label="Before-and-after comparison">', // meaningful, §7.16
+    '<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">', // the shipped Star
+    '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true" class="bhc-trust__icon">', // attribute order varies
+    '<svg role="img" aria-label={label} viewBox="0 0 800 600">', // JSX expression label
+    '<svg aria-hidden="true" />', // self-closing
+    '<svg\n  role="img"\n  aria-label="After: the same kitchen, cleaned"\n  viewBox="0 0 800 600">', // multi-line JSX
+  ];
+  for (const tag of compliant) {
+    assert.equal(extractSvgTags(tag).length, 1, `compliant <svg> not extracted: ${tag}`);
+    assert.equal(svgA11yProblem(extractSvgTags(tag)[0]), null, `compliant <svg> rejected: ${tag}`);
+  }
+
+  const defective = [
+    '<svg alt="star">', // the silently-dropped attribute this delta exists for
+    '<svg alt="Before" aria-hidden="true">', // alt is wrong even when another mechanism is present
+    '<svg width="16" height="16" viewBox="0 0 20 20">', // neither mechanism
+    '<svg role="img">', // role without a label announces "image", nothing more
+    '<svg role="img" aria-label="">', // empty label
+    '<svg role="img" aria-label="   ">', // whitespace label
+    "<svg role=\"img\" aria-label={''}>", // empty JSX expression label
+    '<svg aria-hidden="false" focusable="false">', // hidden=false is not hidden
+    '<svg aria-label="Kitchen">', // labelled but no role, so it is not exposed as an image
+  ];
+  for (const tag of defective) {
+    assert.equal(extractSvgTags(tag).length, 1, `defective <svg> not extracted: ${tag}`);
+    assert.ok(svgA11yProblem(extractSvgTags(tag)[0]), `defective <svg> wrongly accepted: ${tag}`);
+  }
+
+  // The extractor finds every tag in a document, not just the first.
+  assert.equal(
+    extractSvgTags('<p>a</p><svg aria-hidden="true"></svg><span/><svg role="img" aria-label="x"></svg>').length,
+    2
+  );
+  // …and does not fire on prose that merely mentions the element.
+  assert.equal(extractSvgTags('inline svg, hand-authored, never <img>').length, 0);
 });
 
 /* --- Preview cards ------------------------------------------------------- */
