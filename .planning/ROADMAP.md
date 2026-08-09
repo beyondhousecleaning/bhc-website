@@ -90,7 +90,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 02-03-PLAN.md — Design-system source locks: delta 9 (four-file shape + `.design-sync` registration), delta 13 (phone throw), delta 14 (inline SVG a11y), `MIN_TESTS` raised (wave 2)
+- [x] 02-03-PLAN.md — Design-system source locks: delta 9 (four-file shape + `.design-sync` registration), delta 13 (phone throw), delta 14 (inline SVG a11y), `MIN_TESTS` raised (wave 2)
 - [ ] 02-04-PLAN.md — Content primitives: SectionBand, Prose, ProcessSteps, CTABand + the two scoped focus overrides (wave 2)
 
 **Wave 3** *(blocked on Wave 2)*
