@@ -234,11 +234,32 @@ const INTERLINK_LOCK_ACTIVE = false;
   wave-1 stub — a Hero with a rating but no actions. Plan 02-08 gave it the full
   §9.4 template, whose `QuoteFormEntry` renders a primary Button, so the inverse
   assertion failed and forced the entry out. That is the gate working exactly as
-  designed: nobody had to remember. `/_not-found` is the last one left, and it is
-  plan 02-13's.
+  designed: nobody had to remember.
+
+  THE THREE LEGAL ROUTES ARE A DIFFERENT CASE AND WERE ADDED BY PLAN 02-09. They
+  are not an unfinished template: UI-SPEC §9.4's legal variation gives them
+  Breadcrumbs, a centred Hero and `Prose width="narrow"` and NOTHING ELSE — no
+  CTABand, no BeforeAfterSlider, no QuoteFormEntry — because a page somebody
+  reads to find out what happens to their data is not a conversion surface. They
+  are complete as shipped and they still carry no primary Button, because until
+  plan 02-13 composes `Header` into the root layout nothing supplies one
+  sitewide.
+
+  So the entry is "not yet" in the layout sense rather than the template sense,
+  and it is still self-restoring: §5's CTA table puts `Get a Free Quote` in
+  `Header` as a `primary` Button on every page, so the moment 02-13's layout
+  composition lands these three fail the inverse assertion and force themselves
+  out. PLAN 02-13 EMPTIES THIS SET COMPLETELY — its own `/_not-found` entry and
+  these three go together. Nothing here may be removed by giving a legal page a
+  CTA; that would breach §9.4.
 */
 const NO_RATING_YET = new Set(['/_not-found']);
-const NO_PRIMARY_CTA_YET = new Set(['/_not-found']);
+const NO_PRIMARY_CTA_YET = new Set([
+  '/_not-found',
+  '/privacy-policy',
+  '/terms-of-service',
+  '/customer-service-agreement',
+]);
 
 /*
   Per-route expectations. Delta 3 replaces the old hardcoded single-town
