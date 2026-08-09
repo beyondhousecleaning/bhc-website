@@ -30,11 +30,13 @@
     "ReviewRail": "src/components/ReviewRail/ReviewRail.jsx",
     "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.jsx",
     "SkipLink": "src/components/SkipLink/SkipLink.jsx",
-    "Footer": "src/components/Footer/Footer.jsx"
+    "Footer": "src/components/Footer/Footer.jsx",
+    "Header": "src/components/Header/Header.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" },
-    "Footer": { "cardMode": "column" }
+    "Footer": { "cardMode": "column" },
+    "Header": { "cardMode": "column" }
   },
   "docsMap": {
     "Button": "src/components/Button/Button.prompt.md",
@@ -56,6 +58,7 @@
     "ReviewRail": "src/components/ReviewRail/ReviewRail.prompt.md",
     "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.prompt.md",
     "SkipLink": "src/components/SkipLink/SkipLink.prompt.md",
-    "Footer": "src/components/Footer/Footer.prompt.md"
+    "Footer": "src/components/Footer/Footer.prompt.md",
+    "Header": "src/components/Header/Header.prompt.md"
   }
 }

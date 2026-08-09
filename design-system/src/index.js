@@ -23,3 +23,4 @@ export { ReviewRail } from './components/ReviewRail/ReviewRail.jsx';
 export { BeforeAfterSlider } from './components/BeforeAfterSlider/BeforeAfterSlider.jsx';
 export { SkipLink } from './components/SkipLink/SkipLink.jsx';
 export { Footer } from './components/Footer/Footer.jsx';
+export { Header } from './components/Header/Header.jsx';

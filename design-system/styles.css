@@ -1058,6 +1058,178 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   color: var(--bhc-ink-muted);
 }
 
+/* --- Header ---------------------------------------------------------------
+   The navigation runs on the user agent alone. The disclosure element is a
+   state carrier holding only its summary, and the one list is its SIBLING, so
+   a sibling combinator drives it. A UA only hides a disclosure's own children,
+   which is why the list has to sit outside it: were it inside, no `display`
+   rule here could reveal it once the toggle is hidden at desktop width. The
+   two rejected alternatives are set out in Header.prompt.md.
+
+   The list is rendered ONCE. There is no second desktop copy — that would put
+   every navigation link in the DOM twice and break the one-primary-nav rule.
+
+   Grounds and measured contrast. The header is always --bhc-paper. The
+   wordmark and every navigation link set --bhc-ink directly, 15.81:1 against
+   that ground, so this component belongs on paper and nowhere else; it is
+   never a band and never sits on --bhc-navy, where --bhc-ink is 2.65:1.
+
+   No :focus-visible rule of its own. Both <a> and <summary> are already
+   covered by the base rule at the top of this file.                        */
+
+.bhc-header {
+  position: relative;
+  z-index: 30;
+  background: var(--bhc-paper);
+  border-bottom: 1px solid var(--bhc-line);
+}
+
+.bhc-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bhc-space-4);
+  min-height: 64px;
+}
+
+@media (min-width: 1024px) {
+  .bhc-header__inner { min-height: 72px; }
+}
+
+.bhc-header__brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+.bhc-header__brand:hover { color: var(--bhc-ink); }
+
+.bhc-header__wordmark {
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  letter-spacing: var(--bhc-tracking-tight);
+}
+
+/* Hidden below 768px, which is exactly where StickyCallBar leaves. The two
+   are complementary: no viewport shows both call actions, and none shows
+   neither. Both are CSS-gated rather than conditionally rendered, which is
+   what keeps the whole header a server render. */
+.bhc-header__actions { display: none; }
+
+@media (min-width: 768px) {
+  .bhc-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--bhc-space-4);
+  }
+}
+
+.bhc-header__phone {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: var(--bhc-weight-semibold);
+  color: var(--bhc-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.bhc-header__phone:hover { color: var(--bhc-action-hover); }
+
+.bhc-nav { display: flex; align-items: center; }
+
+.bhc-nav__toggle,
+.bhc-nav__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--bhc-ink);
+}
+.bhc-nav__toggle::-webkit-details-marker,
+.bhc-nav__summary::-webkit-details-marker { display: none; }
+
+.bhc-nav__toggle {
+  padding-inline: var(--bhc-space-2);
+  min-width: 44px;
+  justify-content: center;
+}
+
+.bhc-nav__list {
+  display: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  z-index: 30;
+  margin: 0;
+  padding: var(--bhc-space-2) var(--bhc-space-6) var(--bhc-space-4);
+  list-style: none;
+  background: var(--bhc-paper);
+  border-bottom: 1px solid var(--bhc-line);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+.bhc-nav__disclosure[open] ~ .bhc-nav__list { display: block; }
+
+.bhc-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bhc-ink);
+  font-weight: var(--bhc-weight-medium);
+  text-decoration: none;
+}
+.bhc-nav__link:hover { color: var(--bhc-action-hover); }
+
+.bhc-nav__sublist {
+  margin: 0;
+  padding: 0 0 0 var(--bhc-space-4);
+  list-style: none;
+}
+
+.bhc-nav__chevron { transition: transform var(--bhc-dur) var(--bhc-ease); }
+.bhc-nav__submenu[open] > .bhc-nav__summary .bhc-nav__chevron { transform: rotate(180deg); }
+
+@media (min-width: 1024px) {
+  /* The toggle goes entirely; the list is unconditionally visible. */
+  .bhc-nav__disclosure { display: none; }
+
+  .bhc-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--bhc-space-6);
+    position: static;
+    padding: 0;
+    background: none;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  .bhc-nav__item { position: relative; }
+  .bhc-nav__submenu { position: relative; }
+
+  /* Ordinary disclosure usage: this one CONTAINS its list, so the UA hides
+     and shows it and no combinator is involved. */
+  .bhc-nav__sublist {
+    position: absolute;
+    top: calc(100% + var(--bhc-space-2));
+    left: 0;
+    z-index: 40;
+    min-width: 260px;
+    padding: var(--bhc-space-2);
+    background: var(--bhc-paper);
+    border: 1px solid var(--bhc-line);
+    border-radius: var(--bhc-radius-md);
+    box-shadow: var(--bhc-shadow-lg);
+  }
+
+  .bhc-nav__sublist .bhc-nav__link { padding-inline: var(--bhc-space-3); }
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base
