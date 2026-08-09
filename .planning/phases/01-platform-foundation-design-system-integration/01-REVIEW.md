@@ -24,7 +24,37 @@ findings:
   warning: 18
   info: 0
   total: 23
-status: issues_found
+status: partially_resolved
+resolved: 2026-08-09T16:02:19Z
+resolution:
+  fixed: [CR-01, CR-02, CR-03, CR-04, WR-02, WR-03, WR-04, WR-08, WR-13, WR-16, WR-17]
+  fixed_count: 11
+  open_count: 12
+  deferred:
+    - id: CR-05
+      reason: "Entity-graph work owned by Phase 5 SC-1. Fixing it changes rendered JSON-LD, which would breach the D-08 lock 'no rendered markup, class name, prop or default changed on any component'."
+    - id: WR-01
+      reason: "`Disallow: /` is deliberate pre-cutover behaviour with a documented EXPIRY note. Directive left byte-for-byte unchanged; only the file's false claim that noindex acts as an independent backstop was corrected."
+    - id: WR-15
+      reason: "The 404ing links are Phase 2 and Phase 3 route scope."
+  open:
+    - WR-05
+    - WR-06
+    - WR-07
+    - WR-09
+    - WR-10
+    - WR-11
+    - WR-12
+    - WR-14
+    - WR-18
+  promote_next:
+    - id: WR-07
+      why: "_not-found.html and _global-error.html both render RootLayout, so both carry a tel: link and the business JSON-LD, and no lock has ever inspected either. The gap widens per route as Phase 2 adds templates."
+  post_fix_state:
+    design_system_tests: "14 pass / 0 fail (was 10)"
+    html_locks: "21 pass / 0 fail (was 18)"
+    budget: "168.5 KB JS gzip / 500 KB; 191.3 KB page / 1024 KB (unchanged)"
+    ci_run: "31322722270 — locks and build both green"
 ---
 
 # Phase 1: Code Review Report
