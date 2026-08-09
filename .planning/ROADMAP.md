@@ -76,7 +76,49 @@ Plans:
   3. BeforeAfterSlider renders a clearly-labelled placeholder state when no real photo pairs exist yet, so no page is blocked waiting on the Canva-originals pull.
   4. FAQAccordion is present for users/AI-readability without emitting `FAQPage` schema (D13).
 
-**Plans**: TBD
+> **Scope note (from planning, 2026-08-09):** the real utility-page count is **10**, not "~8" — the
+> live sitemap carries ten non-service, non-location, non-blog URLs and the footer's Legal row links
+> three of them, so shipping eight would leave dead internal links. Phase 2 therefore ships
+> **17 routes** (1 home + 6 service + 10 utility) plus a real `not-found` template.
+
+**Plans**: 15 plans across 7 waves
+Plans:
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Package hardening: `src/phone.js`, `toDial` throws, NAPFooter literal deleted + WR-10 guard, Breadcrumbs WR-12 + §13-R, `Star` exported, `Button` gains `as`, three `styles.css` corrections, heading-doc remediation (wave 1)
+- [ ] 02-02-PLAN.md — Multi-page lock harness rewrite around `prerender-manifest.json` (deltas 1–7, 11, 12 + the four unlisted corrections), worst-page budget with WR-05 closed, honest two-route scaffold (wave 1)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 02-03-PLAN.md — Design-system source locks: delta 9 (four-file shape + `.design-sync` registration), delta 13 (phone throw), delta 14 (inline SVG a11y), `MIN_TESTS` raised (wave 2)
+- [ ] 02-04-PLAN.md — Content primitives: SectionBand, Prose, ProcessSteps, CTABand + the two scoped focus overrides (wave 2)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 02-05-PLAN.md — Cards & disclosure: ServiceCard, TownCard, FAQAccordion, QuoteFormEntry (wave 3)
+- [ ] 02-06-PLAN.md — App data foundation: `jsconfig.json` `@/*` alias, `site.js`, `nav.js`, `process.js`, `faqs.js` (wave 3)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 02-07-PLAN.md — Trust components: TrustBar, ReviewCard, ReviewRail, BeforeAfterSlider (SC-3) (wave 4)
+- [ ] 02-08-PLAN.md — Seven core utility routes + `utility.js`; fixes three of the four `<h1>`-less pages (wave 4)
+- [ ] 02-09-PLAN.md — Three legal routes + `legal.js` (wave 4)
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 02-10-PLAN.md — Navigation shell: SkipLink, Footer, Header (zero-JS disclosure), StickyCallBar (wave 5)
+- [ ] 02-11-PLAN.md — Home page + `home.js` (wave 5)
+- [ ] 02-12-PLAN.md — Service dynamic route + `services.js`, six pages at ≥800 words each (wave 5)
+
+**Wave 6** *(blocked on Wave 5)*
+
+- [ ] 02-13-PLAN.md — Root layout composition, real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
+- [ ] 02-14-PLAN.md — Preview floor raised to 22, README and `.design-sync/NOTES.md` refresh (wave 6)
+
+**Wave 7** *(blocked on Wave 6)*
+
+- [ ] 02-15-PLAN.md — Phase verification: success-criteria evidence table, CI run confirmation, human visual + keyboard checkpoint (wave 7, has checkpoint)
+
 **UI hint**: yes
 
 ### Phase 3: Programmatic Location × Service Engine
@@ -91,6 +133,10 @@ Plans:
   3. The 4 Americanised service slugs 301 to their UK equivalents; `south-coventry`/`coventry-south` is resolved to one slug plus a working `coventry` town page.
   4. Every combo page has a real keyword-bearing `<h1>`, ≥800 unique body words, and reaches its parent town hub and the locations index via InterlinkBlock links computed from geography (never hand-picked).
   5. New pages are rolled out in batches of 50–100, not all ~241 new pages at once.
+
+> **Inherited from Phase 2 planning:** `INTERLINK_LOCK_ACTIVE` in `web/scripts/check-html-locks.mjs`
+> is `false` with a self-restoring inverse assertion — the first page that renders an InterlinkBlock
+> fails the suite and forces the constant to be flipped. Phase 3 flips it.
 
 **Plans**: TBD
 **UI hint**: yes
@@ -107,6 +153,12 @@ Plans:
   3. ReviewRail/ReviewCard show town-filtered reviews on town hub and combo pages where available, and the 516 KB Trustmary widget is fully removed.
   4. BeforeAfterSlider shows real matched photo pairs wherever photos have been supplied from the Canva-originals pull, and the Phase 2 placeholder everywhere else — no page is blocked on photography.
 
+> **Inherited from Phase 2 planning:** review quotes are capped at 320 characters **at the data
+> layer**, truncated at a word boundary — a property of the data contract, not the CSS, because with
+> no client JS a CSS clamp would hide text from sighted users that screen readers still receive.
+> `RatingBadge.emitSchema` is deliberately OFF everywhere in Phase 2; turning it on changes the
+> JSON-LD block counts the lock suite asserts.
+
 **Plans**: TBD
 **UI hint**: yes
 
@@ -121,6 +173,11 @@ Plans:
   2. All 11 `docs/design/design-system.md` CI locks pass in the build pipeline (one `<h1>`; breadcrumbs everywhere; rating badge everywhere; single correct `tel:`; no address/postcode; InterlinkBlock present; alt text on every image; title ≤60 chars containing the town / description ≤155 chars; JSON-LD server-rendered; no third-party script >50 KB unsigned-off; ≥800 words).
   3. Total JS is under 500 KB and total page weight under 1 MB on a representative combo page (down from 1.9 MB today).
   4. The sitemap includes `<lastmod>` for every URL, and `robots.txt` allows crawling (`User-agent: *` present).
+
+> **Inherited from Phase 2 planning:** Lock 8's "title contains the town" clause must be scoped to
+> the town-bearing templates (combo, town hub) or it fails on thirteen correct pages. The 900px and
+> 720px breakpoints on `.bhc-hero__grid` and `.bhc-footer__grid` were deliberately left alone in
+> Phase 2 and are normalised here.
 
 **Plans**: TBD
 **UI hint**: yes
@@ -147,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
+| 2. Component Library Completion & Core Templates | 0/15 | Planned | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
