@@ -23,6 +23,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createContext, runInContext } from 'node:vm';
 
 // No third-party imports, ever. Enforcement code that depends on the supply
 // chain it is meant to survive is not enforcement. No DOM parser either — the
@@ -220,9 +221,41 @@ test('SC-4f: all three JSON-LD blocks are in the file on disk', () => {
   assert.equal(blocks, 3, `expected 3 JSON-LD blocks on disk, found ${blocks}`);
 });
 
-test('SC-4g: the built page contains no client directive', () => {
-  const DIRECTIVE = 'use client';
-  assert.ok(!html.includes(DIRECTIVE), 'a client directive survived into the built HTML');
+test('SC-4g: the build declares no first-party client component', () => {
+  /*
+    WR-03. This slot used to hold `assert.ok(!html.includes('use client'))`,
+    which can never fail: the directive is a compile-time marker consumed by the
+    bundler and Next never emits the string into rendered HTML. It read as a
+    lock and covered nothing. Proven by probe — prepending the directive to
+    RatingBadge.jsx and rebuilding left `html.includes(…)` false, so a real
+    client component would have sailed past it.
+
+    The real signal is the client-reference manifest. Every module Next will
+    ship to the browser as a client component is enumerated there, so the
+    falsifiable form of "D-07 forbids client components" is: every entry belongs
+    to the framework's own bootstrap. The same probe makes THIS assertion fail,
+    which is the whole difference.
+  */
+  const MANIFEST = join(ROOT, '.next/server/app/page_client-reference-manifest.js');
+  const source = read(
+    MANIFEST,
+    'run `npm run build --workspace @bhc/web` first — this asserts against build output'
+  );
+
+  const context = createContext({});
+  runInContext(source, context);
+  const manifest = runInContext('globalThis.__RSC_MANIFEST', context);
+  assert.ok(manifest, 'no __RSC_MANIFEST in the client-reference manifest — its shape changed');
+
+  const entries = Object.values(manifest).flatMap((m) => Object.keys(m.clientModules || {}));
+  assert.ok(entries.length, 'the manifest declares no client modules at all — its shape changed');
+
+  const firstParty = entries.filter((id) => !id.includes('/node_modules/next/'));
+  assert.deepEqual(
+    firstParty,
+    [],
+    `first-party client component(s) in the build — D-07 forbids them: ${firstParty.join(', ')}`
+  );
 });
 
 test('SC-4g: no file under web/app declares a client directive', () => {
