@@ -27,7 +27,8 @@
     "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.jsx",
     "TrustBar": "src/components/TrustBar/TrustBar.jsx",
     "ReviewCard": "src/components/ReviewCard/ReviewCard.jsx",
-    "ReviewRail": "src/components/ReviewRail/ReviewRail.jsx"
+    "ReviewRail": "src/components/ReviewRail/ReviewRail.jsx",
+    "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -49,6 +50,7 @@
     "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.prompt.md",
     "TrustBar": "src/components/TrustBar/TrustBar.prompt.md",
     "ReviewCard": "src/components/ReviewCard/ReviewCard.prompt.md",
-    "ReviewRail": "src/components/ReviewRail/ReviewRail.prompt.md"
+    "ReviewRail": "src/components/ReviewRail/ReviewRail.prompt.md",
+    "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.prompt.md"
   }
 }

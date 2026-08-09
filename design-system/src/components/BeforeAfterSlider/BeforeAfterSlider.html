@@ -1,0 +1,97 @@
+<!-- @dsCard group="Trust" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="padding:48px;display:grid;gap:40px;background:var(--bhc-paper)">
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">State B — no pairs. This is what every Phase 2 page renders, and it is Success Criterion 3</p>
+    <figure class="bhc-ba bhc-ba--pending" data-bhc-photo-state="pending">
+      <div class="bhc-ba__track" tabindex="0" role="group" aria-label="Before and after comparison">
+        <div class="bhc-ba__pane">
+          <p class="bhc-ba__label">BEFORE</p>
+          <svg class="bhc-ba__panel" viewBox="0 0 800 600" role="img" aria-label="Before — our own before-and-after photography is in production">
+            <rect width="800" height="600" fill="var(--bhc-paper-tint)" />
+            <path d="M0 452h800" stroke="var(--bhc-line)" stroke-width="6" />
+            <rect x="96" y="132" width="264" height="196" rx="12" fill="none" stroke="var(--bhc-line)" stroke-width="6" />
+            <path d="M228 132v196M96 230h264" stroke="var(--bhc-line)" stroke-width="6" />
+            <rect x="452" y="268" width="252" height="184" rx="10" fill="none" stroke="var(--bhc-line)" stroke-width="6" />
+            <circle cx="560" cy="360" r="26" fill="var(--bhc-line)" />
+            <circle cx="648" cy="336" r="14" fill="var(--bhc-line)" />
+            <circle cx="512" cy="416" r="10" fill="var(--bhc-line)" />
+          </svg>
+        </div>
+        <div class="bhc-ba__pane">
+          <p class="bhc-ba__label">AFTER</p>
+          <svg class="bhc-ba__panel" viewBox="0 0 800 600" role="img" aria-label="After — our own before-and-after photography is in production">
+            <rect width="800" height="600" fill="var(--bhc-paper-warm)" />
+            <path d="M0 452h800" stroke="var(--bhc-line)" stroke-width="6" />
+            <rect x="96" y="132" width="264" height="196" rx="12" fill="none" stroke="var(--bhc-line)" stroke-width="6" />
+            <path d="M228 132v196M96 230h264" stroke="var(--bhc-line)" stroke-width="6" />
+            <rect x="452" y="268" width="252" height="184" rx="10" fill="none" stroke="var(--bhc-line)" stroke-width="6" />
+            <path d="m596 344 18 38 40 6-29 28 7 40-36-19-36 19 7-40-29-28 40-6z" fill="var(--bhc-sponge)" />
+          </svg>
+        </div>
+      </div>
+      <figcaption class="bhc-ba__pending">
+        <h3 class="bhc-ba__pending-title">Real homes, real results</h3>
+        <p class="bhc-ba__pending-body">We're re-shooting our before-and-after photography in-house, with our own team and our own equipment. Every pair here will be a real Warwickshire home we cleaned — no stock images, no borrowed shots.</p>
+        <a class="bhc-btn bhc-btn--secondary bhc-btn--md" href="#"><span>See What's Included</span></a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">State A — one pair. Real images, real BEFORE/AFTER text, a caption, and data-bhc-photo-state="live"</p>
+    <div class="bhc-ba">
+      <figure class="bhc-ba__pair" data-bhc-photo-state="live">
+        <div class="bhc-ba__track" tabindex="0" role="group" aria-label="Before and after — Kitchen · Deep clean · Warwick">
+          <div class="bhc-ba__pane">
+            <p class="bhc-ba__label">BEFORE</p>
+            <img
+              class="bhc-ba__img"
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23F5EFE8'/%3E%3Ctext x='400' y='308' font-family='sans-serif' font-size='22' fill='%234A5A72' text-anchor='middle'%3EStands in for a real photograph%3C/text%3E%3C/svg%3E"
+              alt="Kitchen worktops and splashback before a deep clean"
+              width="800" height="600" loading="lazy" decoding="async" />
+          </div>
+          <div class="bhc-ba__pane">
+            <p class="bhc-ba__label">AFTER</p>
+            <img
+              class="bhc-ba__img"
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23FBF8F5'/%3E%3Ctext x='400' y='308' font-family='sans-serif' font-size='22' fill='%234A5A72' text-anchor='middle'%3EStands in for a real photograph%3C/text%3E%3C/svg%3E"
+              alt="The same kitchen worktops and splashback after a deep clean"
+              width="800" height="600" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <figcaption class="bhc-ba__caption">Kitchen · Deep clean · Warwick</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--bhc-line);padding-top:24px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why the pending state exists at all</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0 0 12px;max-width:70ch">
+      Every other empty-data component in this package renders nothing.
+      <strong>This one never does.</strong> A missing photograph must not silently remove a section
+      from a page, and no page may block waiting on photography that does not exist yet — which is
+      the whole of Success Criterion 3. The state is signalled to machines by
+      <strong>data-bhc-photo-state</strong> and to people by copy that reads finished rather than
+      apologetic.
+    </p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      The link sits in the <strong>figcaption</strong>, outside the track. The track carries
+      <strong>tabindex="0"</strong> so its two panes can be scrolled by keyboard, and that is only
+      correct while it holds nothing focusable itself.
+    </p>
+  </div>
+
+  <div style="border-top:1px solid var(--bhc-line);padding-top:24px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">The live-site bug this prevents</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      All 199 existing before-and-after exports are <strong>1080×1080 composited social posts</strong>
+      with the superseded logo burned in at the top and the words BEFORE and AFTER painted over the
+      photograph. The recoverable panel is about <strong>530 × 690px</strong> per half — a 265 × 345
+      slot at retina density. Labels that are pixels cannot be read by a screen reader, cannot be
+      translated, and cannot be resized. Here they are text.
+    </p>
+  </div>
+
+</div>

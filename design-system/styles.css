@@ -932,6 +932,132 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   .bhc-reviewrail__item { min-width: 0; }
 }
 
+/* --- BeforeAfterSlider ----------------------------------------------------
+   Success Criterion 3. Two states, and the component never renders nothing:
+   a missing photograph must not silently remove a section from a page.
+
+   THE COMPARISON IS CSS ONLY. Side by side at 768px and above, a two-pane
+   scroll-snap track below. A drag handle would need a pointer listener,
+   which needs a client component, which turns the client-boundary gate red
+   for content that does not exist yet.
+
+   The track is focusable in the markup (tabindex="0") so the two panes can
+   be scrolled by keyboard, and the pending state's one link sits OUTSIDE it,
+   in the figcaption — a focusable child inside a focusable scroller is a
+   redundant tab stop immediately before itself.
+
+   BEFORE and AFTER are real text at --bhc-text-xs, uppercase and
+   letter-spaced, never baked into the image. Baked labels were one of the two
+   reasons the 199 existing exports were rejected as source. There is no
+   positive letter-spacing token, so 0.08em is written literally here and in
+   nowhere else in this file.
+
+   Both --bhc-ink-muted uses below are direct colour, so this component
+   belongs on paper, warm or tint and never on the one navy band, where that
+   token is 1.10:1.                                                          */
+
+.bhc-ba__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-4);
+}
+
+.bhc-ba__intro {
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+  margin-bottom: var(--bhc-space-6);
+  max-width: var(--bhc-container-prose);
+}
+
+.bhc-ba {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-8);
+  margin: 0;
+}
+.bhc-ba--pending { gap: var(--bhc-space-6); }
+
+.bhc-ba__pair {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  margin: 0;
+}
+
+.bhc-ba__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(85%, 480px);
+  gap: var(--bhc-space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bhc-space-6);
+}
+
+.bhc-ba__pane {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-2);
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .bhc-ba__track {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--bhc-space-4);
+    /* A scroll container that cannot scroll still clips a focus ring. */
+    overflow-x: visible;
+  }
+}
+
+.bhc-ba__label {
+  margin: 0;
+  font-size: var(--bhc-text-xs);
+  line-height: var(--bhc-leading-snug);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-ba__panel,
+.bhc-ba__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-md);
+}
+
+.bhc-ba__caption {
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-ba__pending {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bhc-space-3);
+}
+
+.bhc-ba__pending-title {
+  margin: 0;
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+
+.bhc-ba__pending-body {
+  margin: 0;
+  max-width: var(--bhc-container-prose);
+  color: var(--bhc-ink-muted);
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base

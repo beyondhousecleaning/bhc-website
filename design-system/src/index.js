@@ -20,3 +20,4 @@ export { QuoteFormEntry } from './components/QuoteFormEntry/QuoteFormEntry.jsx';
 export { TrustBar } from './components/TrustBar/TrustBar.jsx';
 export { ReviewCard } from './components/ReviewCard/ReviewCard.jsx';
 export { ReviewRail } from './components/ReviewRail/ReviewRail.jsx';
+export { BeforeAfterSlider } from './components/BeforeAfterSlider/BeforeAfterSlider.jsx';
