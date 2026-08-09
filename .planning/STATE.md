@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-04-PLAN.md
-last_updated: "2026-08-09T20:12:05.713Z"
+stopped_at: Completed 02-05-PLAN.md
+last_updated: "2026-08-09T20:32:21.251Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 9
+  completed_plans: 10
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 4 of 15
+Plan: 5 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [█████░░░░░] 45%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [█████░░░░░] 45%
 | Phase 02 P01 | 32min | 3 tasks | 18 files |
 | Phase 02 P02 | 25min | 3 tasks | 6 files |
 | Phase 02 P04 | 30min | 2 tasks tasks | 19 files files |
+| Phase 02 P05 | 15min | 2 tasks tasks | 19 files files |
 
 ## Accumulated Context
 
@@ -107,6 +108,11 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-04: the two scoped focus overrides are the LAST section of design-system/styles.css — every later plan appends its component block above the banner, never below it
 - [Phase ?]: 02-04: .bhc-section__intro sets --bhc-ink-muted directly, which is 1.10:1 on navy — it now flips to --bhc-paper on .bhc-section--navy; run the same direct-colour check over TrustBar, ReviewCard and StickyCallBar
 - [Phase ?]: 02-04: Prose width='narrow' maps to --bhc-container-narrow (800px), which is WIDER than the 68ch default measure — the locked token set allows no other mapping; Phase 5 should rename the prop
+- [Phase ?]: 02-05: a whole-card link is ONE anchor plus a stretched ::after, never a wrapper link — an <a> may not contain interactive content, so a wrapper plus a title link is parsed into two sibling links
+- [Phase ?]: 02-05: lightningcss emits ::after as the single-colon :after in built CSS — measured; no lock may grep built CSS for the double-colon form
+- [Phase ?]: 02-05: when a CI grep polices a token, the full explanation goes in the .prompt.md (no scanner reads it) and the .jsx says only that the thing is absent — FAQAccordion names the schema type in neither .jsx nor .html
+- [Phase ?]: 02-05: QuoteFormEntry's tel: label is built as ONE string, not interpolated — delta 2(d) reads rendered text content and a serialiser can separate adjacent text nodes mid-number
+- [Phase ?]: 02-05: the SWC probe must await loadBindings() before transform() — getBindingsSync() throws 'bindings not loaded yet'; this is the third plan blocked by node having no JSX loader
 
 ### Pending Todos
 
@@ -141,6 +147,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T20:12:05.701Z
-Stopped at: Completed 02-04-PLAN.md
+Last session: 2026-08-09T20:32:21.234Z
+Stopped at: Completed 02-05-PLAN.md
 Resume file: None
