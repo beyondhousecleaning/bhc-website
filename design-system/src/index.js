@@ -17,3 +17,4 @@ export { ServiceCard } from './components/ServiceCard/ServiceCard.jsx';
 export { TownCard } from './components/TownCard/TownCard.jsx';
 export { FAQAccordion } from './components/FAQAccordion/FAQAccordion.jsx';
 export { QuoteFormEntry } from './components/QuoteFormEntry/QuoteFormEntry.jsx';
+export { TrustBar } from './components/TrustBar/TrustBar.jsx';

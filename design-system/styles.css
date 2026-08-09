@@ -756,6 +756,81 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   align-items: center;
 }
 
+/* --- TrustBar -------------------------------------------------------------
+   Three claims, inline at 768px and above, stacked below.
+
+   THE TONE SET HAS NO NAVY MEMBER AND MUST NOT GAIN ONE. Measured:
+   --bhc-sponge on --bhc-navy is 2.49:1, which fails; on --bhc-ink it is
+   6.59:1, which is why the sponge glyph rule below is scoped to
+   .bhc-trustbar--ink and to nothing else. The navy pairing was authorised in
+   an early revision of the colour contract and withdrawn before anyone acted
+   on it.
+
+   Labels take --bhc-weight-semibold, which the weight policy permits for
+   exactly this element and five others. They are --bhc-text-sm, the meta step.
+
+   The tone lives on the <ul>, not on the wrapping <section>: an ink bar sits
+   on a paper band, which is what makes the two separate elements worth
+   having.                                                                  */
+
+.bhc-trustbar__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-trustbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bhc-trustbar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+}
+
+.bhc-trustbar__icon {
+  flex: none;
+  display: inline-flex;
+}
+
+.bhc-trustbar__label {
+  font-size: var(--bhc-text-sm);
+  font-weight: var(--bhc-weight-semibold);
+  line-height: var(--bhc-leading-snug);
+}
+
+@media (min-width: 768px) {
+  .bhc-trustbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--bhc-space-8);
+  }
+}
+
+/* The two toned grounds get padding and a radius: a colour with no padding
+   puts the labels on the edge of the band.                                */
+.bhc-trustbar--tint,
+.bhc-trustbar--ink {
+  padding: var(--bhc-space-6);
+  border-radius: var(--bhc-radius-lg);
+}
+.bhc-trustbar--tint { background: var(--bhc-paper-tint); }
+.bhc-trustbar--ink {
+  background: var(--bhc-ink);
+  color: var(--bhc-paper);
+}
+/* 6.59:1. This selector is the ONLY place sponge is paired with a ground in
+   this block, and --bhc-ink is the only ground it is measured against.    */
+.bhc-trustbar--ink .bhc-trustbar__icon { color: var(--bhc-sponge); }
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base

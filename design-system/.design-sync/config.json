@@ -24,7 +24,8 @@
     "ServiceCard": "src/components/ServiceCard/ServiceCard.jsx",
     "TownCard": "src/components/TownCard/TownCard.jsx",
     "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.jsx",
-    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.jsx"
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.jsx",
+    "TrustBar": "src/components/TrustBar/TrustBar.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -43,6 +44,7 @@
     "ServiceCard": "src/components/ServiceCard/ServiceCard.prompt.md",
     "TownCard": "src/components/TownCard/TownCard.prompt.md",
     "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.prompt.md",
-    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.prompt.md"
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.prompt.md",
+    "TrustBar": "src/components/TrustBar/TrustBar.prompt.md"
   }
 }
