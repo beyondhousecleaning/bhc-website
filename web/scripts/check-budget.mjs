@@ -59,17 +59,56 @@ if (!existsSync(HTML_PATH)) {
 }
 
 const html = readFileSync(HTML_PATH, 'utf8');
-const srcs = [...html.matchAll(/<script src="([^"]+)"/g)].map((m) => m[1]);
 
-// Every page-referenced script, resolved to its file and compressed. Scripts
-// the page references but the build did not emit are skipped rather than
-// guessed at.
+// Attribute-order independent: React renders DOM attributes in JSX source
+// order, so `<script async src="…">` is at least as likely as `src` first. The
+// old `/<script src="([^"]+)"/` form saw only the latter, which meant a
+// third-party bundle added the idiomatic way was not merely unresolvable —
+// it was invisible to the measurement entirely.
+const LOCAL_PREFIX = '/_next/';
+const srcs = (html.match(/<script\b[^>]*>/g) || [])
+  .map((tag) => tag.match(/\bsrc="([^"]*)"/))
+  .filter(Boolean)
+  .map((m) => m[1]);
+
+/*
+  A skipped script used to `continue` silently. Nothing counted the skips and
+  nothing failed, so a change to Next's on-disk asset layout (a minor bump, an
+  assetPrefix, a distDir override, a static-export switch) would make every
+  entry unresolvable, leave `js` at 0, and print "0.0 KB / 500 KB" with exit 0
+  — a budget gate reporting perfect health while measuring nothing. The same
+  silence gave every external-origin script a weight of zero, since
+  .next/https:/cdn.example.com/lib.js never exists on disk.
+
+  A measurement that cannot be completed is not a pass. It is a refusal.
+*/
 let js = 0;
+const unresolved = [];
 for (const s of srcs) {
-  const f = join(ROOT, '.next', s.replace('/_next/', ''));
-  if (!existsSync(f)) continue;
+  if (!s.startsWith(LOCAL_PREFIX)) {
+    unresolved.push(`${s} — not a local ${LOCAL_PREFIX} asset; external scripts cannot be budgeted`);
+    continue;
+  }
+  const f = join(ROOT, '.next', s.slice(LOCAL_PREFIX.length));
+  if (!existsSync(f)) {
+    unresolved.push(`${s} -> ${f} does not exist`);
+    continue;
+  }
   js += gzipSync(readFileSync(f)).length;
 }
+
+if (srcs.length === 0) {
+  console.error('no <script src> tags found in the built HTML — the budget measured nothing');
+  console.error(`  ${HTML_PATH}`);
+  process.exit(1);
+}
+
+if (unresolved.length) {
+  console.error('BUDGET MEASUREMENT INCOMPLETE — refusing to report a verdict:');
+  for (const u of unresolved) console.error(`  ${u}`);
+  process.exit(1);
+}
+
 const page = js + Buffer.byteLength(html);
 
 const kb = (n) => (n / 1024).toFixed(1);
