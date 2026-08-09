@@ -100,7 +100,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3)*
 
-- [ ] 02-07-PLAN.md — Trust components: TrustBar, ReviewCard, ReviewRail, BeforeAfterSlider (SC-3) (wave 4)
+- [x] 02-07-PLAN.md — Trust components: TrustBar, ReviewCard, ReviewRail, BeforeAfterSlider (SC-3) (wave 4)
 - [ ] 02-08-PLAN.md — Seven core utility routes + `utility.js`; fixes three of the four `<h1>`-less pages (wave 4)
 - [ ] 02-09-PLAN.md — Three legal routes + `legal.js` (wave 4)
 
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 6/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 7/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
