@@ -405,10 +405,16 @@ test('D-14b: the external-script detector is attribute-order independent', () =>
   }
 });
 
-test('D-15: the built page carries a noindex robots meta tag', () => {
-  const meta = html.match(/<meta[^>]*name="robots"[^>]*>/);
-  assert.ok(meta, 'no name="robots" meta tag in built HTML');
-  assert.match(meta[0], /content="[^"]*noindex/, `robots meta does not noindex: ${meta[0]}`);
+test('D-15: every robots meta tag in the built page says noindex', () => {
+  // WR-17. This used to be `html.match(/…/)` with no `g` flag, so only the
+  // FIRST robots meta was inspected. Multiple robots metas are not
+  // hypothetical: _not-found.html in this very build ships two. A page
+  // emitting a permissive tag after a restrictive one would have passed.
+  const metas = [...html.matchAll(/<meta[^>]*name="robots"[^>]*>/g)].map((m) => m[0]);
+  assert.ok(metas.length, 'no name="robots" meta tag in built HTML');
+  for (const meta of metas) {
+    assert.match(meta, /content="[^"]*noindex/, `robots meta does not noindex: ${meta}`);
+  }
 });
 
 test('D-15: robots.txt blocks every crawler at host level', () => {
