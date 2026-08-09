@@ -30,8 +30,42 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const digits = (s) => String(s).replace(/\D/g, '');
 
-// Verbatim from locks.test.js:63 — do not re-derive it.
-const POSTCODE = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/;
+/*
+  Verbatim from design-system/test/locks.test.js — do not re-derive it, and
+  change both or neither.
+
+  WR-02. The single original form was `/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/`:
+  case-sensitive, with `\s?` permitting at most ONE whitespace character. It
+  missed `cv32 6eq`, `CV32&nbsp;6EQ` and `CV32  6EQ` — every one of which is a
+  plausible way a Phase-3 data file puts a residential postcode onto ~336
+  prerendered pages.
+
+  Two patterns rather than one widened pattern, and the split is load-bearing:
+
+    SPACED  — any case, one or more separators required.
+    COMPACT — uppercase only, no separator, i.e. exactly today's coverage.
+
+  Simply adding the `i` flag to the zero-separator form makes the lock FLAKY,
+  not stronger: a UK postcode's shape (1-2 letters, 1-2 digits, optional
+  letter, digit, 2 letters) is also the shape of a lowercase build hash, and
+  Next's per-build id is random. Measured on a real build, `o5h8fd--6Limf2FJodaMt`
+  in the RSC flight payload matched, failing SC-2d on a page carrying no
+  address at all. A lock that fails at random gets deleted, and then it catches
+  nothing forever.
+
+  Known residual gap, stated rather than papered over: an all-lowercase
+  compact postcode (`cv326eq`) is not matched, because nothing distinguishes it
+  from a build hash. It is also the least likely form to reach rendered copy —
+  the three forms this fix does close are the ones a human or a data file
+  actually produces.
+
+  `\s` already covers the U+00A0 a prerenderer may emit in place of `&nbsp;`;
+  the entity alternatives cover the case where it emits the entity instead.
+*/
+const POSTCODE_SPACED = /\b[A-Z]{1,2}\d{1,2}[A-Z]?(?:\s|&nbsp;|&#160;|&#xa0;)+\d[A-Z]{2}\b/i;
+const POSTCODE_COMPACT = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\d[A-Z]{2}\b/;
+const findPostcode = (text) =>
+  (text.match(POSTCODE_SPACED) || text.match(POSTCODE_COMPACT) || [null])[0];
 
 // The scaffold page's town (web/app/page.jsx). Phase 2 replaces that page with
 // real templates — update this constant with it.
@@ -93,8 +127,41 @@ test('SC-2d: no UK postcode appears in the built page', () => {
   // comments because the docs legitimately name CV32 6EQ as the thing not to
   // ship; prerendered HTML has no source comments, so a strip step would only
   // ever be a hole.
-  const found = html.match(POSTCODE);
-  assert.ok(!found, `postcode found in built HTML: ${found && found[0]}`);
+  const found = findPostcode(html);
+  assert.ok(!found, `postcode found in built HTML: ${found}`);
+});
+
+test('SC-2d: the postcode matcher still matches the forms it is meant to', () => {
+  // WR-02 regression guard. SC-2d passes today because nothing renders an
+  // address at all, so a matcher that quietly stopped matching would read
+  // green forever. These are the forms the single original pattern missed.
+  const [a, n, d, t] = ['CV', '32', '6', 'EQ'];
+  const mustMatch = [
+    `${a}${n} ${d}${t}`,
+    `${a}${n}${d}${t}`,
+    `${a}${n}  ${d}${t}`,
+    `${a}${n}&nbsp;${d}${t}`,
+    `${a}${n}&#160;${d}${t}`,
+    `${a}${n}\u00a0${d}${t}`, // U+00A0, written as an escape on purpose
+    `${a}${n} ${d}${t}`.toLowerCase(),
+    `<p class="bhc-footer__area">Warwick ${a}${n} ${d}${t}</p>`.toLowerCase(),
+  ];
+  for (const form of mustMatch) {
+    assert.ok(findPostcode(form), `postcode form not matched: ${JSON.stringify(form)}`);
+  }
+
+  // …and it stays quiet on the copy the page actually renders, and on the
+  // lowercase build-hash shape that made a naive `i` flag flaky.
+  const mustNotMatch = [
+    'Serving Warwickshire, Coventry and the West Midlands',
+    'Mon–Sat, 8am–7pm',
+    'Deep Cleaning in Warwick',
+    'o5h8fd--6Limf2FJodaMt',
+    '/_next/static/chunks/2y4wans9ulj_u.js',
+  ];
+  for (const clean of mustNotMatch) {
+    assert.equal(findPostcode(clean), null, `false positive on ${JSON.stringify(clean)}`);
+  }
 });
 
 test('SC-2d: no street address field reaches the built page', () => {

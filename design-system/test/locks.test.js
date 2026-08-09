@@ -105,8 +105,32 @@ test('Lock 4: NAPFooter markup contains exactly one tel: link', () => {
 
 /* --- Lock 5 — no street address or postcode ------------------------------ */
 
+/*
+  WR-02. The single original form was `/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/`:
+  case-sensitive, with `\s?` permitting at most ONE whitespace character. It
+  missed `cv32 6eq`, `CV32&nbsp;6EQ` and `CV32  6EQ` — every one of which is a
+  plausible way a Phase-3 data file puts a residential postcode into rendered
+  output at ~336-page scale.
+
+  Two patterns rather than one widened pattern:
+
+    SPACED  — any case, one or more separators required.
+    COMPACT — uppercase only, no separator, i.e. exactly today's coverage.
+
+  Adding the `i` flag to the zero-separator form is flaky rather than stronger:
+  a postcode's shape is also a lowercase build-hash's shape, and this constant
+  is kept identical to the copy in web/scripts/check-html-locks.mjs, which
+  scans prerendered HTML full of them. Residual gap, stated not papered over:
+  an all-lowercase compact postcode (`cv326eq`) is not matched.
+
+  Change both copies or neither.
+*/
+const POSTCODE_SPACED = /\b[A-Z]{1,2}\d{1,2}[A-Z]?(?:\s|&nbsp;|&#160;|&#xa0;)+\d[A-Z]{2}\b/i;
+const POSTCODE_COMPACT = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\d[A-Z]{2}\b/;
+const findPostcode = (text) =>
+  (text.match(POSTCODE_SPACED) || text.match(POSTCODE_COMPACT) || [null])[0];
+
 test('Lock 5: no UK postcode appears in any component output', () => {
-  const POSTCODE = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/;
   const files = [];
   const walk = (dir) => {
     for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -125,7 +149,38 @@ test('Lock 5: no UK postcode appears in any component output', () => {
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s*\/\/.*$/gm, '')
       .replace(/<!--[\s\S]*?-->/g, '');
-    assert.ok(!POSTCODE.test(stripped), `postcode found in rendered output of ${f}`);
+    assert.ok(!findPostcode(stripped), `postcode found in rendered output of ${f}`);
+  }
+});
+
+test('Lock 5: the postcode matcher still matches the forms it is meant to', () => {
+  // WR-02 regression guard. Lock 5 passes today because no component carries a
+  // postcode at all, so a matcher that quietly stopped matching would still
+  // read green. These are the forms the original matcher missed.
+  const [a, n, d, t] = ['CV', '32', '6', 'EQ'];
+  for (const form of [
+    `${a}${n} ${d}${t}`,
+    `${a}${n}${d}${t}`,
+    `${a}${n}  ${d}${t}`,
+    `${a}${n}&nbsp;${d}${t}`,
+    `${a}${n}&#160;${d}${t}`,
+    `${a}${n}\u00a0${d}${t}`, // U+00A0, written as an escape on purpose
+    `${a}${n} ${d}${t}`.toLowerCase(),
+    `Serving ${a}${n} ${d}${t} and nearby`.toLowerCase(),
+  ]) {
+    assert.ok(findPostcode(form), `postcode form not matched: ${JSON.stringify(form)}`);
+  }
+
+  // …and it does not fire on ordinary copy, which would make the lock unusable,
+  // nor on the lowercase build-hash shape that makes a naive `i` flag flaky.
+  for (const clean of [
+    'Serving Warwickshire, Coventry and the West Midlands',
+    'Mon–Sat, 8am–7pm',
+    'Deep Cleaning in Warwick',
+    '4.9 from 175 reviews',
+    'o5h8fd--6Limf2FJodaMt',
+  ]) {
+    assert.equal(findPostcode(clean), null, `false positive on ${JSON.stringify(clean)}`);
   }
 });
 
