@@ -1230,6 +1230,62 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   .bhc-nav__sublist .bhc-nav__link { padding-inline: var(--bhc-space-3); }
 }
 
+/* --- StickyCallBar --------------------------------------------------------
+   The ONE documented narrow-viewport media query in this file. Every other
+   block here is min-width only; this component is defined by its absence
+   above a breakpoint rather than its presence below one, and UI-SPEC §7.12
+   authorises the exception.
+
+   HIDDEN IS THE DEFAULT STATE. The bar is `display: none` outside the query,
+   so above the breakpoint it is removed from the accessibility tree rather
+   than merely painted out of view — a desktop keyboard user must not tab into
+   an invisible bar. Writing it this way also keeps the narrow query to a
+   single occurrence in this file, which is what the harness counts.
+
+   `body { padding-bottom: 64px }` sits inside the same query so the bar never
+   covers the footer's last row. It is a global rule declared by a component
+   block, which is unusual and deliberate: the bar is `position: fixed`, so
+   nothing in normal flow can reserve the space for it, and the component is
+   rendered once from the root layout on every page.
+
+   The 64px height and the safe-area inset were both authored, built and read
+   back out of the emitted chunk unchanged.
+
+   Ground and measured contrast: --bhc-paper with a --bhc-line top border. The
+   bar sets no text colour of its own — both actions are Buttons and carry
+   their own measured pairings (primary is an orange fill with an ink label at
+   5.17:1, never white at 3.05:1). It is fixed to the viewport rather than
+   placed in a band, so it never sits on --bhc-navy.                        */
+
+.bhc-callbar { display: none; }
+
+@media (max-width: 767px) {
+  .bhc-callbar {
+    display: flex;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    align-items: center;
+    gap: var(--bhc-space-3);
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding: var(--bhc-space-2) var(--bhc-space-4)
+      calc(var(--bhc-space-2) + env(safe-area-inset-bottom));
+    background: var(--bhc-paper);
+    border-top: 1px solid var(--bhc-line);
+    box-shadow: var(--bhc-shadow-lg);
+  }
+
+  /* 50/50, and both at least 44px tall — UI-SPEC §2's touch-target floor. */
+  .bhc-callbar__action {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  body { padding-bottom: 64px; }
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base

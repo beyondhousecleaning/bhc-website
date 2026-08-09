@@ -24,3 +24,4 @@ export { BeforeAfterSlider } from './components/BeforeAfterSlider/BeforeAfterSli
 export { SkipLink } from './components/SkipLink/SkipLink.jsx';
 export { Footer } from './components/Footer/Footer.jsx';
 export { Header } from './components/Header/Header.jsx';
+export { StickyCallBar } from './components/StickyCallBar/StickyCallBar.jsx';

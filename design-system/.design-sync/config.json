@@ -31,12 +31,14 @@
     "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.jsx",
     "SkipLink": "src/components/SkipLink/SkipLink.jsx",
     "Footer": "src/components/Footer/Footer.jsx",
-    "Header": "src/components/Header/Header.jsx"
+    "Header": "src/components/Header/Header.jsx",
+    "StickyCallBar": "src/components/StickyCallBar/StickyCallBar.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" },
     "Footer": { "cardMode": "column" },
-    "Header": { "cardMode": "column" }
+    "Header": { "cardMode": "column" },
+    "StickyCallBar": { "cardMode": "column" }
   },
   "docsMap": {
     "Button": "src/components/Button/Button.prompt.md",
@@ -59,6 +61,7 @@
     "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.prompt.md",
     "SkipLink": "src/components/SkipLink/SkipLink.prompt.md",
     "Footer": "src/components/Footer/Footer.prompt.md",
-    "Header": "src/components/Header/Header.prompt.md"
+    "Header": "src/components/Header/Header.prompt.md",
+    "StickyCallBar": "src/components/StickyCallBar/StickyCallBar.prompt.md"
   }
 }
