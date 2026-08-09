@@ -45,7 +45,7 @@ export function InterlinkBlock({
         <h2 className="bhc-interlink__heading" id={`interlink-${variant}`}>
           {heading}
         </h2>
-        {intro ? <p className="bhc-hero__lead">{intro}</p> : null}
+        {intro ? <p className="bhc-section__intro">{intro}</p> : null}
         <ul className="bhc-interlink__list">
           {links.map((link) => (
             <li key={link.href}>

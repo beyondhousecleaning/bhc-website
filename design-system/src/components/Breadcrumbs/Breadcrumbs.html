@@ -6,10 +6,10 @@
     <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Combo page — the deepest trail</p>
     <nav class="bhc-breadcrumbs" aria-label="Breadcrumb">
       <ol class="bhc-breadcrumbs__list">
-        <li style="display:contents"><a href="/">Home</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations">Locations</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations/warwick">Warwick</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Deep Cleaning</span></li>
+        <li><a href="/">Home</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations">Locations</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations/warwick">Warwick</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Deep Cleaning</span></li>
       </ol>
     </nav>
   </div>
@@ -18,28 +18,36 @@
     <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Town hub</p>
     <nav class="bhc-breadcrumbs" aria-label="Breadcrumb">
       <ol class="bhc-breadcrumbs__list">
-        <li style="display:contents"><a href="/">Home</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations">Locations</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Warwick</span></li>
+        <li><a href="/">Home</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/locations">Locations</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Warwick</span></li>
       </ol>
     </nav>
   </div>
 
   <div>
-    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Service</p>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Service — two crumbs, not three</p>
     <nav class="bhc-breadcrumbs" aria-label="Breadcrumb">
       <ol class="bhc-breadcrumbs__list">
-        <li style="display:contents"><a href="/">Home</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><a href="/services">Services</a></li>
-        <li style="display:contents"><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Deep Cleaning</span></li>
+        <li><a href="/">Home</a></li>
+        <li><span class="bhc-breadcrumbs__sep" aria-hidden="true">/</span><span class="bhc-breadcrumbs__current" aria-current="page">Deep Cleaning</span></li>
       </ol>
     </nav>
   </div>
 
   <p style="font:400 14px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch;border-top:1px solid var(--bhc-line);padding-top:20px">
-    0 of 115 live pages have breadcrumbs of any kind — and every parent URL above
-    (<code>/services</code>, <code>/locations</code>, <code>/locations/warwick</code>) currently returns 404.
-    The trail only becomes meaningful once the hub templates exist.
+    0 of 115 live pages have breadcrumbs of any kind. The service trail is two crumbs because
+    there is no services index to point the middle one at yet — a crumb linking a URL that 404s
+    is worse than no trail, so it is omitted until Phase 3 builds the index. The town-hub and
+    combo trails above still name <code>/locations</code> and <code>/locations/warwick</code>,
+    which is why those two templates ship together.
+  </p>
+
+  <p style="font:400 14px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+    Exactly one crumb carries <code>aria-current="page"</code> — the last one — at every trail
+    length. The <code>&lt;li&gt;</code> elements carry no inline style: <code>display: contents</code>
+    removes them from the accessibility tree in Chrome and Safari, which is the whole point of
+    using an <code>&lt;ol&gt;</code>.
   </p>
 
 </div>
