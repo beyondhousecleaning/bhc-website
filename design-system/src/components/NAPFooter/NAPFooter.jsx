@@ -86,11 +86,18 @@ export function NAPFooter({
             ) : null}
           </div>
 
-          {columns.map((col) => (
+          {/*
+            Guards only — the markup, class names, props and defaults below are
+            unchanged. `col.links.map` on a column without `links` throws
+            during server render, and this footer is in the root layout, so a
+            single malformed entry in a Phase-3 nav data file would 500 EVERY
+            route rather than break one list.
+          */}
+          {columns.filter(Boolean).map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
               <p className="bhc-footer__col-heading">{col.heading}</p>
               <ul className="bhc-footer__links">
-                {col.links.map((l) => (
+                {(col.links || []).map((l) => (
                   <li key={l.href}>
                     <a href={l.href}>{l.label}</a>
                   </li>
