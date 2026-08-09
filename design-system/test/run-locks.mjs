@@ -40,8 +40,17 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
   RAISE this when locks are added. Do not lower it without writing down why —
   a shrinking lock suite is precisely the regression this file exists to catch,
   and lowering the floor to make a red run green defeats the whole mechanism.
+
+  It is the EXACT current count, deliberately, with no headroom: headroom is what
+  lets a silently deleted lock go unnoticed, which is the only thing this floor is
+  for. 14 -> 20 in plan 02-03 (deltas 9, 13 and 14, each with its paired guard).
+
+  Plan 02-14 does NOT raise this again: it tightens the existing
+  `previews.length >= 6` floor inside locks.test.js to 22, which changes an
+  assertion rather than adding a test, so the count is unchanged by it. Anyone who
+  adds a lock in any other plan still raises this number.
 */
-const MIN_TESTS = 14;
+const MIN_TESTS = 20;
 
 const files = readdirSync(TEST_DIR)
   .filter((name) => name.endsWith('.test.js'))
