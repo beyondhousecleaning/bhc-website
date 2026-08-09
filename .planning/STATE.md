@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-08-09T19:23:59.296Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-08-09T20:12:05.713Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 7
+  completed_plans: 9
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 3 of 15
+Plan: 4 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [████░░░░░░] 35%
+Progress: [█████░░░░░] 45%
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [████░░░░░░] 35%
 | Phase 01 P04 | 20min | 3 tasks | 1 files |
 | Phase 02 P01 | 32min | 3 tasks | 18 files |
 | Phase 02 P02 | 25min | 3 tasks | 6 files |
+| Phase 02 P04 | 30min | 2 tasks tasks | 19 files files |
 
 ## Accumulated Context
 
@@ -102,6 +103,10 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-02: Dormant locks are gated and assert the INVERSE (INTERLINK_LOCK_ACTIVE, NO_RATING_YET, NO_PRIMARY_CTA_YET) so the plan that should re-enable them finds the build red
 - [Phase ?]: 02-02: The tel: cap is 4 per page, not 3 — QuoteFormEntry's fallback is the fourth link; exactly one tel: inside <footer> remains the real NAP invariant
 - [Phase ?]: 02-02: The budget gates on the modern noModule-excluded JS figure and reports the legacy polyfill separately (WR-06); page weight is gzip JS + gzip HTML + gzip CSS + raw woff2 (WR-05)
+- [Phase ?]: 02-04: ProcessSteps wraps its list in a <section> when a heading is passed — an <ol>'s content model is li/script/template only, so a heading inside it is hoisted out and takes the counter-reset with it
+- [Phase ?]: 02-04: the two scoped focus overrides are the LAST section of design-system/styles.css — every later plan appends its component block above the banner, never below it
+- [Phase ?]: 02-04: .bhc-section__intro sets --bhc-ink-muted directly, which is 1.10:1 on navy — it now flips to --bhc-paper on .bhc-section--navy; run the same direct-colour check over TrustBar, ReviewCard and StickyCallBar
+- [Phase ?]: 02-04: Prose width='narrow' maps to --bhc-container-narrow (800px), which is WIDER than the 68ch default measure — the locked token set allows no other mapping; Phase 5 should rename the prop
 
 ### Pending Todos
 
@@ -136,6 +141,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T19:23:59.284Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-08-09T20:12:05.701Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None

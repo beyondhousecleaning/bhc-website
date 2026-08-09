@@ -91,7 +91,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1)*
 
 - [x] 02-03-PLAN.md — Design-system source locks: delta 9 (four-file shape + `.design-sync` registration), delta 13 (phone throw), delta 14 (inline SVG a11y), `MIN_TESTS` raised (wave 2)
-- [ ] 02-04-PLAN.md — Content primitives: SectionBand, Prose, ProcessSteps, CTABand + the two scoped focus overrides (wave 2)
+- [x] 02-04-PLAN.md — Content primitives: SectionBand, Prose, ProcessSteps, CTABand + the two scoped focus overrides (wave 2)
 
 **Wave 3** *(blocked on Wave 2)*
 
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 2/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 4/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
