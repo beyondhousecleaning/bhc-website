@@ -480,6 +480,155 @@ h4.bhc-steps__title { font-size: var(--bhc-text-lg); }
   justify-content: center;
 }
 
+/* --- ServiceCard ----------------------------------------------------------
+   Deliberately the SAME card as .bhc-interlink__link (:260-277), with card
+   padding and the larger radius. From Phase 3 a service page carries a
+   ServiceCard grid and two InterlinkBlocks, and two card languages on one
+   page reads as two sites (UI-SPEC §7.6).
+
+   The whole card is the target via a stretched pseudo-element on the card's
+   ONE anchor, never an outer wrapper link: an <a> may not have interactive
+   content as a descendant, so a wrapper plus a title link is parsed into two
+   sibling links and a six-card grid announces twelve.
+
+   Measured, not assumed: lightningcss rewrites ::after to the single-colon
+   :after in the built stylesheet. No lock may grep built CSS for the
+   double-colon form.
+
+   Heading sizes are tag-scoped, not set on the class — a headingLevel of 2
+   must land on --bhc-text-2xl and 4 on --bhc-text-lg, per UI-SPEC §3's
+   binding table and the precedent set by .bhc-section__heading.          */
+
+.bhc-service-card__grid {
+  display: grid;
+  gap: var(--bhc-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.bhc-service-card {
+  /* The containing block for the stretched anchor below. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+  color: var(--bhc-ink);
+  transition: border-color var(--bhc-dur) var(--bhc-ease),
+              box-shadow var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-service-card:hover {
+  border-color: var(--bhc-action);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+/* No colour of its own: it inherits --bhc-ink from the card. --bhc-action is
+   a fill and its reserved-for list (UI-SPEC §4) does not include icon
+   glyphs on a light ground.                                              */
+.bhc-service-card__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bhc-service-card__title {
+  margin: 0;
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+h2.bhc-service-card__title { font-size: var(--bhc-text-2xl); }
+h3.bhc-service-card__title { font-size: var(--bhc-text-xl); }
+h4.bhc-service-card__title { font-size: var(--bhc-text-lg); }
+
+.bhc-service-card__link {
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+/* The card-sized hit area. Focus stays on the anchor's own text box, which
+   is the shipped :focus-visible behaviour and is not overridden here.    */
+.bhc-service-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.bhc-service-card:hover .bhc-service-card__link { color: var(--bhc-action-hover); }
+
+.bhc-service-card__summary {
+  margin: 0;
+  font-size: var(--bhc-text-base);
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-service-card__includes {
+  margin: 0;
+  padding-inline-start: var(--bhc-space-6);
+  font-size: var(--bhc-text-sm);
+  color: var(--bhc-ink-muted);
+}
+.bhc-service-card__includes li { margin-block-end: var(--bhc-space-1); }
+
+/* --- TownCard -------------------------------------------------------------
+   The dense card: ~56 on a locations index and six more on every town hub,
+   so it is a title and one meta line. Same family as ServiceCard and
+   .bhc-interlink__link, at --bhc-radius-md rather than --bhc-radius-lg
+   because it is the size of an interlink link, not of a service card.
+
+   Grid is minmax(200px, 1fr) with a --bhc-space-3 gap against
+   ServiceCard's 240px / --bhc-space-6 — an order of magnitude more cards,
+   each of them shorter.                                                  */
+
+.bhc-town-card__grid {
+  display: grid;
+  gap: var(--bhc-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.bhc-town-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-1);
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-md);
+  color: var(--bhc-ink);
+  transition: border-color var(--bhc-dur) var(--bhc-ease),
+              box-shadow var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-town-card:hover {
+  border-color: var(--bhc-action);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+.bhc-town-card__title {
+  margin: 0;
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+h2.bhc-town-card__title { font-size: var(--bhc-text-2xl); }
+h3.bhc-town-card__title { font-size: var(--bhc-text-xl); }
+h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
+
+.bhc-town-card__link {
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+.bhc-town-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.bhc-town-card:hover .bhc-town-card__link { color: var(--bhc-action-hover); }
+
+.bhc-town-card__meta {
+  margin: 0;
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base

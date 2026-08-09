@@ -20,7 +20,9 @@
     "SectionBand": "src/components/SectionBand/SectionBand.jsx",
     "Prose": "src/components/Prose/Prose.jsx",
     "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.jsx",
-    "CTABand": "src/components/CTABand/CTABand.jsx"
+    "CTABand": "src/components/CTABand/CTABand.jsx",
+    "ServiceCard": "src/components/ServiceCard/ServiceCard.jsx",
+    "TownCard": "src/components/TownCard/TownCard.jsx"
   },
   "overrides": {
     "NAPFooter": { "cardMode": "column" }
@@ -35,6 +37,8 @@
     "SectionBand": "src/components/SectionBand/SectionBand.prompt.md",
     "Prose": "src/components/Prose/Prose.prompt.md",
     "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.prompt.md",
-    "CTABand": "src/components/CTABand/CTABand.prompt.md"
+    "CTABand": "src/components/CTABand/CTABand.prompt.md",
+    "ServiceCard": "src/components/ServiceCard/ServiceCard.prompt.md",
+    "TownCard": "src/components/TownCard/TownCard.prompt.md"
   }
 }

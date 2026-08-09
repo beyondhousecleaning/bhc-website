@@ -1,0 +1,91 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="padding:48px;display:grid;gap:40px;background:var(--bhc-paper-warm)">
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Default — the six-card grid, paper cards on a warm band</p>
+    <div class="bhc-service-card__grid">
+
+      <article class="bhc-service-card">
+        <span class="bhc-service-card__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false"><path d="M4 20h16" /><path d="M7 20V9l5-5 5 5v11" /><path d="M10 20v-5h4v5" /></svg>
+        </span>
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">Regular Cleaning</a></h3>
+        <p class="bhc-service-card__summary">The same DBS-checked cleaner every visit, weekly or fortnightly, so they learn your home.</p>
+        <ul class="bhc-service-card__includes">
+          <li>Kitchen and bathrooms</li>
+          <li>Floors, surfaces, dusting</li>
+          <li>Beds changed on request</li>
+        </ul>
+      </article>
+
+      <article class="bhc-service-card">
+        <span class="bhc-service-card__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false"><path d="M12 3v6" /><path d="M8 9h8l1 11H7z" /><path d="M10 13h4" /></svg>
+        </span>
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">Deep Cleaning</a></h3>
+        <p class="bhc-service-card__summary">Top to bottom, once. Skirting, inside cupboards, limescale, the parts a regular clean does not reach.</p>
+        <ul class="bhc-service-card__includes">
+          <li>Inside oven and fridge</li>
+          <li>Limescale and grout</li>
+          <li>Skirting and door frames</li>
+        </ul>
+      </article>
+
+      <article class="bhc-service-card">
+        <span class="bhc-service-card__icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18" /><path d="M8 15h4" /></svg>
+        </span>
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">End of Tenancy Cleaning</a></h3>
+        <p class="bhc-service-card__summary">The clean that gets the deposit back, on the checklist letting agents actually use.</p>
+        <ul class="bhc-service-card__includes">
+          <li>Inventory-standard finish</li>
+          <li>Oven, fridge, freezer</li>
+          <li>Windows inside</li>
+        </ul>
+      </article>
+
+      <article class="bhc-service-card">
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">Office Cleaning</a></h3>
+        <p class="bhc-service-card__summary">Out of hours, so nobody works around a mop. Small offices and studios across Warwickshire.</p>
+      </article>
+
+      <article class="bhc-service-card">
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">Airbnb Cleaning</a></h3>
+        <p class="bhc-service-card__summary">Same-day turnarounds with linen, and a photo check before the next guest arrives.</p>
+      </article>
+
+      <article class="bhc-service-card">
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">After Builders Cleaning</a></h3>
+        <p class="bhc-service-card__summary">Dust that settles three times before it stops. We come back until it does.</p>
+      </article>
+
+    </div>
+  </div>
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Hover — the border goes --bhc-action and the card lifts to --bhc-shadow-md</p>
+    <div class="bhc-service-card__grid" style="max-width:520px">
+      <article class="bhc-service-card" style="border-color:var(--bhc-action);box-shadow:var(--bhc-shadow-md)">
+        <h3 class="bhc-service-card__title"><a class="bhc-service-card__link" href="#">Deep Cleaning</a></h3>
+        <p class="bhc-service-card__summary">Shown in its hover state on purpose — the state is the affordance, and the whole card is the target, not just this line.</p>
+      </article>
+    </div>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:16px 0 0;max-width:70ch">
+      Identical to the shipped <strong>.bhc-interlink__link</strong> treatment, on purpose: from
+      Phase 3 both card families appear on the same page, and two card languages on one page reads
+      as two sites.
+    </p>
+  </div>
+
+  <div style="padding:32px 0 0;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why this component exists</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      There is exactly <strong>one anchor per card</strong>. The whole-card hit area comes from a
+      stretched <strong>::after</strong> on that same anchor, not from an outer wrapper link — an
+      <strong>&lt;a&gt;</strong> may not contain interactive content, so a wrapper plus a title link
+      is parsed into two sibling links and a six-card grid announces twelve.
+    </p>
+  </div>
+
+</div>
