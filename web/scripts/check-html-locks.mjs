@@ -129,8 +129,27 @@ test('SC-2b: the tel: href digits equal the displayed digits', () => {
 });
 
 test('SC-2c: no retired phone number appears anywhere in the built page', () => {
-  for (const retired of ['07441918832', '447441918832', '447575709361']) {
-    assert.ok(!html.includes(retired), `retired number ${retired} found in built HTML`);
+  /*
+    WR-16. The list used to be hand-written as
+    ['07441918832', '447441918832', '447575709361'] — the first number in both
+    national and international form, the second in international form only. The
+    national form of the third number is the one most likely to be pasted off a
+    business card or carried over from a Webflow export, and it passed.
+
+    Both forms are now derived from one list of national numbers, so the pair
+    cannot drift again. The digits are assembled rather than written out: this
+    file greps the build for these very strings, and a lock that matches its own
+    source is a collision this phase has already hit twice.
+  */
+  const RETIRED_NATIONAL = [
+    '0744' + '1918832', // what the live footer actually dials on all 115 pages
+    '0757' + '5709361', // the third number, on /get-a-quote
+  ];
+
+  for (const national of RETIRED_NATIONAL) {
+    for (const form of [national, `44${national.slice(1)}`]) {
+      assert.ok(!html.includes(form), `retired number ${form} found in built HTML`);
+    }
   }
 });
 
