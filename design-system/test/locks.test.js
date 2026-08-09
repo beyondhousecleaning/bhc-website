@@ -44,6 +44,51 @@ test('Lock 4: the live-site bug is impossible through this API', () => {
   assert.notEqual(display, '+44 7861 936533');
 });
 
+test('Lock 4: the displayed string is never the raw input, on any branch', () => {
+  // CR-04. formatPhone's fallback used to return String(value) unchanged, so
+  // any value it could not render as a UK national number displayed one number
+  // beside an href that dialled another — the live-site bug, reintroduced
+  // through the very API written to prevent it. The invariant is unconditional:
+  // whatever is displayed is a rendering of whatever is dialled.
+  const inputs = [
+    '+447861936533', // canonical
+    '07861936533', // national
+    '+44 7861 936533', // spaced international
+    '07441918832', // the number the live footer actually dials
+    '+1 415 555 2671', // explicit non-UK
+    '078619365333', // one digit too many
+    '0786193653', // one digit too few
+    '', // empty
+    '+44', // country code only
+    'call us', // not a number at all
+  ];
+  for (const input of inputs) {
+    assert.equal(
+      digits(formatPhone(input)),
+      digits(toDial(input)),
+      `display/href divergence for ${JSON.stringify(input)}: ` +
+        `displays ${formatPhone(input)}, dials ${toDial(input)}`
+    );
+  }
+});
+
+test('Lock 4: toDial does not fabricate +44 onto an explicit non-UK number', () => {
+  // CR-04. `+1 415 555 2671` used to dial +4414155552671 — a UK number that
+  // does not exist — and SC-2b passed it, because normalising both sides with
+  // /^44/ strips the fabricated prefix off the href and the real `1` then
+  // matches on both sides by coincidence.
+  assert.equal(toDial('+1 415 555 2671'), '+14155552671');
+  assert.equal(formatPhone('+1 415 555 2671'), '+14155552671');
+  assert.equal(toDial('+353 1 234 5678'), '+35312345678');
+
+  // …and the canonical UK forms are byte-identical to before the fix.
+  assert.equal(toDial('+447861936533'), '+447861936533');
+  assert.equal(toDial('07861936533'), '+447861936533');
+  assert.equal(toDial('+44 7861 936533'), '+447861936533');
+  assert.equal(formatPhone('+447861936533'), '+44 7861 936533');
+  assert.equal(formatPhone('07861936533'), '+44 7861 936533');
+});
+
 test('Lock 4: NAPFooter markup contains exactly one tel: link', () => {
   const html = readFileSync(
     join(ROOT, 'src/components/NAPFooter/NAPFooter.html'),
