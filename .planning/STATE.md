@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-05-PLAN.md
-last_updated: "2026-08-09T20:32:21.251Z"
+stopped_at: Completed 02-06-PLAN.md
+last_updated: "2026-08-09T20:46:21.707Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 10
+  completed_plans: 11
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 5 of 15
+Plan: 6 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 55%
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Progress: [█████░░░░░] 50%
 | Phase 02 P02 | 25min | 3 tasks | 6 files |
 | Phase 02 P04 | 30min | 2 tasks tasks | 19 files files |
 | Phase 02 P05 | 15min | 2 tasks tasks | 19 files files |
+| Phase 02 P06 | 22min | 2 tasks tasks | 6 files files |
 
 ## Accumulated Context
 
@@ -113,6 +114,11 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-05: when a CI grep polices a token, the full explanation goes in the .prompt.md (no scanner reads it) and the .jsx says only that the thing is absent — FAQAccordion names the schema type in neither .jsx nor .html
 - [Phase ?]: 02-05: QuoteFormEntry's tel: label is built as ONE string, not interpolated — delta 2(d) reads rendered text content and a serialiser can separate adjacent text nodes mid-number
 - [Phase ?]: 02-05: the SWC probe must await loadBindings() before transform() — getBindingsSync() throws 'bindings not loaded yet'; this is the third plan blocked by node having no JSX loader
+- [Phase 02]: 02-06: web/content IS genuinely reached by the client-directive scan — proven, a scratch file there turned check:html red at SC-4g test 24, then reverted
+- [Phase 02]: 02-06: AREA_SERVED and HOURS are named exports in web/content/site.js — plan 02-13 MUST thread them through Footer to NAPFooter or 18 pages silently lose areaServed City nodes with a fully green CI
+- [Phase 02]: 02-06: the Services NavItem carries NO href — /services 404s (delta 6) and a child's href would duplicate in the DOM (02-10); 02-10 renders a childed NavItem as a <summary> and never emits its href anyway
+- [Phase 02]: 02-06: the SWC probe also needs jsc.transform.react.runtime='automatic' — without it SWC emits React.createElement and the module throws 'React is not defined'; this is the FOURTH plan blocked by node having no JSX loader
+- [Phase 02]: 02-06: two UTILITY titles overrun Lock 8's 60-char cap when the h1 is reused verbatim — /about-us 61, /contact-us 62; plan 02-11 owns the fix (a shorter title subject, NOT a shorter h1); recorded in titleFor's JSDoc
 
 ### Pending Todos
 
@@ -147,6 +153,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T20:32:21.234Z
-Stopped at: Completed 02-05-PLAN.md
+Last session: 2026-08-09T20:46:21.698Z
+Stopped at: Completed 02-06-PLAN.md
 Resume file: None

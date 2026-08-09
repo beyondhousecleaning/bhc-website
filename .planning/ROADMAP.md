@@ -96,7 +96,7 @@ Plans:
 **Wave 3** *(blocked on Wave 2)*
 
 - [x] 02-05-PLAN.md — Cards & disclosure: ServiceCard, TownCard, FAQAccordion, QuoteFormEntry (wave 3)
-- [ ] 02-06-PLAN.md — App data foundation: `jsconfig.json` `@/*` alias, `site.js` (incl. `AREA_SERVED`), `nav.js`, `process.js`, `faqs.js`, and the shared `renderBlocks` (wave 3)
+- [x] 02-06-PLAN.md — App data foundation: `jsconfig.json` `@/*` alias, `site.js` (incl. `AREA_SERVED`), `nav.js`, `process.js`, `faqs.js`, and the shared `renderBlocks` (wave 3)
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 5/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 6/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
