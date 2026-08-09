@@ -1,72 +1,158 @@
 /**
  * Home — Beyond House Cleaning
  *
- * Phase 1 Success Criterion 4: at least one REAL page renders Hero,
- * RatingBadge, Button and NAPFooter *from the package*. An import that
- * compiles is not proof; a rendered page is. (NAPFooter is rendered in
- * layout.jsx and nowhere else, D-11.)
+ * UI-SPEC §9.2, the full template: Hero → TrustBar → six ServiceCards →
+ * BeforeAfterSlider → ProcessSteps → ReviewRail → FAQAccordion → CTABand →
+ * footer. Arbor Trail's proven sequence with orange actions and warm neutrals
+ * rather than their cold blue.
  *
- * LOCK 1 / D-07: `heading` is ALWAYS the page's single <h1>, and every one of
- *         these components renders server-side. There is ZERO client-directive
- *         usage anywhere in web/app — a client boundary would move the JSON-LD
- *         and the rating badge into a hydration payload and silently break
- *         Locks 3 and 9, which is the entire point of the rebuild. The CI gate
- *         for this is a plain substring grep over web/app, web/content and
- *         design-system/src, so do not name the directive in prose here either.
+ * EVERY WORD ON THIS PAGE COMES FROM `@/content/home.js`. Two independent
+ * reasons, either of which alone would settle it: the components are
+ * framework-agnostic UI and must not carry site copy, and the `claude-seo`
+ * PostToolUse hook rejects a `.jsx` write containing a common English verb that
+ * ordinary prose keeps producing. Copy lives in `.js`. Keep it so.
  *
- * WHAT PHASE 2 PLAN 02-02 CHANGED, AND WHY — this page was trimmed to an
- * honest state so the rewritten lock harness is green on the wave-1 build:
- *   - `Breadcrumbs` removed. UI-SPEC §9.2: there are no breadcrumbs on `/`,
- *     and the old trail claimed `Home / Warwick` for a URL that is `/`.
- *   - `InterlinkBlock` removed. It rendered `null` without town data anyway
- *     (Phase 3 supplies it) and its three links all 404'd.
- *   - `RatingBadge`'s schema-emitting prop was dropped. DECISION: that prop is
- *     OFF on every Phase 2 template — emitting 17 orphaned AggregateRating
- *     nodes would make the deferred CR-05 seventeen times worse for Phase 5 to
- *     unwind, and the visible badge already satisfies Lock 3 in `bare` mode.
- *     Home therefore emits exactly ONE JSON-LD block, NAPFooter's.
- *     The prop is named nowhere in this file on purpose: 02-02's acceptance
- *     greps this file for it, and a comment explaining an absence that matches
- *     the grep policing that absence is a defect this phase has now hit four
- *     times (02-01-SUMMARY deviations 1, 5 and 6).
- *   - Exactly one internal link remains, `/get-a-quote`, and it resolves.
- *     Every internal href in built HTML must be a prerendered route (delta 6).
+ * §4's BAND ORDER, WHICH IS WHAT PRODUCES THE 60/30/10 COLOUR SPLIT. The tones
+ * alternate down the page rather than being chosen per section:
  *
- * The copy is now UI-SPEC §5's real Home deck. Plan 02-11 composes the full
- * §9.2 template (TrustBar, ServiceCards, BeforeAfterSlider, ProcessSteps,
- * ReviewRail, FAQAccordion, CTABand) on top of it.
+ *   Hero                paper-warm   (bhc-hero's own ground)
+ *   TrustBar            paper
+ *   ServiceCard ×6      warm         cards on paper
+ *   BeforeAfterSlider   paper
+ *   ProcessSteps        tint
+ *   ReviewRail          —            renders nothing until Phase 4
+ *   FAQAccordion        paper
+ *   CTABand             navy         the ONE dark band, immediately above the footer
  *
- * The canonical phone number is deliberately absent from this directory: the
- * number lives once, in the package's src/phone.js. The review signal
- * (175 reviews at 4.9) is accurate as of 2026-08-06.
+ * Never two identical tones adjacent, and never a second navy band.
+ *
+ * SIX THINGS THIS FILE DELIBERATELY DOES NOT DO, each with a CI gate behind it,
+ * so none of them is a style preference:
+ *
+ *   1. No `Breadcrumbs`. UI-SPEC §9.2 has none on `/` — this IS the root — and
+ *      `PAGE_EXPECTATIONS['/']` in check-html-locks.mjs sets `hasBreadcrumbs:
+ *      false` and `ldJsonBlocks: 1` permanently. The one JSON-LD block on this
+ *      page is NAPFooter's, from the layout.
+ *   2. No schema-emitting prop on the rating. That prop is OFF on every Phase 2
+ *      template; a second block here turns SC-4f red. The prop is not named in
+ *      this file: 02-02's acceptance greps this directory for it, and a comment
+ *      explaining an absence that matches the grep policing that absence is a
+ *      defect this phase has hit ten times.
+ *   3. No `InterlinkBlock`. The locations teaser is Phase 3 — the component
+ *      returns null without town data anyway, and SC-4d asserts the inverse
+ *      until that data exists.
+ *   4. No `RatingBadge` on the navy band. The badge sets --bhc-ink directly
+ *      rather than inheriting currentColor, so it is light-surface only and
+ *      illegible on --bhc-navy. `Hero`'s badge is the only one on the page,
+ *      which is also what keeps the rating stated exactly once.
+ *   5. No phone number and no client directive anywhere under web/app. The
+ *      number lives once, in the package's src/phone.js; every tel: link on
+ *      this page comes from NAPFooter in the layout.
+ *   6. No CSS import. layout.jsx is the only file in the app that imports one —
+ *      a route-level import produces a second hashed stylesheet chunk and
+ *      splits the cascade (SC-1b).
+ *
+ * The `<h1>` is Success Criterion 2 copy and must match `PAGE_EXPECTATIONS`
+ * character for character. The `<title>` does not match it, and need not — see
+ * the metadata note at the foot of home.js for the measurement.
  */
 
-import { Hero, RatingBadge } from '@bhc/design-system';
+import {
+  BeforeAfterSlider,
+  CTABand,
+  FAQAccordion,
+  Hero,
+  ProcessSteps,
+  ReviewRail,
+  SectionBand,
+  ServiceCard,
+  TrustBar,
+} from '@bhc/design-system';
 
-export const metadata = {
-  title: 'House Cleaning in Warwickshire | Beyond House Cleaning',
-  description:
-    'Rated 4.9 by 175 Google reviews. House cleaning across Warwickshire by DBS-checked, insured local cleaners. Free quote in two minutes.',
-};
+import {
+  HOME_ACTIONS,
+  HOME_CTA,
+  HOME_DESCRIPTION,
+  HOME_FAQS,
+  HOME_HEADINGS,
+  HOME_HERO,
+  HOME_INTRO,
+  HOME_SERVICE_CARDS,
+  HOME_TITLE,
+} from '@/content/home.js';
+import { PROCESS_STEPS } from '@/content/process.js';
+import { RATING } from '@/content/site.js';
+
+export const metadata = { title: HOME_TITLE, description: HOME_DESCRIPTION };
 
 export default function Page() {
   return (
     <>
       <Hero
-        eyebrow="DBS-checked, insured, local"
-        heading="Professional House Cleaning in Warwickshire & the West Midlands"
-        lead="The same trusted cleaner each visit, a fixed price before we start, and an evening back to yourself."
-        rating={{ rating: 4.9, count: 175, source: 'Google' }}
-        actions={[{ label: 'Get a Free Quote', href: '/get-a-quote', variant: 'primary' }]}
+        eyebrow={HOME_HERO.eyebrow}
+        heading={HOME_HERO.heading}
+        lead={HOME_HERO.lead}
+        rating={RATING}
+        actions={HOME_ACTIONS}
       />
 
-      {/* RatingBadge sets --bhc-ink directly, so it is light-surface only —
-          never band it on bhc-section--navy (conventions.md:50-52). */}
-      <section className="bhc-section bhc-section--warm">
-        <div className="bhc-container">
-          <RatingBadge rating={4.9} count={175} />
+      {/* The band carries the <h2>, so TrustBar renders the bare <ul>. */}
+      <SectionBand heading={HOME_HEADINGS.trust}>
+        <TrustBar heading={null} />
+      </SectionBand>
+
+      {/* `bhc-service-card__grid` is a plain class, not a component
+          (ServiceCard.prompt.md). headingLevel 3 keeps the outline legal under
+          this band's <h2>. */}
+      <SectionBand tone="warm" heading={HOME_HEADINGS.services} intro={HOME_INTRO}>
+        <div className="bhc-service-card__grid">
+          {HOME_SERVICE_CARDS.map((card) => (
+            <ServiceCard
+              key={card.href}
+              title={card.title}
+              href={card.href}
+              summary={card.summary}
+              includes={card.includes}
+              headingLevel={3}
+            />
+          ))}
         </div>
-      </section>
+      </SectionBand>
+
+      {/* NO `pairs` PROP, AND THAT IS ROADMAP SUCCESS CRITERION 3. This is the
+          one component in the package that renders MORE without data rather
+          than nothing: it emits data-bhc-photo-state="pending" with a labelled,
+          finished-looking placeholder, so no page is blocked on photography
+          that does not exist yet. Plan 04 of Phase 4 supplies the real pairs and
+          asserts the pending marker reaches zero on the pages it has backfilled.
+          Do not "fix" this by removing the section. */}
+      <SectionBand heading={HOME_HEADINGS.photos}>
+        <BeforeAfterSlider />
+      </SectionBand>
+
+      <SectionBand tone="tint" heading={HOME_HEADINGS.process}>
+        <ProcessSteps steps={PROCESS_STEPS} />
+      </SectionBand>
+
+      {/* An empty array renders null — expected, and composed anyway on purpose.
+          Phase 4 supplies the review data, and when it does this template does
+          not change: a data file does. It is deliberately NOT wrapped in a
+          SectionBand, because an empty band would put two paper grounds
+          adjacent and emit a headless section into every build until Phase 4. */}
+      <ReviewRail reviews={[]} />
+
+      {/* FAQAccordion emits no structured data — ever. Delta 7 greps every built
+          page for the schema type it declines to emit, and that type is named in
+          its .prompt.md and nowhere in executable source. */}
+      <SectionBand heading={HOME_HEADINGS.faqs}>
+        <FAQAccordion items={HOME_FAQS} />
+      </SectionBand>
+
+      {/* The one navy band, last before the footer. Its second action is `ghost`
+          rather than `secondary`: an outlined ink button on navy measures 2.65:1
+          and reads as nothing. CTABand coerces it either way; home.js states it
+          correctly so the coercion never has to fire. */}
+      <CTABand heading={HOME_CTA.heading} actions={HOME_CTA.actions} />
     </>
   );
 }
