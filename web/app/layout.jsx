@@ -60,7 +60,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-GB">
       <body>
-        {children}
+        {/* UI-SPEC §9.1 / §10 landmarks. `<main id="main" tabIndex={-1}>` is
+            the skip-link target and the one <main> the harness asserts per
+            page; `tabIndex={-1}` renders as tabindex="-1" and is what actually
+            moves focus in Safari and Chrome. SkipLink, Header, Footer and
+            StickyCallBar are NOT here yet — those components do not exist
+            until wave 2 and plan 02-13 composes them into this file. */}
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
 
         {/* No `phone` prop. See the header. */}
         <NAPFooter

@@ -1,0 +1,13 @@
+# Load-bearing. Do not delete this file, and do not delete this directory even
+# if it is ever emptied.
+#
+# web/content/ is one of the three UNCONDITIONAL walk roots of the
+# client-directive source scan in web/scripts/check-html-locks.mjs (the other
+# two are web/app and design-system/src). That scan is a bare readdirSync
+# recursion with no existsSync guard, on purpose: a scan that skips a missing
+# directory goes silently quiet the moment the directory is renamed, and then
+# proves nothing forever. So the directory must exist from wave 1 even though
+# plan 02-06 does not add its first real data module until wave 3.
+#
+# Without this file `npm run check:html` throws ENOENT inside the required
+# `build` job, on a branch whose ruleset has no bypass actors.
