@@ -68,6 +68,17 @@ const POSTCODE_COMPACT = /\b[A-Z]{1,2}\d{1,2}[A-Z]?\d[A-Z]{2}\b/;
 const findPostcode = (text) =>
   (text.match(POSTCODE_SPACED) || text.match(POSTCODE_COMPACT) || [null])[0];
 
+/*
+  WR-04. A UK street line: house number, optional letter, one or two
+  capitalised name words, then a thoroughfare type. Case-sensitive on the name
+  words on purpose — requiring the capitalisation is what keeps it off ordinary
+  prose like "3 bedroom deep clean" while still catching "12 High Street" and
+  "84 Acacia Road", which is the exact case SC-2d's own comment named and then
+  did not check.
+*/
+const STREET_LINE =
+  /\b\d{1,4}[a-zA-Z]?\s+(?:[A-Z][a-z]+\s+){1,2}(?:Road|Rd|Street|St|Avenue|Ave|Lane|Ln|Close|Drive|Dr|Way|Court|Crescent|Terrace|Grove|Gardens|Place|Park|Hill|Walk|Row|Mews)\b/;
+
 // The scaffold page's town (web/app/page.jsx). Phase 2 replaces that page with
 // real templates — update this constant with it.
 const TOWN = 'Warwick';
@@ -173,6 +184,40 @@ test('SC-2d: no street address field reaches the built page', () => {
   // inherits when data-file values feed these components at ~336-page scale.
   for (const token of ['streetAddress', '"address"']) {
     assert.ok(!html.includes(token), `address token ${token} found in built HTML`);
+  }
+
+  // WR-04: and now the case the comment above names. `12 High Street` carries
+  // no postcode and no schema field, so neither the postcode matcher nor the
+  // token list saw it. NAPFooter's `serviceArea` prop is free text rendered
+  // straight into the footer — a Phase-3 data file putting a street line there
+  // used to pass every assertion in this file.
+  const found = html.match(STREET_LINE);
+  assert.ok(!found, `street-address line found in built HTML: ${found && found[0]}`);
+});
+
+test('SC-2d: the street-address heuristic matches the line its comment names', () => {
+  // Same reasoning as the postcode regression guard: this lock passes today
+  // because nothing renders an address, so a matcher that stopped matching
+  // would read green forever.
+  for (const line of [
+    '12 High Street',
+    '84 Acacia Road',
+    '1a Mill Lane',
+    '<p class="bhc-footer__area">Serving 7 Church Crescent and nearby</p>',
+    '221 Baker Street, London',
+  ]) {
+    assert.ok(STREET_LINE.test(line), `street line not matched: ${JSON.stringify(line)}`);
+  }
+
+  // …and it stays quiet on the copy the footer and hero actually render.
+  for (const clean of [
+    'Serving Warwickshire, Coventry and the West Midlands',
+    'Mon–Sat, 8am–7pm',
+    'Deep Cleaning in Warwick',
+    '4.9 from 175 reviews',
+    '3 Bedroom Deep Clean',
+  ]) {
+    assert.ok(!STREET_LINE.test(clean), `false positive on ${JSON.stringify(clean)}`);
   }
 });
 
