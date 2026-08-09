@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-08-PLAN.md
-last_updated: "2026-08-09T22:56:48.742Z"
+stopped_at: Completed 02-09-PLAN.md
+last_updated: "2026-08-09T23:09:29.324Z"
 last_activity: 2026-08-09
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 13
+  completed_plans: 14
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 8 of 15
+Plan: 9 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-09
 
-Progress: [███████░░░] 65%
+Progress: [███████░░░] 70%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [███████░░░] 65%
 | Phase 02 P06 | 22min | 2 tasks tasks | 6 files files |
 | Phase 02 P07 | 41min | 3 tasks | 19 files |
 | Phase 02 P08 | 45min | 3 tasks | 9 files |
+| Phase 02 P09 | 6min | 2 tasks tasks | 5 files files |
 
 ## Accumulated Context
 
@@ -130,6 +131,10 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-08: /customer-login and /gift-cards outbound hrefs default to the LIVE SITE's own page for that route — no portal or provider URL exists anywhere in the repo; both MUST be swapped before cutover or each becomes a link to itself, and delta 6 never inspects an absolute URL
 - [Phase ?]: 02-08: NO_PRIMARY_CTA_YET is down to /_not-found — the self-restoring inverse fired exactly as designed when /get-a-quote gained QuoteFormEntry's primary Button; 02-13 owns the last entry
 - [Phase ?]: 02-08: the ninth and tenth scanner self-collisions — an illustrative street line and the three banned CTA phrases both failed the greps their own comments explained; explanations must describe a banned shape, never instance it
+- [Phase 02]: 02-09: the three legal routes are in NO_PRIMARY_CTA_YET, not given a CTA — UI-SPEC 9.4 forbids the CTABand and SC-4e demands a primary Button, and nothing sitewide supplies one until 02-13 composes Header; 02-13 now empties FOUR entries, not one
+- [Phase 02]: 02-09: all ten UI-SPEC 5 utility routes now prerender — the footer Legal row cannot point at a 404 when 02-13 renders the Footer; 13 routes in the manifest, all static
+- [Phase 02]: 02-09: the satisfaction promise now lives in THREE places (process.js step 3, legal.js SATISFACTION, TrustBar's third claim) and all three move together on UI-SPEC 14-1; legal.js keeps a literal rather than importing process.js, so the agreement can diverge later
+- [Phase 02]: 02-09: the legal retention periods, cancellation notice and late-cancellation charge are conservative defaults nobody has signed off — each is one string in web/content/legal.js; confirm with Sam and get a solicitor read before cutover
 
 ### Pending Todos
 
@@ -164,6 +169,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T22:56:48.729Z
-Stopped at: Completed 02-08-PLAN.md
+Last session: 2026-08-09T23:09:29.315Z
+Stopped at: Completed 02-09-PLAN.md
 Resume file: None
