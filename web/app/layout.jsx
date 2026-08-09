@@ -6,9 +6,14 @@
  * LOCK 5 / D-10: no street address and no UK postcode in rendered output.
  * D-15:   the pre-cutover deployment must not be indexable.
  *
- * The live site DISPLAYS +44 7861 936533 and DIALS 07441918832 on all 115
- * pages, with a third number (+447575709361) on /get-a-quote. That is only
- * expressible when display and href are separate inputs. `NAPFooter` derives
+ * The live Webflow site DISPLAYS one number and DIALS a different one on all
+ * 115 pages, with a third number on /get-a-quote. The exact retired digits are
+ * enumerated ONCE, in web/scripts/check-html-locks.mjs's retired list, which
+ * asserts they never reach built output — they are deliberately not written
+ * here, because a literal UK number anywhere under web/app is itself a second
+ * place the number can be wrong, and this plan's gate greps this directory for
+ * exactly that. That divergence between display and href is only expressible
+ * when the two are separate inputs. `NAPFooter` derives
  * both from a single `phone` prop, and this layout passes NO `phone` prop at
  * all — the canonical number lives once, as the package default at
  * NAPFooter.jsx:33. An app-side restatement would be a second place the number
