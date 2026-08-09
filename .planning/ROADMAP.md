@@ -56,7 +56,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 01-05-PLAN.md — Prove the CI gate turns red on a failing lock, then make both jobs required status checks (wave 4, has checkpoint)
+- [x] 01-05-PLAN.md — Prove the CI gate turns red on a failing lock, then make both jobs required status checks (wave 4, has checkpoint)
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation & Design System Integration | 3/5 | In Progress|  |
+| 1. Platform Foundation & Design System Integration | 4/5 | In Progress|  |
 | 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |

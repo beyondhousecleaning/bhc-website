@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-08-08T21:32:31.776Z"
+stopped_at: Completed 01-05-PLAN.md
+last_updated: "2026-08-09T13:46:00.602Z"
 last_activity: 2026-08-08
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 01 (platform-foundation-design-system-integration) — EXECUTING
-Plan: 4 of 5
-Status: Ready to execute
+Plan: 4 of 5 complete — 01-01, 01-02, 01-03, 01-05 done; **01-04 (Vercel) is the only one left**
+Status: Ready to execute 01-04 (wave 5)
 Last activity: 2026-08-08
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [██████░░░░] 60%
 | Phase 01 P01 | 4 | 3 tasks | 6 files |
 | Phase 01 P02 | 6min | 3 tasks | 7 files |
 | Phase 01 P03 | 8min | 3 tasks | 4 files |
+| Phase 01 P05 | 65min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 01-03: CI gate lives in GitHub Actions, not the Vercel build — Root Directory sandboxing forbids .. traversal and a red preview does not block a merge (D-13)
 - [Phase ?]: 01-03: actions/checkout and actions/setup-node pinned to v7 — majors confirmed at execution time; research assumption A2 said v4
 - [Phase ?]: 01-03: enforcement code stays zero-dependency — node: built-ins only, no DOM parser, no size tool, no test framework beyond node:test
+- [Phase ?]: 01-05: repo made PUBLIC (Sam, Route B) — GitHub Free gives a private personal repo neither branch protection nor rulesets, so this was the only zero-cost route to D-13; .planning/ and docs/research/ are now world-readable
+- [Phase ?]: 01-05: main is gated by repository ruleset 20595020 (active, refs/heads/main, locks + build required, strict on, bypass_actors empty) — verify via rules/branches/main; branches/main/protection 404s and that is expected, not a failure
+- [Phase ?]: 01-05: required status checks now gate direct pushes to main too, not just merges — a push whose head commit has not passed locks and build is rejected
 
 ### Pending Todos
 
@@ -116,6 +120,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-08T21:31:56.022Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-08-09T13:46:00.593Z
+Stopped at: Completed 01-05-PLAN.md
 Resume file: None
