@@ -468,6 +468,25 @@ export const UTILITY = {
       label: 'Open the Booking Portal',
       href: BOOKING_PORTAL,
     },
+    /*
+      The `Call` fallback UI-SPEC §9.4 requires on this page, rendered by
+      `QuoteFormEntry` — the panel's own defaults are written for a prospect
+      asking for a price, and the person on this page already books with us.
+
+      The COPY is here rather than in the route file for the reason at the top
+      of `site.js`: copy lives in `.js`. The phone number is NOT here. It is
+      not a field of this record and it never will be — `QuoteFormEntry`
+      derives both the displayed digits and the `tel:` href from the one value
+      in `design-system/src/phone.js`, which is the whole of the NAP fix.
+    */
+    callout: {
+      heading: 'Would rather talk to a person?',
+      bullets: [
+        'No queue and no call centre',
+        'The same team that cleans your home',
+        'Changes sorted while you are on the phone',
+      ],
+    },
     prose: [
       {
         type: 'p',

@@ -230,11 +230,15 @@ const INTERLINK_LOCK_ACTIVE = false;
   has no Hero, so no RatingBadge and no CTA. PLAN 02-13 task 2 lands
   `app/not-found.jsx` and must empty NO_RATING_YET and drop `/_not-found` here.
 
-  `/get-a-quote` is the wave-1 stub from plan 02-02 task 1: a Hero with a rating
-  but no actions. PLAN 02-08 adds `QuoteFormEntry`/`CTABand` and must drop it.
+  `/get-a-quote` was the second entry in NO_PRIMARY_CTA_YET, seeded against the
+  wave-1 stub — a Hero with a rating but no actions. Plan 02-08 gave it the full
+  §9.4 template, whose `QuoteFormEntry` renders a primary Button, so the inverse
+  assertion failed and forced the entry out. That is the gate working exactly as
+  designed: nobody had to remember. `/_not-found` is the last one left, and it is
+  plan 02-13's.
 */
 const NO_RATING_YET = new Set(['/_not-found']);
-const NO_PRIMARY_CTA_YET = new Set(['/_not-found', '/get-a-quote']);
+const NO_PRIMARY_CTA_YET = new Set(['/_not-found']);
 
 /*
   Per-route expectations. Delta 3 replaces the old hardcoded single-town
@@ -286,9 +290,7 @@ const PAGE_EXPECTATIONS = {
   // can point at a 404 (delta 6).
   '/about-us': { h1: 'The Team Behind Beyond House Cleaning', hasBreadcrumbs: true, ldJsonBlocks: 2 },
   '/contact-us': { h1: 'Contact Our Warwickshire Cleaning Team', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  // WAVE-1 ONLY. Task 1 of plan 02-02 ships a stub with no Breadcrumbs.
-  // PLAN 02-08 TASK 3 FLIPS BOTH OF THESE to `true` / `2`.
-  '/get-a-quote': { h1: 'Get a Free Cleaning Quote', hasBreadcrumbs: false, ldJsonBlocks: 1 },
+  '/get-a-quote': { h1: 'Get a Free Cleaning Quote', hasBreadcrumbs: true, ldJsonBlocks: 2 },
   '/checklist': { h1: "What's Included in Every Clean", hasBreadcrumbs: true, ldJsonBlocks: 2 },
   '/work-with-us': { h1: 'Cleaning Jobs in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
   '/gift-cards': { h1: 'House Cleaning Gift Cards', hasBreadcrumbs: true, ldJsonBlocks: 2 },
