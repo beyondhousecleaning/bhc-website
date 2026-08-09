@@ -472,7 +472,7 @@ also print the route name that produced each max
 
 ### Pitfall 4 — `formatPhone` still degrades silently, and now three components consume it
 
-**What goes wrong:** an empty or malformed `phone` renders `<a href="tel:+44">` wrapping empty link text — an empty interactive element (WCAG 2.4.4) — on 17 pages ×3 links.
+**What goes wrong:** an empty or malformed `phone` renders `<a href="tel:+44">` wrapping empty link text — an empty interactive element (WCAG 2.4.4) — on 17 pages ×4 links (Header, StickyCallBar, NAPFooter, and QuoteFormEntry on the pages that render it — see plan 02-02's `<tel_link_budget>`).
 **Why it happens:** `formatPhone.js` has **no `throw` on any branch**; `formatPhone('')` and `formatPhone(undefined)` both return `"+44"`. CR-04 closed the *divergence* hole (display is now derived from the dial string, lock-tested at `locks.test.js:47`); it did not close the *degradation* hole. UI-SPEC §10 already flags this correctly and it is delta 13.
 **How to avoid:** make `toDial` throw on an invalid national length; `formatPhone` inherits it; add lock tests for `''`, `undefined`, `'+44'`, `'call us'`, and the one-over/one-under cases; raise `MIN_TESTS`. Failing at build time across ~410 prerendered pages is strictly better than shipping a dead `tel:`.
 **Warning signs:** none at runtime — this is silent until a data file feeds it in Phase 3.
@@ -767,7 +767,7 @@ No framework install is needed. Nothing here adds a dependency.
 | Residential address or postcode reaching rendered HTML | Information disclosure | `SC-2d` postcode + street-line matchers over built HTML | ✅ green; now runs over 17 pages of new prose instead of one scaffold |
 | Unsigned third-party script (GTM/GA/Trustmary) | Tampering / weight | `D-14b` external-script detector, attribute-order independent | ✅ green; must run per page under delta 1 |
 | Premature indexing of the pre-cutover deployment | Information disclosure | D-15 (`noindex` meta + `Disallow: /` + Vercel Deployment Protection) | ✅ green. WR-01 remains open and correct: the two layers are not independent — a `Disallow`ed URL is never fetched, so the `noindex` is never read. Matters at cutover sequencing, not now. |
-| Empty interactive element (`<a href="tel:+44"></a>`) | — (WCAG 2.4.4) | `toDial` throwing at build time | ❌ **delta 13**, and the blast radius is now 3 links × 17 pages |
+| Empty interactive element (`<a href="tel:+44"></a>`) | — (WCAG 2.4.4) | `toDial` throwing at build time | ❌ **delta 13**, and the blast radius is now 4 links × 17 pages |
 
 ---
 

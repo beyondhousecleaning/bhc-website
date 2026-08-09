@@ -89,11 +89,15 @@ frontmatter on the `.prompt.md` — delta 9 asserts they agree.
 | `web/scripts/check-html-locks.mjs` | integration tests over built HTML | **REWRITE** — single-page → `prerender-manifest.json`-driven multi-page; deltas 1–8, 11, 12 + 4 unlisted corrections | itself (idiom) + `02-RESEARCH.md` § *Recommended harness shape* (architecture) | partial |
 | `web/scripts/check-budget.mjs` | script | **REWRITE** — single-page → worst-page | itself (idiom) + `02-RESEARCH.md` § *Recommendation for `check-budget.mjs`* | partial |
 
-### 1d. App — 20
+### 1d. App — 24
 
 | File | Role | Change | Closest analog | Match |
 |---|---|---|---|---|
 | `web/jsconfig.json` | config | **NEW** | none in repo | **no analog** |
+| `web/content/site.js` | data module | **NEW** | `geo.js` for module shape | partial |
+| `web/content/blocks.jsx` | prose-block renderer (the only `.jsx` in `web/content/`) | **NEW** | none — returns elements, carries no copy and no string manipulation | **no analog** |
+| `web/content/legal.js` | data module | **NEW** | as `utility.js` | partial |
+| `web/content/home.js` | data module | **NEW** | as `utility.js` | partial |
 | `web/content/services.js` | data module | **NEW** | none — `geo.js` is logic, not copy | **no analog** |
 | `web/content/utility.js` | data module | **NEW** | as above | **no analog** |
 | `web/content/nav.js` | data module | **NEW** | `NAPFooter` `columns`/`legal` prop shape (`NAPFooter.d.ts:1-2`) is the target schema | partial |
