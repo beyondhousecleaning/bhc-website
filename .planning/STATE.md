@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-05-PLAN.md
-last_updated: "2026-08-09T13:46:00.602Z"
-last_activity: 2026-08-08
+stopped_at: Completed 01-04-PLAN.md — Phase 01 complete
+last_updated: "2026-08-09T14:08:01.464Z"
+last_activity: 2026-08-09
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
-  percent: 0
+  completed_plans: 5
+  percent: 17
 ---
 
 # Project State
@@ -25,12 +25,13 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 
 ## Current Position
 
-Phase: 01 (platform-foundation-design-system-integration) — EXECUTING
-Plan: 4 of 5 complete — 01-01, 01-02, 01-03, 01-05 done; **01-04 (Vercel) is the only one left**
-Status: Ready to execute 01-04 (wave 5)
-Last activity: 2026-08-08
+Phase: 01 (platform-foundation-design-system-integration) — **COMPLETE**
+Plan: 5 of 5 complete — 01-01, 01-02, 01-03, 01-04, 01-05 all done
+Status: Phase 01 delivered. Live at https://bhc-website-nine.vercel.app (noindex + Disallow: /);
+        `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
+Last activity: 2026-08-09
 
-Progress: [████████░░] 80%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,6 +57,7 @@ Progress: [████████░░] 80%
 | Phase 01 P02 | 6min | 3 tasks | 7 files |
 | Phase 01 P03 | 8min | 3 tasks | 4 files |
 | Phase 01 P05 | 65min | 2 tasks | 1 files |
+| Phase 01 P04 | 20min | 3 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -86,6 +88,10 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 01-05: repo made PUBLIC (Sam, Route B) — GitHub Free gives a private personal repo neither branch protection nor rulesets, so this was the only zero-cost route to D-13; .planning/ and docs/research/ are now world-readable
 - [Phase ?]: 01-05: main is gated by repository ruleset 20595020 (active, refs/heads/main, locks + build required, strict on, bypass_actors empty) — verify via rules/branches/main; branches/main/protection 404s and that is expected, not a failure
 - [Phase ?]: 01-05: required status checks now gate direct pushes to main too, not just merges — a push whose head commit has not passed locks and build is rejected
+- [Phase 01]: 01-04: Vercel project bhc-website (prj_JOjTPePirfNMQUshAioLkqXXBxXY) is LIVE at https://bhc-website-nine.vercel.app — Root Directory web, Node 22.x, framework-default build, NO custom domain; D-03 intact, apex still Webflow 198.202.211.1
+- [Phase 01]: 01-04: D-09 CLOSED — Sam confirmed 2026-08-09 that +447861936533 IS the number that reaches BHC; no code change taken, and 07441918832 / +447575709361 stay retired and asserted-against at check-html-locks.mjs:86
+- [Phase 01]: 01-04: Vercel Deployment Protection is ON (Standard, ssoProtection=all_except_custom_domains) — only the production alias bhc-website-nine.vercel.app is public (200); every generated/team/branch URL 302s to Vercel SSO, so no bypass token exists or is needed
+- [Phase 01]: 01-04: Vercel POST /v11/projects REJECTS nodeVersion and defaults new projects to Node 24.x — the follow-up PATCH /v9/projects/{id} to 22.x is mandatory, not cosmetic; link.productionBranch stays main deliberately (main has no web/, so an accidental build from it fails and cannot take the alias)
 
 ### Pending Todos
 
@@ -120,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T13:46:00.593Z
+Last session: 2026-08-09T14:07:30.504Z
 Stopped at: Completed 01-05-PLAN.md
 Resume file: None

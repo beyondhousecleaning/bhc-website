@@ -19,7 +19,7 @@ ships with a placeholder state in Phase 2 and gets backfilled with real photos i
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Platform Foundation & Design System Integration** - Next.js app live on Vercel, existing design-system wired in, sitewide NAP bug fixed
+- [x] **Phase 1: Platform Foundation & Design System Integration** - Next.js app live on Vercel, existing design-system wired in, sitewide NAP bug fixed (completed 2026-08-09)
 - [ ] **Phase 2: Component Library Completion & Core Templates** - Remaining ~15 components built; Home/Service/Utility templates render correctly
 - [ ] **Phase 3: Programmatic Location × Service Engine** - ~336 combo pages + ~56 town hubs live, hub-and-spoke navigable, taxonomy unified
 - [ ] **Phase 4: Reviews & Trust at Scale** - 4.9★/175-review badge and review content server-rendered everywhere; real before/afters backfilled where available
@@ -60,7 +60,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 01-04-PLAN.md — Vercel project connection and live-URL verification, canonical phone-number confirmation (wave 5, has checkpoints)
+- [x] 01-04-PLAN.md — Vercel project connection and live-URL verification, canonical phone-number confirmation (wave 5, has checkpoints)
 
 **UI hint**: yes
 
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation & Design System Integration | 4/5 | In Progress|  |
+| 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
 | 2. Component Library Completion & Core Templates | 0/TBD | Not started | - |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
