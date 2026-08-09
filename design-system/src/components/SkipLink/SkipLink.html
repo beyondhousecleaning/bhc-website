@@ -1,0 +1,41 @@
+<!-- @dsCard group="Navigation" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="padding:48px;display:grid;gap:40px;background:var(--bhc-paper)">
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Resting — off-canvas above the viewport, still in the tab order</p>
+    <div style="position:relative;height:120px;border:1px dashed var(--bhc-line);border-radius:var(--bhc-radius-md);overflow:hidden;background:var(--bhc-paper-warm)">
+      <a class="bhc-skip-link" href="#main">Skip to content</a>
+      <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;padding:24px">
+        The link is here, clipped by this wrapper the way the viewport clips it on a real page.
+        It is not <code>display:none</code> and not <code>aria-hidden</code> — it is reachable by
+        Tab, which is the whole point.
+      </p>
+    </div>
+  </div>
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Focused — <code>:focus</code> animates it to <code>top: var(--bhc-space-4)</code></p>
+    <div style="position:relative;height:120px;border:1px dashed var(--bhc-line);border-radius:var(--bhc-radius-md);background:var(--bhc-paper-warm)">
+      <!-- A preview is a static document and cannot hold focus, so the focused
+           position is set inline here. The shipped rule is styles.css:62. -->
+      <a class="bhc-skip-link" href="#main" style="top:var(--bhc-space-4);outline:var(--bhc-focus-ring);outline-offset:var(--bhc-focus-offset)">Skip to content</a>
+      <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;padding:24px 24px 24px 200px">
+        Paper on ink, 15.81:1. The focus ring is the shipped base indicator — this component adds
+        no <code>:focus-visible</code> rule of its own.
+      </p>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--bhc-line);padding-top:24px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">The failure this component's contract prevents</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      A skip link whose target has no <code>tabindex="-1"</code> moves the viewport and leaves focus
+      in the header, so the next Tab press returns to the first nav item. It looks like it works.
+      The root layout renders <code>&lt;main id="main" tabindex="-1"&gt;</code> for exactly this reason,
+      and this component must be the <strong>first element inside <code>&lt;body&gt;</code></strong>,
+      before the header.
+    </p>
+  </div>
+
+</div>

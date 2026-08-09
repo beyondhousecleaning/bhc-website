@@ -1,0 +1,79 @@
+<!-- @dsCard group="Navigation" -->
+<link rel="stylesheet" href="../../../styles.css" />
+
+<footer class="bhc-footer">
+  <div class="bhc-container">
+    <div class="bhc-footer__grid">
+
+      <div class="bhc-footer__nap">
+        <p class="bhc-footer__name">Beyond House Cleaning</p>
+        <p class="bhc-footer__area">Serving Warwickshire, Coventry and the West Midlands</p>
+        <!-- The one tel: inside the one footer. href digits === displayed digits. -->
+        <a class="bhc-footer__phone" href="tel:+447861936533">+44 7861 936533</a>
+        <p class="bhc-footer__hours">Mon–Sat, 8am–7pm</p>
+      </div>
+
+      <nav aria-label="Services">
+        <p class="bhc-footer__col-heading">Services</p>
+        <ul class="bhc-footer__links">
+          <li><a href="/services/deep-cleaning">Deep Cleaning</a></li>
+          <li><a href="/services/standard-home-cleaning">Regular House Cleaning</a></li>
+          <li><a href="/services/move-in-cleaning">Move-In Cleaning</a></li>
+          <li><a href="/services/move-out-cleaning">Move-Out Cleaning</a></li>
+          <li><a href="/services/short-term-rental-cleaning">Short-Term Rental Cleaning</a></li>
+          <li><a href="/services/post-construction-cleaning">Builders Clean</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Company">
+        <p class="bhc-footer__col-heading">Company</p>
+        <ul class="bhc-footer__links">
+          <li><a href="/about-us">About Us</a></li>
+          <li><a href="/work-with-us">Work With Us</a></li>
+          <li><a href="/contact-us">Contact Us</a></li>
+          <li><a href="/gift-cards">Gift Cards</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Customers">
+        <p class="bhc-footer__col-heading">Customers</p>
+        <ul class="bhc-footer__links">
+          <li><a href="/checklist">What's Included</a></li>
+          <li><a href="/get-a-quote">Get a Quote</a></li>
+          <li><a href="/customer-login">Customer Login</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="bhc-footer__bottom">
+      <span>© 2026 Beyond House Cleaning</span>
+      <span style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-service">Terms of Service</a>
+        <a href="/customer-service-agreement">Customer Service Agreement</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<div style="padding:32px 48px;background:var(--bhc-paper)">
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">This component emits none of the markup above</p>
+  <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0 0 16px;max-width:70ch">
+    Every element here belongs to <strong>NAPFooter</strong>. <strong>Footer</strong> is a
+    composition layer with no root element of its own: it supplies the columns, the legal row, the
+    social profiles, the Google place URL, the served towns and the opening hours, and renders one
+    <strong>NAPFooter</strong>. That component owns the landmark, the single <code>tel:</code> and
+    the <code>HomeAndConstructionBusiness</code> JSON-LD. Exactly one <code>&lt;footer&gt;</code> per
+    page is lock-asserted, and a second landmark would also break the structural argument behind the
+    NAP guarantee.
+  </p>
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">The silent loss this component's props exist to prevent</p>
+  <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+    <code>areaServed</code> and <code>hours</code> are forwarded unchanged. The City nodes are
+    emitted only when the array is non-empty, no assertion anywhere counts them, and the JSON-LD
+    block count does not move because <code>areaServed</code> is a property rather than a block —
+    so dropping the prop would remove the served towns from the structured data on all 18 pages
+    with every gate green.
+  </p>
+</div>
