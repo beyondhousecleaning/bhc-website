@@ -13,7 +13,7 @@
   },
   "files": ["src", "tokens.css", "styles.css", "fonts"],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node test/run-locks.mjs"
   },
   "peerDependencies": {
     "react": ">=18"

@@ -40,8 +40,13 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
+      # Via the runner, not `node --test design-system/test/*.test.js`: a glob
+      # that matches nothing exits 0 with `# tests 0`, so the old form left this
+      # required check green after a rename. run-locks.mjs fails on zero matched
+      # files and on a suite that ran fewer tests than expected. Still
+      # zero-install — the runner uses builtins only.
       - name: Design-system lock tests (D-12)
-        run: node --test design-system/test/*.test.js
+        run: node design-system/test/run-locks.mjs
 
   build:
     # Node 22 is pinned: Next.js 16 requires Node >= 20.9.0 and local
