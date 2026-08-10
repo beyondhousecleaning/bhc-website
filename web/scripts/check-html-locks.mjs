@@ -203,12 +203,47 @@ const FRAMEWORK_ONLY = new Set(['/_global-error']);
 const APP_PAGES = PAGES.filter((p) => !FRAMEWORK_ONLY.has(p.route));
 
 /*
-  Routes that must exist. Seeded with the wave-1 site; PLAN 02-13 raises this to
-  all eighteen when the layout composition and the remaining templates land.
-  Asserted in BOTH directions, so neither a missing route nor a shrinking site
-  can pass quietly.
+  Routes that must exist — all eighteen of them, asserted in BOTH directions, so
+  neither a missing route nor a shrinking site can pass quietly.
+
+  WHAT THIS FLOOR ACTUALLY GUARDS, because it is not obvious and it is the whole
+  reason the constant exists rather than the suite simply iterating whatever the
+  manifest happens to hold (02-RESEARCH.md § Pitfall 9): a route that silently
+  opts into DYNAMIC rendering — one `cookies()`, one `headers()`, one
+  `export const dynamic`, one un-awaited `params` — disappears from
+  `prerender-manifest.json`. It therefore disappears from `PAGES`, from
+  `APP_PAGES`, and from every single assertion in this file. Without a floor the
+  suite would go GREEN by having less to check, and the page would ship
+  unasserted: no `<h1>` check, no NAP check, no postcode check, no robots check.
+  Every one of the ~336 Phase 3 pages inherits the same exposure, so this list
+  grows with the site rather than being retired.
 */
-const EXPECTED_APP_ROUTES = new Set(['/', '/get-a-quote', '/_not-found']);
+const EXPECTED_APP_ROUTES = new Set([
+  '/',
+
+  // The six service routes — one dynamic entry, six prerendered pages.
+  '/services/deep-cleaning',
+  '/services/standard-home-cleaning',
+  '/services/move-in-cleaning',
+  '/services/move-out-cleaning',
+  '/services/short-term-rental-cleaning',
+  '/services/post-construction-cleaning',
+
+  // The ten UI-SPEC §5 utility routes.
+  '/about-us',
+  '/checklist',
+  '/contact-us',
+  '/customer-login',
+  '/customer-service-agreement',
+  '/get-a-quote',
+  '/gift-cards',
+  '/privacy-policy',
+  '/terms-of-service',
+  '/work-with-us',
+
+  // A real §9.4 template since plan 02-13, and it renders RootLayout.
+  '/_not-found',
+]);
 
 /*
   `InterlinkBlock` returns `null` until town data exists, so its marker is
@@ -634,19 +669,38 @@ test('delta 4: the <h1> extractor decodes entities', () => {
   assert.equal(h1TextOf('<h1><span>404</span></h1>'), '404');
 });
 
-test('delta 5: exactly one <footer> and one <main id="main"> per app page', () => {
+test('delta 5: one <header>, one primary <nav>, one <main id="main">, one <footer> and one skip link per app page', () => {
   /*
-    The `<header>` and `<nav aria-label="Primary">` clauses of delta 5 are
-    deliberately NOT here yet. Those landmarks arrive with PLAN 02-13, which
-    adds the layout composition and their assertions in the same change. Their
-    absence is a schedule, not an oversight.
+    All four landmark clauses plus the skip link, now that plan 02-13 composes
+    `SkipLink`, `Header` and `Footer` into the root layout.
+
+    THE SKIP LINK IS ASSERTED HERE RATHER THAN NOWHERE because its absence is
+    SILENT: no page looks different without it, nothing else counts it, and it
+    is the first focusable element on every page — the whole of WCAG 2.4.1's
+    bypass mechanism. `class="[^"]*bhc-skip-link` and not a bare class name: the
+    inlined RSC flight payload carries a serialised `"className":"bhc-skip-link"`
+    too, so the bare form reads 2 on a correct page (rule 2 in the header).
+
+    TWO <footer> LANDMARKS IS THE FAILURE MODE THIS CATCHES ON ALL 18 PAGES AT
+    ONCE. The layout renders the footer COMPOSITION component and never the
+    component it wraps; rendering both would emit two, and the whole structural
+    argument behind REQ-nap-consistency is that the NAP block exists once.
   */
   for (const p of APP_PAGES) {
-    const footers = count(p.html, /<footer/g);
-    assert.equal(footers, 1, `${p.route}: expected 1 <footer>, found ${footers}`);
+    const headers = count(p.html, /<header/g);
+    assert.equal(headers, 1, `${p.route}: expected 1 <header>, found ${headers}`);
+
+    const navs = count(p.html, /<nav aria-label="Primary"/g);
+    assert.equal(navs, 1, `${p.route}: expected 1 <nav aria-label="Primary">, found ${navs}`);
 
     const mains = count(p.html, /<main id="main"/g);
     assert.equal(mains, 1, `${p.route}: expected 1 <main id="main">, found ${mains}`);
+
+    const footers = count(p.html, /<footer/g);
+    assert.equal(footers, 1, `${p.route}: expected 1 <footer>, found ${footers}`);
+
+    const skips = count(p.html, /class="[^"]*bhc-skip-link/g);
+    assert.equal(skips, 1, `${p.route}: expected 1 skip link, found ${skips}`);
   }
 });
 
@@ -749,6 +803,75 @@ test('SC-4d: InterlinkBlock — gated, not deleted', () => {
       );
     }
   }
+});
+
+/*
+  Delta 8 — the photo placeholder, and the pages that carry one.
+
+  `BeforeAfterSlider` is the ONE component in the package that renders MORE
+  without data rather than nothing: given no pairs it emits a labelled,
+  finished-looking figure marked `pending`, so no page is blocked on photography
+  that does not exist. That is ROADMAP Success Criterion 3, and this is what
+  makes it assertable instead of aspirational.
+
+  In Phase 2 exactly seven templates render the slider: Home and the six service
+  pages. Every other app page must carry the attribute NOWHERE — the negative
+  half is what keeps this from being a lock that would pass on a page that
+  accidentally rendered a second slider, and it is the half PHASE 4 INVERTS as
+  it backfills real pairs: a backfilled page emits a state that is not
+  `pending`, this assertion goes red for that route, and the route moves out of
+  the list below. The marker is the machine-readable hand-off between the two
+  phases, not decoration.
+
+  THE ATTRIBUTE-WITH-VALUE FORM IS LOAD-BEARING, and it was measured rather than
+  assumed. On a correct build the bare attribute NAME reads 2 on every slider
+  page — the flight payload serialises the prop key — while
+  `data-bhc-photo-state="pending"` reads 1. The negative half tests the bare
+  name deliberately: it is a ZERO assertion, so double-counting cannot inflate
+  it and scanning the payload as well only makes it stricter.
+
+  Counted by splitting on a plain string rather than with a global regex, so
+  nothing here can be mistaken for a bare class-name count by the self-check
+  that polices rule 2.
+*/
+const PHOTO_STATE_ATTR = 'data-bhc-photo-state';
+const PHOTO_PENDING_MARKER = `${PHOTO_STATE_ATTR}="pending"`;
+
+const PHOTO_PLACEHOLDER_ROUTES = new Set([
+  '/',
+  '/services/deep-cleaning',
+  '/services/standard-home-cleaning',
+  '/services/move-in-cleaning',
+  '/services/move-out-cleaning',
+  '/services/short-term-rental-cleaning',
+  '/services/post-construction-cleaning',
+]);
+
+const occurrences = (html, marker) => html.split(marker).length - 1;
+
+test('delta 8 / SC-3: the photo placeholder renders on exactly the seven slider pages', () => {
+  for (const p of APP_PAGES) {
+    if (PHOTO_PLACEHOLDER_ROUTES.has(p.route)) {
+      const n = occurrences(p.html, PHOTO_PENDING_MARKER);
+      assert.equal(
+        n,
+        1,
+        `${p.route}: expected exactly 1 pending photo placeholder, found ${n} — if Phase 4 has backfilled real pairs here, remove this route from PHOTO_PLACEHOLDER_ROUTES`
+      );
+      continue;
+    }
+
+    // Zero assertion, so the bare attribute name is the stricter form.
+    assert.ok(
+      !p.html.includes(PHOTO_STATE_ATTR),
+      `${p.route}: a BeforeAfterSlider renders on a page whose template has none — add the route to PHOTO_PLACEHOLDER_ROUTES or remove the slider`
+    );
+  }
+
+  assert.ok(
+    APP_PAGES.some((p) => PHOTO_PLACEHOLDER_ROUTES.has(p.route)),
+    'no app page is in PHOTO_PLACEHOLDER_ROUTES — the positive half of this lock would be vacuous'
+  );
 });
 
 test('SC-4e: Button renders from the package', () => {
