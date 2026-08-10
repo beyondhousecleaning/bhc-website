@@ -112,7 +112,7 @@ Plans:
 
 **Wave 6** *(blocked on Wave 5)*
 
-- [ ] 02-13-PLAN.md — Root layout composition (Footer replaces the direct NAPFooter call, `areaServed` threaded through), real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
+- [x] 02-13-PLAN.md — Root layout composition (Footer replaces the direct NAPFooter call, `areaServed` threaded through), real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
 - [ ] 02-14-PLAN.md — Preview floor raised to 22, README and `.design-sync/NOTES.md` refresh (wave 6)
 
 **Wave 7** *(blocked on Wave 6)*
@@ -204,7 +204,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
-| 2. Component Library Completion & Core Templates | 12/15 | In Progress|  |
+| 2. Component Library Completion & Core Templates | 13/15 | In Progress|  |
 | 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |

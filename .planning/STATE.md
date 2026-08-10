@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-11-PLAN.md
-last_updated: "2026-08-10T00:00:55.293Z"
+stopped_at: Completed 02-13-PLAN.md
+last_updated: "2026-08-10T00:14:59.525Z"
 last_activity: 2026-08-10
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 17
+  completed_plans: 18
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 12 of 15
+Plan: 14 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
 Last activity: 2026-08-10
 
-Progress: [█████████░] 85%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
@@ -69,6 +69,7 @@ Progress: [█████████░] 85%
 | Phase 02 P10 | 38min | 3 tasks tasks | 19 files files |
 | Phase Phase 02 PP11 | 15min | 2 tasks tasks | 2 files files |
 | Phase 02 P12 | 55min | 3 tasks | 3 files |
+| Phase 02 P13 | 52min | 3 tasks tasks | 3 files files |
 
 ## Accumulated Context
 
@@ -152,6 +153,13 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-12: the six service pages ship as ONE dynamic SSG route plus one data module, not six directories — which is what makes UI-SPEC 13-C's deferral of the canonical-slug rename to Phase 3 a data change rather than a template change
 - [Phase ?]: 02-12: SC-4g's count tripwire now measures built page.js route ENTRIES, not prerendered pages — Next emits one client-reference manifest per entry, so the old comparison failed on any generateStaticParams route and would have under-counted by ~330 in Phase 3
 - [Phase ?]: 02-12: the service BeforeAfterSlider band takes tone warm rather than UI-SPEC 9.3's summary-listed paper — with the prose band on paper they would be two identical adjacent grounds, which section 4 forbids
+- [Phase 02]: 02-13: the layout renders Footer and NEVER the footer component it wraps — grep -c NAPFooter web/app/layout.jsx must stay 0, or two <footer> landmarks ship on all 18 pages
+- [Phase 02]: 02-13: AREA_SERVED and HOURS are threaded through Footer from web/content/site.js — all four areaServed City nodes verified INSIDE the JSON-LD block on all 18 pages (a page-wide includes() would pass falsely, Warwick is a substring of Warwickshire)
+- [Phase 02]: 02-13: NO_RATING_YET and NO_PRIMARY_CTA_YET are now EMPTY sets, kept rather than deleted — every app page is held to the positive SC-4c/SC-4e lock; a route may be added back only with a spec clause naming it
+- [Phase 02]: 02-13: EXPECTED_APP_ROUTES is 18 and is the ONLY guard against a route silently opting into dynamic rendering — it then leaves prerender-manifest.json and every assertion, so the suite would go green by having less to check; Phase 3 must grow it with every route it adds
+- [Phase 02]: 02-13: delta 8 counts data-bhc-photo-state="pending" by splitting on the full attribute=value string — the BARE attribute name is inflated by the RSC flight payload (measured 2 vs 1), same trap as bare class names
+- [Phase 02]: 02-13: /get-a-quote and /customer-login now sit EXACTLY on the tel: cap of four — Header + StickyCallBar + footer is three on every page, so there is no headroom for a fifth tel: anywhere
+- [Phase 02]: 02-13: Next 16 emits a hidden <div hidden> Suspense preamble as the first child of <body>, so 'skip link is first in body' is false on a correct build — assert 'first FOCUSABLE element', which is what WCAG 2.4.1 requires
 
 ### Pending Todos
 
@@ -186,6 +194,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-10T00:00:36.337Z
-Stopped at: Completed 02-11-PLAN.md
+Last session: 2026-08-10T00:14:35.709Z
+Stopped at: Completed 02-13-PLAN.md
 Resume file: None
