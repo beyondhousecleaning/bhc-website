@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Completed 02-11-PLAN.md
-last_updated: "2026-08-09T23:40:24.438Z"
-last_activity: 2026-08-09
+last_updated: "2026-08-10T00:00:55.293Z"
+last_activity: 2026-08-10
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 16
+  completed_plans: 17
   percent: 17
 ---
 
@@ -26,12 +26,12 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 11 of 15
+Plan: 12 of 15
 Status: Ready to execute
         `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
-Last activity: 2026-08-09
+Last activity: 2026-08-10
 
-Progress: [████████░░] 80%
+Progress: [█████████░] 85%
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Progress: [████████░░] 80%
 | Phase 02 P09 | 6min | 2 tasks tasks | 5 files files |
 | Phase 02 P10 | 38min | 3 tasks tasks | 19 files files |
 | Phase Phase 02 PP11 | 15min | 2 tasks tasks | 2 files files |
+| Phase 02 P12 | 55min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -148,6 +149,9 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-11: home.js owns section headings, CTA labels AND metadata, not just body copy — page.jsx carries no copy literal at all, which is what keeps the claude-seo .jsx substring ban from ever binding on a template
 - [Phase ?]: 02-11: check:html is 29/30 until 02-12 lands — delta 6 fails on the six /services/* hrefs by design (wave-mate dependency stated in the plan objective); PAGE_EXPECTATIONS already holds all six entries, so no harness change is needed, only the routes
 - [Phase ?]: 02-11: ROADMAP SC-3 is now demonstrably satisfied — data-bhc-photo-state="pending" renders exactly once on /, and the same attribute is Phase 4's machine-readable hand-off when it backfills real pairs
+- [Phase ?]: 02-12: the six service pages ship as ONE dynamic SSG route plus one data module, not six directories — which is what makes UI-SPEC 13-C's deferral of the canonical-slug rename to Phase 3 a data change rather than a template change
+- [Phase ?]: 02-12: SC-4g's count tripwire now measures built page.js route ENTRIES, not prerendered pages — Next emits one client-reference manifest per entry, so the old comparison failed on any generateStaticParams route and would have under-counted by ~330 in Phase 3
+- [Phase ?]: 02-12: the service BeforeAfterSlider band takes tone warm rather than UI-SPEC 9.3's summary-listed paper — with the prose band on paper they would be two identical adjacent grounds, which section 4 forbids
 
 ### Pending Todos
 
@@ -182,6 +186,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-09T23:40:24.428Z
+Last session: 2026-08-10T00:00:36.337Z
 Stopped at: Completed 02-11-PLAN.md
 Resume file: None
