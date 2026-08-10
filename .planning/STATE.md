@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 02-13-PLAN.md
-last_updated: "2026-08-10T00:14:59.525Z"
+status: awaiting-human-checkpoint
+stopped_at: 02-15-PLAN.md task 2 — blocking human-verify checkpoint (12 visual + keyboard checks)
+last_updated: "2026-08-10T13:49:33.491Z"
 last_activity: 2026-08-10
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 20
-  completed_plans: 18
+  completed_plans: 19
   percent: 17
 ---
 
@@ -26,12 +26,15 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 14 of 15
-Status: Ready to execute
-        `www.beyondhousecleaning.com` still on Webflow, untouched. Ready for Phase 02.
+Plan: 15 of 15 — PAUSED at a blocking human checkpoint
+Status: 02-15 task 1 COMPLETE (all four Success Criteria proven against build output; `npm run verify`
+        exit 0 at 20 + 31 tests; CI run 31385409769 green on branch head c68f520 for both required
+        checks). 02-15 task 2 is a `checkpoint:human-verify` and has NOT been answered — the twelve
+        visual and keyboard checks in 02-15-SUMMARY.md need Sam. The phase is NOT verified.
+        `www.beyondhousecleaning.com` still on Webflow, untouched.
 Last activity: 2026-08-10
 
-Progress: [█████████░] 90%
+Progress: [█████████░] 93%
 
 ## Performance Metrics
 
@@ -70,6 +73,7 @@ Progress: [█████████░] 90%
 | Phase Phase 02 PP11 | 15min | 2 tasks tasks | 2 files files |
 | Phase 02 P12 | 55min | 3 tasks | 3 files |
 | Phase 02 P13 | 52min | 3 tasks tasks | 3 files files |
+| Phase 02 P15 | 18min | 1 of 2 tasks tasks | 0 files files |
 
 ## Accumulated Context
 
@@ -160,6 +164,9 @@ Highlights a fresh session needs immediately:
 - [Phase 02]: 02-13: delta 8 counts data-bhc-photo-state="pending" by splitting on the full attribute=value string — the BARE attribute name is inflated by the RSC flight payload (measured 2 vs 1), same trap as bare class names
 - [Phase 02]: 02-13: /get-a-quote and /customer-login now sit EXACTLY on the tel: cap of four — Header + StickyCallBar + footer is three on every page, so there is no headroom for a fifth tel: anywhere
 - [Phase 02]: 02-13: Next 16 emits a hidden <div hidden> Suspense preamble as the first child of <body>, so 'skip link is first in body' is false on a correct build — assert 'first FOCUSABLE element', which is what WCAG 2.4.1 requires
+- [Phase ?]: 02-15: the phase-start budget baseline is NOT comparable to the phase-end figure — WR-06 removed the 38.7 KB noModule polyfill from the JS number and WR-05 added raw woff2 to the page number, both inside Phase 2; the app's modern JS is unchanged from the one-page scaffold
+- [Phase ?]: 02-15: all four ROADMAP Phase 2 Success Criteria proven against build output — 22 four-file components, 18 static app routes each with exactly one h1 (incl. the four previously-headless utility pages), data-bhc-photo-state=pending on exactly 7 pages with two labelled role=img panels, and zero FAQPage occurrences while closed FAQ answers still ship in the HTML
+- [Phase ?]: 02-15: CI run 31385409769 is green on branch head c68f520 for BOTH required checks (locks 6s, build 20s); ruleset 20595020 re-read live — active, contexts exactly [locks, build], strict true, bypass_actors empty
 
 ### Pending Todos
 
@@ -194,6 +201,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-10T00:14:35.709Z
-Stopped at: Completed 02-13-PLAN.md
-Resume file: None
+Last session: 2026-08-10T13:49:33.491Z
+Stopped at: 02-15-PLAN.md task 2 — blocking `checkpoint:human-verify`, 12 checks pending Sam
+Resume file: .planning/phases/02-component-library-completion-core-templates/02-15-SUMMARY.md
