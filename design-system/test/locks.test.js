@@ -441,7 +441,21 @@ test('every preview declares a @dsCard group on line 1', () => {
     return out;
   };
   const previews = walk(join(ROOT, 'src'));
-  assert.ok(previews.length >= 6, 'expected a preview per component');
+  /*
+    Anti-vacuity floor, and it is the EXACT component count rather than an estimate:
+    this walk visits every `.html` under `src`, and every component ships exactly one
+    preview, so the two numbers are the same number. 22 = the 6 shipped in Phase 1 plus
+    the 16 authored across waves 2 to 5 of Phase 2.
+
+    At 6 it asserted nothing useful after this phase: a preview that silently vanished
+    would leave 21 files, still clear the floor, and read green — which is precisely the
+    regression the floor exists to catch. Whoever adds a component in Phase 3 raises it
+    again, exactly as this plan did.
+  */
+  assert.ok(
+    previews.length >= 22,
+    `expected a preview per component: 22 (6 shipped in Phase 1 + 16 added in Phase 2), found ${previews.length}`
+  );
   for (const f of previews) {
     const first = readFileSync(f, 'utf8').split('\n')[0];
     assert.match(first, /^<!--\s*@dsCard group="[^"]+"\s*-->$/, `bad @dsCard marker in ${f}`);
@@ -494,9 +508,11 @@ test('delta 9: every component ships four files and is registered in both .desig
     .map((e) => e.name)
     .sort();
 
-  // Anti-vacuity floor: six components shipped in Phase 1. Plan 02-14 raises the
-  // preview floor to 22; this one tracks the same set and is raised with it.
-  assert.ok(names.length >= 6, `expected at least 6 components, found ${names.length}`);
+  // Anti-vacuity floor: six components shipped in Phase 1, sixteen more in Phase 2.
+  // This floor and the preview floor above track the SAME set — one directory, one
+  // `.html` — so plan 02-14 raised both to 22 together, as the previous wording of this
+  // comment required. A deleted component directory has to fail here, not go quiet.
+  assert.ok(names.length >= 22, `expected at least 22 components, found ${names.length}`);
 
   const cfg = JSON.parse(readFileSync(join(ROOT, '.design-sync/config.json'), 'utf8'));
   const { componentSrcMap, docsMap } = cfg;
