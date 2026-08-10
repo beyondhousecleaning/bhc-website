@@ -222,44 +222,36 @@ const EXPECTED_APP_ROUTES = new Set(['/', '/get-a-quote', '/_not-found']);
 const INTERLINK_LOCK_ACTIVE = false;
 
 /*
-  Wave-1 template gaps, and both are self-restoring for the same reason as
-  INTERLINK_LOCK_ACTIVE: each set is asserted in the INVERSE, so a route that
-  gains the missing element fails until it is removed from the set.
+  BOTH SETS ARE NOW EMPTY, AND THEY STAY THAT WAY. They are kept rather than
+  deleted because each is asserted in the INVERSE while non-empty, which is what
+  made them self-restoring — and because an empty exemption set is the honest
+  record that every app page is now held to the positive lock. A route may be
+  added here only with a spec clause naming it, never to quiet a red run.
 
-  `/_not-found` is still Next's built-in 404 document inside our RootLayout — it
-  has no Hero, so no RatingBadge and no CTA. PLAN 02-13 task 2 lands
-  `app/not-found.jsx` and must empty NO_RATING_YET and drop `/_not-found` here.
+  How they emptied, in order, because the sequence is the argument for writing
+  gaps down as gated sets rather than as comments:
 
-  `/get-a-quote` was the second entry in NO_PRIMARY_CTA_YET, seeded against the
-  wave-1 stub — a Hero with a rating but no actions. Plan 02-08 gave it the full
-  §9.4 template, whose `QuoteFormEntry` renders a primary Button, so the inverse
-  assertion failed and forced the entry out. That is the gate working exactly as
-  designed: nobody had to remember.
+    `/get-a-quote` left NO_PRIMARY_CTA_YET in plan 02-08. It was seeded against
+    the wave-1 stub — a Hero with a rating but no actions — and 02-08 gave it
+    the full §9.4 template, whose `QuoteFormEntry` renders a primary Button. The
+    inverse assertion failed and forced the entry out. Nobody had to remember.
 
-  THE THREE LEGAL ROUTES ARE A DIFFERENT CASE AND WERE ADDED BY PLAN 02-09. They
-  are not an unfinished template: UI-SPEC §9.4's legal variation gives them
-  Breadcrumbs, a centred Hero and `Prose width="narrow"` and NOTHING ELSE — no
-  CTABand, no BeforeAfterSlider, no QuoteFormEntry — because a page somebody
-  reads to find out what happens to their data is not a conversion surface. They
-  are complete as shipped and they still carry no primary Button, because until
-  plan 02-13 composes `Header` into the root layout nothing supplies one
-  sitewide.
+    THE THREE LEGAL ROUTES were a different case, added by plan 02-09. They are
+    not unfinished: UI-SPEC §9.4's legal variation gives them Breadcrumbs, a
+    centred Hero and `Prose width="narrow"` and NOTHING ELSE — no CTABand, no
+    BeforeAfterSlider, no QuoteFormEntry — because a page somebody reads to find
+    out what happens to their data is not a conversion surface. They carried no
+    primary Button because nothing supplied one SITEWIDE. Plan 02-13's layout
+    composition put §5's `Get a Free Quote` Button in `Header` on every page, so
+    all three failed the inverse assertion at once and came out together. None
+    of them was given a CTA of its own; that would have breached §9.4.
 
-  So the entry is "not yet" in the layout sense rather than the template sense,
-  and it is still self-restoring: §5's CTA table puts `Get a Free Quote` in
-  `Header` as a `primary` Button on every page, so the moment 02-13's layout
-  composition lands these three fail the inverse assertion and force themselves
-  out. PLAN 02-13 EMPTIES THIS SET COMPLETELY — its own `/_not-found` entry and
-  these three go together. Nothing here may be removed by giving a legal page a
-  CTA; that would breach §9.4.
+    `/_not-found` left BOTH sets in plan 02-13, which swapped Next's built-in
+    404 document for `app/not-found.jsx` — a real template with a centred Hero,
+    a `RatingBadge` and three recovery links.
 */
-const NO_RATING_YET = new Set(['/_not-found']);
-const NO_PRIMARY_CTA_YET = new Set([
-  '/_not-found',
-  '/privacy-policy',
-  '/terms-of-service',
-  '/customer-service-agreement',
-]);
+const NO_RATING_YET = new Set([]);
+const NO_PRIMARY_CTA_YET = new Set([]);
 
 /*
   Per-route expectations. Delta 3 replaces the old hardcoded single-town
@@ -320,13 +312,12 @@ const PAGE_EXPECTATIONS = {
   '/terms-of-service': { h1: 'Terms of Service', hasBreadcrumbs: true, ldJsonBlocks: 2 },
   '/customer-service-agreement': { h1: 'Customer Service Agreement', hasBreadcrumbs: true, ldJsonBlocks: 2 },
 
-  // MEASURED, not aspirational: today this file is Next's built-in 404
-  // document rendered inside our RootLayout, so its heading is literally `404`
-  // and it carries exactly ONE tag-form JSON-LD block (NAPFooter's).
-  // PLAN 02-13 TASK 2 replaces the `h1` with `We Couldn't Find That Page` when
-  // `app/not-found.jsx` lands. `hasBreadcrumbs` and `ldJsonBlocks` stay as they
-  // are: a 404 has no position in the hierarchy to describe.
-  '/_not-found': { h1: '404', hasBreadcrumbs: false, ldJsonBlocks: 1 },
+  // MEASURED, not aspirational. `app/not-found.jsx` is a real §9.4 template
+  // rendered inside our RootLayout, so this heading is ours and not the
+  // framework's. `hasBreadcrumbs: false` and one tag-form JSON-LD block (the
+  // footer's business node) are PERMANENT: a 404 has no position in the
+  // hierarchy to describe, and a trail here would add a second block.
+  '/_not-found': { h1: "We Couldn't Find That Page", hasBreadcrumbs: false, ldJsonBlocks: 1 },
 };
 
 const expectationsFor = (route) => {
