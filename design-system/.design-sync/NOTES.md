@@ -43,9 +43,10 @@ that output. This is load-bearing:
 **not** added to `package.json` as a script/devDependency, to preserve the repo's zero-toolchain
 design. Run it before the converter on every re-sync.
 
-## Why `componentSrcMap` and `docsMap` enumerate all six
+## Why `componentSrcMap` and `docsMap` enumerate every component
 
-Both are full enumerations rather than sparse exception lists, and that is correct here:
+Both are full enumerations rather than sparse exception lists — 22 entries each as of Phase 2, and
+that is correct here:
 
 - **`componentSrcMap`**: discovery reads PascalCase value exports from the shipped `.d.ts` tree via
   an entry `.d.ts`. There is no `src/index.d.ts` and no `types` field in `package.json`, so
@@ -61,8 +62,15 @@ Both are full enumerations rather than sparse exception lists, and that is corre
 nothing and every component would land in `general`. Groups now come from `category:` frontmatter
 prepended to each `.prompt.md`, **generated from the `@dsCard group="…"` marker in the sibling
 `.html`** so the two cannot diverge. Regenerate with the snippet in git history for this file's
-first commit, or add frontmatter by hand when adding a component. Current: Button→Actions,
-Hero→Content, Breadcrumbs/NAPFooter/InterlinkBlock→Navigation, RatingBadge→Trust.
+first commit, or add frontmatter by hand when adding a component.
+
+**The groups are a closed set of four**, and the distribution across the 22 components today is
+Navigation 6, Content 8, Trust 5, Actions 3. The per-component assignment is deliberately *not*
+written out here — it went stale within one phase last time. It lives in each component's `@dsCard`
+marker, is mirrored into that component's `.prompt.md` frontmatter, and `config.json`'s
+`componentSrcMap` is the enumeration of which components exist. `delta 9` in `test/locks.test.js`
+fails if a marker and its frontmatter disagree, if a group falls outside the four, or if a component
+is absent from either map — so all three stay true without anyone maintaining a list.
 
 ## Fonts are vendored, not CDN-loaded
 
@@ -84,6 +92,14 @@ resolved during the first sync, for reference:
 - `[GRID_OVERFLOW] NAPFooter (wide)` — footers are full-width by nature. Fixed permanently with
   `cfg.overrides.NAPFooter: {"cardMode": "column"}`. Do not remove that override.
 
+Plan 02-10 added the same `{"cardMode": "column"}` override for **`Header`, `Footer` and
+`StickyCallBar`**, pre-emptively and for the identical reason: all three are full-width site chrome —
+a header bar, the footer that composes `NAPFooter`, and a fixed mobile call bar — so each has the
+shape that produced the original `NAPFooter` warn. `cfg.overrides` now holds four entries and they
+are all one shape. None of the other eighteen needs one; a component that starts warning `wide`
+should get an override here rather than a layout change, because the warn is about the card, not the
+component.
+
 ## Render-harness artifacts — do not chase these
 
 - **`© 2024` in NAPFooter screenshots.** `package-capture.mjs:102` pins the browser clock to
@@ -104,10 +120,22 @@ The conventions header currently documents the limitation for the design agent.
 
 ## Preview authoring
 
-All 6 components have authored previews in `.design-sync/previews/` (28 cells, all graded `good`).
-Compositions were ported from the repo's own `src/components/<Name>/<Name>.html` previews, which
-are the canonical source — including the hero's honest data-URI placeholder for the still-blocked
-photography, and the "the live-site bug this prevents" caption blocks.
+**Every one of the 22 components has an authored `.html` preview** at
+`src/components/<Name>/<Name>.html`. That file is the canonical composition: it carries the
+`@dsCard` marker the group is read from, it is what `Lock 7`, `delta 9` and `delta 14` scan, and its
+count is a floor in the lock suite (22, the exact number, so a vanished preview turns the suite red).
+
+**Authored `.tsx` sync previews exist for the original six only** — `Button`, `Hero`, `Breadcrumbs`,
+`RatingBadge`, `NAPFooter`, `InterlinkBlock` (28 cells, all graded `good`). Their compositions were
+ported from the `.html` previews — including the hero's honest data-URI placeholder for the
+still-blocked photography, and the "the live-site bug this prevents" caption blocks.
+
+The sixteen components added in Phase 2 have **no** `.design-sync/previews/*.tsx`, so Claude Design
+generates their cards from the component and its inferred props instead of showing curated cells.
+This was a deliberate decision (02-RESEARCH assumption A7) and its consequence is cosmetic and
+reversible: the components sync, the docs sync, the tokens sync, and only the *card composition* is
+generated rather than authored. Anyone who wants an authored one drops a `<Name>.tsx` in this
+directory — no config entry, no lock, nothing else to change.
 
 `InterlinkBlock.tsx` calls the real `buildInterlinks` / `nearestTowns` over a real town list with
 coordinates copied from `test/locks.test.js`, so the "N miles away" strings are computed, not
@@ -133,4 +161,5 @@ they are duplicated, not shared.
    `--bhc-dur*`, `--bhc-ease` and `--bhc-focus-ring` are documented but unexercised.
 7. **`package.json` has no `types` field.** Adding one (or a `src/index.d.ts` barrel) would let
    discovery work natively and make `componentSrcMap` unnecessary — worth doing if the component
-   count grows.
+   count grows. It has: 6 → 22 in Phase 2, with every one of the sixteen hand-registered in two
+   maps. Risk 3 above is now the most expensive line in this file, and this is its permanent fix.
