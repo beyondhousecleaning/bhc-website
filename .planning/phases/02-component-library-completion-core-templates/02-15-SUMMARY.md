@@ -252,6 +252,20 @@ Both measurement bases changed inside Phase 2:
 | `locks` job | **✓ success** (job `93444605499`, 6 s) |
 | `build` job | **✓ success** (job `93444605486`, 20 s) |
 
+**Re-confirmed on the head this plan itself pushed.** The commit above was the head when the
+criteria evidence was gathered; committing this report moved the branch, so CI was re-read on the
+new head rather than left stale:
+
+| Item | Value |
+|------|-------|
+| New branch head | `37ee4b8` — `docs(02-15): phase verification evidence…` |
+| **Run id** | **`31394966695`** |
+| Run conclusion | `completed / success` |
+| `locks` job | **✓ success** (job `93475506450`, 7 s) |
+| `build` job | **✓ success** (job `93475506565`, 25 s) |
+
+Both required checks are green on both `c68f520` (the code head) and `37ee4b8` (the pushed head).
+
 Ruleset `20595020`, re-read live rather than assumed: `enforcement: active`, required contexts
 exactly `["locks", "build"]`, `strict_required_status_checks_policy: true`, `bypass_actors: []`
 (**zero**). Both required checks are green on the exact commit that is the branch head.
