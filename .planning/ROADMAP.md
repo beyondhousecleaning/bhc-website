@@ -113,7 +113,7 @@ Plans:
 **Wave 6** *(blocked on Wave 5)*
 
 - [x] 02-13-PLAN.md — Root layout composition (Footer replaces the direct NAPFooter call, `areaServed` threaded through), real 404 template, landmark locks, `EXPECTED_APP_ROUTES` raised to 18, delta 8 photo-state lock (wave 6)
-- [ ] 02-14-PLAN.md — Preview floor raised to 22, README and `.design-sync/NOTES.md` refresh (wave 6)
+- [x] 02-14-PLAN.md — Preview floor raised to 22, README and `.design-sync/NOTES.md` refresh (wave 6)
 
 **Wave 7** *(blocked on Wave 6)*
 
