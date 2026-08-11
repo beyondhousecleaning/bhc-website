@@ -136,9 +136,77 @@ Plans:
 
 > **Inherited from Phase 2 planning:** `INTERLINK_LOCK_ACTIVE` in `web/scripts/check-html-locks.mjs`
 > is `false` with a self-restoring inverse assertion — the first page that renders an InterlinkBlock
-> fails the suite and forces the constant to be flipped. Phase 3 flips it.
+> fails the suite and forces the constant to be flipped. Phase 3 does not flip it; `03-RESEARCH.md`
+> verified that setting it `true` reddens twelve correct pages, so plan 03-01 replaces it with a
+> per-template rule (delta 16) and plan 03-20 empties the staged pending set.
 
-**Plans**: TBD
+> **Scope note (from planning, 2026-08-11):** the derived scale is **58 towns · 348 combos · 258 new
+> combos · 57 new hubs · 317 new pages · 426 built routes**, re-derived by crossing
+> `docs/research/service-area-coverage.md`'s 39 post towns with the frozen sitemap's 19 town slugs.
+> The "~56 / ~336 / ~241" figures above predate that cross and are stale. **Phase 3 completes with
+> batch 1 published** — 21 towns, 58 new pages, **167 app routes** — because the site is `noindex`
+> until cutover (D-15), so the indexation interval SC-5 exists to protect only starts then. Batches
+> 2-5 are post-cutover data changes: one `PUBLISHED_BATCHES` increment plus a raised route floor.
+>
+> Two items ship as working defaults and are ratified by Sam in plan 03-24, not assumed:
+> **five** of the 95 frozen URLs 301 (the `coventry-south` set — D2 says zero, SC-3 says resolve the
+> duplicate, and 90 are untouched), and **two** service slugs 301 rather than D14's "4" (D14's own
+> eight canonical concepts already contain the other two). The sitemap is settled as **Phase 5's**;
+> Phase 3 ships only the harness filter that stops a sitemap route detonating the lock suite.
+
+**Plans**: 24 plans across 9 waves
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Wave 0 harness rewrite: metadata-route filter, delta 18 template resolver, delta 16 and 21 per-template rules, delta 26 floor mechanism, one commit (wave 1)
+- [ ] 03-02-PLAN.md — Package: `geo.js` `metaFor`, the `./geo` subpath export, three CSS classes, the honest rail heading (wave 1)
+- [ ] 03-03-PLAN.md — Service-variant grid: domestic cleaning, 8 subjects x 8 stages (wave 1)
+- [ ] 03-04-PLAN.md — Service-variant grid: deep cleaning (wave 1)
+- [ ] 03-05-PLAN.md — Service-variant grid: end of tenancy cleaning (wave 1)
+- [ ] 03-06-PLAN.md — Service-variant grid: flat cleaning (wave 1)
+- [ ] 03-07-PLAN.md — Service-variant grid: builders clean (wave 1)
+- [ ] 03-08-PLAN.md — Service-variant grid: holiday let cleaning (wave 1)
+- [ ] 03-10-PLAN.md — The 45 county notes, service x county (wave 1)
+- [ ] 03-11-PLAN.md — Town prose: 21 openers and 21 locality paragraphs (wave 1)
+- [ ] 03-12-PLAN.md — Hub prose A: the town, and us in it, x21 (wave 1)
+- [ ] 03-13-PLAN.md — Hub prose B: which clean do you need, x21 (wave 1)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-09-PLAN.md — Service-variant grid: move-out cleaning, with the cross-deck separation proof against end of tenancy (wave 2)
+- [ ] 03-14-PLAN.md — The D14 rename: two slugs, four noun corrections, nav/home/faqs/reviews follow, and the `faqs.js` guard that closes the silent-failure path (wave 2)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 03-15-PLAN.md — `/services/apartment-cleaning`: the seventh record, its FAQs, its rail and its two chrome links (wave 3)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 03-16-PLAN.md — `towns.js`: 58 rows, COMBO_SERVICES, the Latin square, PUBLISHED_TOWNS and eleven module-load guards (wave 4)
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 03-17-PLAN.md — Combo composition: the variant aggregator, the checklists, `combo.js`, `reviewsForCombo`, and the similarity arithmetic measured before any page is built (wave 5)
+- [ ] 03-18-PLAN.md — Hub and index composition, plus the four bounded interlink builders (wave 5)
+
+**Wave 6** *(blocked on Wave 5)*
+
+- [ ] 03-19-PLAN.md — The three route files in one commit, the nav item, the 404 recovery link and the route floor at 167 (wave 6)
+
+**Wave 7** *(blocked on Wave 6)*
+
+- [ ] 03-20-PLAN.md — Home and the seven service pages gain their InterlinkBlock and a tint FAQ band; the staged set is emptied (wave 7)
+- [ ] 03-21-PLAN.md — The redirect table at `statusCode: 301` and `check-redirects.mjs` — the 90/5 contract, derived from the frozen sitemap (wave 7)
+
+**Wave 8** *(blocked on Wave 7)*
+
+- [ ] 03-22-PLAN.md — Harness deltas 17, 19 (per-template), 20, 25, 27 (new from scratch) and 28 (wave 8)
+- [ ] 03-23-PLAN.md — `check-content.mjs`: delta 22 depth floors and delta 23 similarity, Jaccard plus the restored cosine metric (wave 8)
+
+**Wave 9** *(blocked on Wave 8)*
+
+- [ ] 03-24-PLAN.md — Phase verification: success-criteria evidence, the two ratification decisions, visual and keyboard sign-off (wave 9, has checkpoints)
+
 **UI hint**: yes
 
 ### Phase 4: Reviews & Trust at Scale
@@ -205,7 +273,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
 | 2. Component Library Completion & Core Templates | 14/15 | In Progress|  |
-| 3. Programmatic Location × Service Engine | 0/TBD | Not started | - |
+| 3. Programmatic Location × Service Engine | 0/24 | Not started | - |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
 | 6. Content & Blog | 0/TBD | Not started | - |
