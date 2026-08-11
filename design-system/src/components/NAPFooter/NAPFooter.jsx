@@ -14,7 +14,10 @@
  * `formatPhone` derives the display string FROM the dial string, so the two
  * cannot diverge. There is no prop for the displayed text.
  *
- * Lock 5: the registered office (84 Acacia Road, CV32 6EQ) is residential.
+ * Lock 5: the registered office is a residential address, so it is not written
+ * out here — this repository is public, and a comment explaining why an address
+ * must never ship is a poor place to keep the address. Companies House holds it
+ * if it is ever needed.
  * The GBP is a service-area business with the address suppressed, so the
  * footer carries a service-area statement and no address. Schema uses
  * areaServed with no streetAddress — JSON-LD ships in page HTML, so putting

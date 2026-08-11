@@ -670,7 +670,11 @@ test('nearestTowns is ordered by real distance and excludes self', () => {
 });
 
 test('the audited pin distances reproduce', () => {
-  const pin = { lat: 52.29358, lon: -1.55378 }; // 84 Acacia Road, CV32 6EQ
+  // D-10 is "no address anywhere", and this repo is public. The literal street
+  // line and postcode that used to annotate this pin have been removed; the
+  // coordinates themselves are superseded in Phase 3 by the Leamington Spa town
+  // centroid, which sits 0.8 miles away and reproduces every distance below.
+  const pin = { lat: 52.29358, lon: -1.55378 };
   const birmingham = { lat: 52.4797, lon: -1.9026 };
   const telford = { lat: 52.6784, lon: -2.4453 };
 

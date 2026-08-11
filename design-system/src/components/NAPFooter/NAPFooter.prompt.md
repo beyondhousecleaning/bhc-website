@@ -65,8 +65,10 @@ the one a new browsing context would have had.
 
 ## Lock 5: no address
 
-The registered office — **84 Acacia Road, Leamington Spa CV32 6EQ** — is residential, and the
-GBP is correctly configured as a service-area business with the address suppressed.
+The registered office is a **residential address**, and the GBP is correctly configured as a
+service-area business with the address suppressed. The address is deliberately not written out
+here: this repository is public, and a document explaining why an address must never ship is a
+poor place to keep the address. Companies House holds it if it is ever needed.
 
 So the footer carries a **service-area statement**, not an address. Schema uses `areaServed`
 with **no `streetAddress`**: JSON-LD ships in the HTML of every page, so putting the postcode
