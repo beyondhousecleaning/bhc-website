@@ -35,9 +35,15 @@ four on the home page.
 **No `-webkit-line-clamp`.** With no client JavaScript there is no "read more", so a CSS clamp
 hides text from sighted readers that screen readers still receive, and the loss widens at 200% zoom
 (WCAG 1.4.4). **The quote is capped at 320 characters at the data layer**, truncated at a word
-boundary with an ellipsis at ingest, so what ships is exactly what displays. Phase 4's review pull
-must honour that cap — it is a property of the data contract, not of the styling, and it is written
-into the `quote` JSDoc in `ReviewCard.d.ts` for that reason.
+boundary with an ellipsis at ingest, so what ships is exactly what displays. That cap is a property
+of the data contract, not of the styling, and it is written into the `quote` JSDoc in
+`ReviewCard.d.ts` for that reason. `web/content/reviews.js` honours it **by selection rather than by
+truncation** — every quote it carries already fits, so what ships is a whole review and never part
+of one. That is the stronger form and the one to keep.
+
+**`date` is optional, and `town` always was.** The review payload the live site carries holds a
+name, a body and a star count and nothing else. Requiring a date would have made a fabricated month
+on every card the only way to satisfy the type.
 
 **No link.** That is load-bearing rather than incidental: `ReviewRail`'s scroll container carries
 `tabindex="0"`, which is correct **only because this card has no focusable children**. Chrome's
@@ -56,7 +62,9 @@ Neither this component nor `ReviewRail` emits a structured-data block of any kin
 `quote` is the largest untrusted string in the build: it is externally sourced, and a customer who
 names their street in a review must not have it published. Review text renders as React children,
 so it is escaped, and neither component puts it into a script context. The built-HTML postcode and
-street-line scan is the backstop, not the primary control — Phase 4's ingest is.
+street-line scan is the backstop, not the primary control — the data module's own screen is. All 166
+extracted reviews were run against the harness's postcode and street-line matchers before any
+selection was made, and a review that named a street would simply not be selected.
 
 ## Don't
 

@@ -20,8 +20,19 @@ export interface Review {
   town?: string;
   /** Out of 5. Rounded for the glyph row; the exact value goes in the label. */
   rating: number;
-  /** A rendered string such as `June 2026`, not a Date — the package is pure. */
-  date: string;
+  /**
+   * A rendered string such as `June 2026`, not a Date — the package is pure.
+   *
+   * OPTIONAL, and it became optional when the real data landed. The review
+   * payload the live site carries holds only a name, a body and a star count;
+   * it has no per-review date at all. Requiring the field would have made the
+   * only way to satisfy the type a fabricated month on every card, which is the
+   * same defect as a fabricated review and is a banned practice under the
+   * Digital Markets, Competition and Consumers Act 2024. The card already
+   * renders the attribution line from whatever it is given, so absence costs
+   * nothing. Supply a real one when a source that carries one exists.
+   */
+  date?: string;
   source?: 'Google';
 }
 

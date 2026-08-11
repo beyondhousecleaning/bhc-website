@@ -13,19 +13,27 @@ code either way.
 The shipped `InterlinkBlock` convention: an empty rail is worse than no rail, and there is no
 "no reviews yet" message, because that is a promise about the future rendered as content.
 
-**Every Phase 2 template composes this component with `reviews={[]}`, so it renders nothing on every
-page.** That is deliberate and it costs nothing: Phase 4 supplies the data and changes a data file
-rather than eight templates.
+Every Phase 2 template composed this component with `reviews={[]}` and it rendered nothing on every
+page. That prediction held exactly: when the real reviews landed, **one data file was added and no
+template's structure changed** — the seven review-bearing routes pass `HOME_REVIEWS` or
+`reviewsForService(slug)` from `web/content/reviews.js` into the same call site that was already
+there. The `null` return is still the contract for a caller with nothing to show.
 
-## Nothing links to the `reviews` anchor in Phase 2
+## The `reviews` anchor now resolves
 
-`Read Our Reviews → #reviews` was withdrawn from the closed call-to-action set for exactly this
-reason. The anchor's target renders nothing without data, and the internal-link lock resolves only
-hrefs beginning with a slash, so a dead in-page anchor would pass unnoticed on all eighteen pages.
-Seeding invented testimonials to make it resolve contradicts the whole "genuinely local team"
-positioning the site is built on.
+`Read Our Reviews → #reviews` had been withdrawn from the closed call-to-action set for one stated
+reason: the anchor's target rendered nothing without data, and the internal-link lock resolves only
+hrefs beginning with a slash, so a dead in-page anchor would have passed unnoticed on all eighteen
+pages. That reason expired with the data, and the action is live again on the home page. The
+harness now asserts that every in-page anchor on every built page resolves to an element carrying
+the matching id, so the dead-end cannot return quietly.
 
-The `id` prop exists so Phase 4 reinstates that link with a data change rather than an API change.
+The `id` prop is what made that reinstatement a data change rather than an API change.
+
+Seeding invented testimonials to make the anchor resolve was never an option and still is not: it
+contradicts the whole "genuinely local team" positioning the site is built on, and a fabricated
+testimonial is a banned practice under the Digital Markets, Competition and Consumers Act 2024.
+Every quote this renders is a real, published Google review quoted verbatim.
 
 ## Why there are no arrow buttons
 

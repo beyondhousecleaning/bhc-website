@@ -19,10 +19,12 @@ export interface ReviewRailProps {
   /**
    * The section's anchor id. Defaults to `reviews`.
    *
-   * Nothing links to it in Phase 2: the `Read Our Reviews` call to action was
-   * withdrawn from the closed set precisely because this component renders
-   * nothing without data. The id exists so Phase 4 reinstates that link with a
-   * data change rather than an API change.
+   * The `Read Our Reviews` call to action points at it and is live again. It
+   * had been withdrawn from the closed set precisely because this component
+   * rendered nothing without data; the id is what made reinstating that link a
+   * data change rather than an API change, which is exactly what happened when
+   * the real reviews landed. Override it only if a page needs two rails, and
+   * point the action at the one it should reach.
    */
   id?: string;
   className?: string;

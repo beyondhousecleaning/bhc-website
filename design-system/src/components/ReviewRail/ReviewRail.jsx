@@ -7,17 +7,27 @@
  *
  * IT RETURNS null ON EMPTY DATA. The shipped InterlinkBlock.jsx:37 convention:
  * an empty rail is worse than no rail, and there is no "no reviews yet"
- * message, because that is a promise about the future rendered as content.
- * Review data arrives in Phase 4; until then every page composes this component
- * with an empty array and it simply does not appear.
+ * message, because that is a promise about the future rendered as content. That
+ * behaviour has not changed and is still the contract for a caller with nothing
+ * to show.
  *
- * NOTHING LINKS TO THE `reviews` ANCHOR IN PHASE 2. The `Read Our Reviews` call
- * to action was withdrawn from the closed set for exactly that reason — the
- * anchor's target renders nothing without data, and the internal-link lock only
- * resolves hrefs beginning with a slash, so a dead in-page anchor would pass
- * unnoticed on every page. Seeding invented testimonials to make it resolve
- * contradicts the whole "genuinely local team" positioning. The `id` prop exists
- * so Phase 4 reinstates the call to action without an API change.
+ * THE DATA HAS NOW LANDED, AND THE ANCHOR RESOLVES. Every template composed this
+ * component with an empty array from plan 02-11 until the reviews were pulled
+ * forward from Phase 4; `web/content/reviews.js` supplies them now, and the
+ * `Read Our Reviews` call to action came back with them. It had been withdrawn
+ * from the closed set for one stated reason — the anchor's target rendered
+ * nothing, and the internal-link lock only resolves hrefs beginning with a
+ * slash, so a dead in-page anchor would have passed unnoticed on every page.
+ * That reason expired; the harness now asserts that every in-page anchor
+ * resolves to an element carrying the matching id, so it cannot come back
+ * silently. The `id` prop is what made the reinstatement a data change rather
+ * than an API change, exactly as intended.
+ *
+ * Seeding invented testimonials to make the anchor resolve was never an option
+ * and still is not: it contradicts the whole "genuinely local team" positioning,
+ * and a fabricated testimonial is a banned practice under the Digital Markets,
+ * Competition and Consumers Act 2024. Every quote this renders is a real,
+ * published Google review quoted verbatim.
  *
  * THE SCROLL CONTAINER CARRIES tabindex="0", role="group" AND AN aria-label.
  * That is the standard treatment for a scrollable region — it is what makes the
@@ -52,8 +62,8 @@ const DEFAULT_HEADING = 'What Warwickshire customers say';
 
 export function ReviewRail({ heading, reviews = [], town, id = 'reviews', className = '' }) {
   /*
-    The guard idiom from NAPFooter.jsx:89-107. Phase 4 feeds this from an
-    external pull, and this renders inside the page tree of every template, so
+    The guard idiom from NAPFooter.jsx:89-107. This is fed from an externally
+    sourced data module and renders inside the page tree of every template, so
     one malformed entry must not throw during server render.
   */
   const entries = reviews.filter(Boolean);
