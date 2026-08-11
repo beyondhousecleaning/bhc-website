@@ -31,16 +31,19 @@
  * Phase 3's canonical-slug rename (UI-SPEC §13-C) therefore does not touch this
  * module at all.
  *
- * THE CALLS TO ACTION ARE §5's CLOSED SET AND NOTHING ELSE. Two labels appear on
- * this page: the primary quote action and the checklist action. §5 withdrew a
- * third — the one that pointed at the review rail's in-page anchor — because
- * `ReviewRail` renders nothing without data, so that anchor dead-ends on every
- * Phase 2 page, and the internal-link lock only resolves hrefs beginning with a
- * slash so nothing would catch it. It returns in Phase 4 with the data. Its exact
- * label is in §5 and is deliberately not quoted here: the acceptance check for
- * this file greps it for that label, and a comment explaining an absence that
- * matches the grep policing that absence is a defect this phase has now hit ten
- * times. The same applies to the three dead CTA phrases §5 closes the door on.
+ * THE CALLS TO ACTION ARE §5's CLOSED SET AND NOTHING ELSE. Two labels are
+ * authored in this file: the primary quote action and the checklist action. §5
+ * had withdrawn a third — the one that points at the review rail's in-page
+ * anchor — because `ReviewRail` rendered nothing without data, so that anchor
+ * dead-ended on every Phase 2 page, and the internal-link lock only resolves
+ * hrefs beginning with a slash so nothing would have caught it. The data landed
+ * and that action is live again, but it is NOT authored here: it lives in
+ * `reviews.js` beside the anchor constant it is built from, so the link and its
+ * target cannot drift. Its exact label is therefore still absent from this file,
+ * which is what the acceptance check for this file wants — that check greps for
+ * the label, and a comment explaining an absence that matches the grep policing
+ * that absence is a defect this phase has now hit eleven times. The same applies
+ * to the three dead CTA phrases §5 closes the door on.
  *
  * VOICE — UI-SPEC §5. Plain UK English, contractions, concrete nouns, named
  * towns: `tenancy`, `flat`, `skirting boards`, `hoover`, `builders clean`. Never
@@ -125,7 +128,7 @@ export const HOME_CTA = {
  * `SectionBand` supplies each one, and every component underneath is composed
  * WITHOUT its own heading prop so the outline stays one `<h1>`, six `<h2>`s and
  * their `<h3>` children. The review rail is the exception: it carries its own
- * `<h2>` and renders nothing at all until Phase 4 supplies the data.
+ * `<h2>`, from the package's own default, so there is no seventh entry here.
  */
 export const HOME_HEADINGS = {
   trust: 'Why people book us again',

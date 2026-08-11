@@ -302,6 +302,19 @@ h3.bhc-section__heading { font-size: var(--bhc-text-xl); }
    band, so this is not an edge case.                                     */
 .bhc-section--navy .bhc-section__intro { color: var(--bhc-paper); }
 
+/* One optional action under a band's content, separated from it by the same
+   step .bhc-section__head uses above it.
+
+   A PLAIN CLASS, NOT A COMPONENT PROP, and the precedent is deliberate:
+   .bhc-service-card__grid is the same thing — a class a template applies
+   directly, documented in the component's prompt doc rather than wrapped in
+   an API. SectionBand renders many kinds of children and gaining an
+   `actions` prop would put a second, weaker CTA surface beside CTABand's on
+   every one of eighteen call sites. The only user today is the home page's
+   trust band, whose action jumps to the review rail's anchor further down
+   the same page.                                                          */
+.bhc-section__action { margin-block-start: var(--bhc-space-6); }
+
 /* --- Prose ----------------------------------------------------------------
    800 to 1,100 words on ~336 pages. Live service pages already median
    1,183 words, which is the one metric beating the competition; setting

@@ -20,11 +20,21 @@
  *   ServiceCard ×6      warm         cards on paper
  *   BeforeAfterSlider   paper
  *   ProcessSteps        tint
- *   ReviewRail          —            renders nothing until Phase 4
+ *   ReviewRail          warm         see below — it was unbanded while empty
  *   FAQAccordion        paper
  *   CTABand             navy         the ONE dark band, immediately above the footer
  *
  * Never two identical tones adjacent, and never a second navy band.
+ *
+ * THE REVIEW RAIL IS BANDED NOW, AND IT WAS RIGHT NOT TO BE BEFORE. Plan 02-11
+ * rendered it bare on purpose: it returned null on empty data, so a band around
+ * it would have emitted a headless empty section into every build AND put the
+ * process band's neighbour-to-be, the FAQ band's paper ground, next to another
+ * paper ground. With real reviews in it the rail has content, needs the band's
+ * container and vertical rhythm like every other section, and takes `warm` —
+ * neither of its neighbours' tones, which is the whole adjacency rule. The band
+ * carries no heading: the rail supplies its own <h2> from the package default,
+ * and a band heading above it would say the same thing twice.
  *
  * SIX THINGS THIS FILE DELIBERATELY DOES NOT DO, each with a CI gate behind it,
  * so none of them is a style preference:
@@ -59,6 +69,7 @@
 
 import {
   BeforeAfterSlider,
+  Button,
   CTABand,
   FAQAccordion,
   Hero,
@@ -81,6 +92,7 @@ import {
   HOME_TITLE,
 } from '@/content/home.js';
 import { PROCESS_STEPS } from '@/content/process.js';
+import { HOME_REVIEWS, REVIEWS_ANCHOR, REVIEWS_CTA } from '@/content/reviews.js';
 import { RATING } from '@/content/site.js';
 
 export const metadata = { title: HOME_TITLE, description: HOME_DESCRIPTION };
@@ -96,9 +108,22 @@ export default function Page() {
         actions={HOME_ACTIONS}
       />
 
-      {/* The band carries the <h2>, so TrustBar renders the bare <ul>. */}
+      {/* The band carries the <h2>, so TrustBar renders the bare <ul>.
+
+          The action under it is §5's reinstated reviews link, and this band is
+          where it belongs: the three closed-set trust claims, then the way to
+          the evidence for them. Its label and its href both come from
+          reviews.js, which builds the href from the same constant the rail's id
+          is set from below, so the two cannot drift. `bhc-section__action` is a
+          plain class, the `bhc-service-card__grid` arrangement — SectionBand has
+          no actions prop and must not gain one. */}
       <SectionBand heading={HOME_HEADINGS.trust}>
         <TrustBar heading={null} />
+        <div className="bhc-section__action">
+          <Button href={REVIEWS_CTA.href} variant={REVIEWS_CTA.variant}>
+            {REVIEWS_CTA.label}
+          </Button>
+        </div>
       </SectionBand>
 
       {/* `bhc-service-card__grid` is a plain class, not a component
@@ -134,12 +159,14 @@ export default function Page() {
         <ProcessSteps steps={PROCESS_STEPS} />
       </SectionBand>
 
-      {/* An empty array renders null — expected, and composed anyway on purpose.
-          Phase 4 supplies the review data, and when it does this template does
-          not change: a data file does. It is deliberately NOT wrapped in a
-          SectionBand, because an empty band would put two paper grounds
-          adjacent and emit a headless section into every build until Phase 4. */}
-      <ReviewRail reviews={[]} />
+      {/* Six real, verbatim Google reviews, server-rendered — one per service,
+          so the rail reads as varied rather than as six ways of saying the same
+          thing. The prediction plan 02-11 made held: a data file arrived and the
+          call site did not move. `id` is set from the same constant the trust
+          band's action builds its href from, so the anchor cannot dead-end. */}
+      <SectionBand tone="warm">
+        <ReviewRail reviews={HOME_REVIEWS} id={REVIEWS_ANCHOR} />
+      </SectionBand>
 
       {/* FAQAccordion emits no structured data — ever. Delta 7 greps every built
           page for the schema type it declines to emit, and that type is named in

@@ -59,6 +59,18 @@ The `aria-labelledby` target is **derived**, never hardcoded — `{id}-heading` 
 given, otherwise a slug of the heading text. A page carries several bands, and a fixed id would
 point every one of their labels at the first band on the page.
 
+## `.bhc-section__action` is a plain class, not a prop
+
+There is no `actions` prop and there should not be one. A band that can carry its own call to
+action is a second, weaker CTA surface on every one of its call sites, competing with `CTABand`
+directly above the footer. What exists instead is a single CSS class a template applies to a
+wrapper around one `Button` — the same arrangement as `.bhc-service-card__grid`, which is a class
+rather than a component for the same reason.
+
+It supplies one thing: the `--bhc-space-6` gap above, matching `.bhc-section__head` below the
+heading. The only user today is the home page's trust band, whose action jumps to the review
+rail's anchor further down the same page.
+
 ## Don't
 
 - Don't override the vertical padding. It is `--bhc-section-y` and it is the rhythm.
