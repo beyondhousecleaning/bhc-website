@@ -739,7 +739,7 @@ verified by direct read.
    `design-system/test/locks.test.js:673`:
 
    ```js
-   const pin = { lat: 52.29358, lon: -1.55378 }; // 84 Acacia Road, CV32 6EQ
+   const pin = { lat: 52.29358, lon: -1.55378 }; // (address comment removed — see commit a9364f6)
    ```
 
    Lock 5 (`locks.test.js:224-245`) walks `design-system/src` only and strips comments before

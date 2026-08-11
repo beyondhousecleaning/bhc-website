@@ -42,7 +42,7 @@ entry).
 
 - **Source:** `docs/goals.md` (PRD), confirmed in `docs/research/seo-audit-2026-08-06.md` (DOC,
   measurement-only, does not out-rank the PRD but corroborates it)
-- **Decision:** Do not relocate the GBP pin. Registered office 84 Acacia Road, Milverton, Royal
+- **Decision:** Do not relocate the GBP pin. Registered office (residential, Leamington Spa) is
   Leamington Spa, CV32 6EQ (geocoded 52.29358, −1.55378) remains the pin. Map-pack is a
   Warwickshire/Coventry-only win; all five new postcode areas (≥18.8 miles out) are treated as
   organic-only unless a second staffed premises with its own GBP is opened.

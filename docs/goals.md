@@ -61,7 +61,7 @@ Keeping Warwickshire rules out moving the pin. The Leamington pin is the **stron
 
 So: **keep the Leamington pin.** Map pack is winnable near it (Warwickshire/Coventry) and *not* winnable in the Black Country or Telford from one pin. To win map pack there you need a second genuinely staffed premises with its own GBP — otherwise accept organic-only in the new areas and treat map pack as a Warwickshire/Coventry win.
 
-✅ **VERIFIED 2026-08-06.** The pin is the registered office: **84 Acacia Road, Milverton, Royal Leamington Spa, CV32 6EQ** (`BEYOND HOUSE CLEANING LTD`, company 15995647; geocoded 52.29358, −1.55378). Review count also now known: **175 at 4.9★**.
+✅ **VERIFIED 2026-08-06.** The pin is the registered office: the registered office (residential; held at Companies House, deliberately not written out in this public repo) (`BEYOND HOUSE CLEANING LTD`, company 15995647; geocoded 52.29358, −1.55378). Review count also now known: **175 at 4.9★**.
 
 Measured straight-line distances confirm the call above — and the earlier estimates were all slightly over:
 

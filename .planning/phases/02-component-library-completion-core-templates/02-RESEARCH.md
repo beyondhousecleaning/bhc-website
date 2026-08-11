@@ -274,7 +274,7 @@ test('Lock 1: exactly one <h1> on every prerendered page', () => {
 ### Two encoding traps in the expectation table
 
 - **`&` renders as `&amp;`.** Twelve of the seventeen `<h1>`s contain *"Warwickshire & the West Midlands"*. In built HTML that is `Warwickshire &amp; the West Midlands`. [VERIFIED: probe built an `<h1>` with `&` and the artifact contains `&amp;`.] Either store the expectation in encoded form, or decode the extracted text before comparing. Do not discover this at execution time on twelve pages at once.
-- **The postcode matcher's `COMPACT` form is deliberately case-sensitive** to avoid matching lowercase build hashes, and both copies (`locks.test.js` and `check-html-locks.mjs`) carry a *"change both or neither"* comment. Phase 2 adds ~1,000 words of prose to each of 17 pages, which is the first time the `STREET_LINE` heuristic meets real copy at volume. Low risk (it requires a leading number, capitalised name words, **and** a thoroughfare noun) but non-zero — a Prose sentence like *"84 Acacia Road"* used as an illustrative example would trip it. Worth a note in the plan rather than a change.
+- **The postcode matcher's `COMPACT` form is deliberately case-sensitive** to avoid matching lowercase build hashes, and both copies (`locks.test.js` and `check-html-locks.mjs`) carry a *"change both or neither"* comment. Phase 2 adds ~1,000 words of prose to each of 17 pages, which is the first time the `STREET_LINE` heuristic meets real copy at volume. Low risk (it requires a leading number, capitalised name words, **and** a thoroughfare noun) but non-zero — a Prose sentence like *"84 Sycamore Road"* used as an illustrative example would trip it. Worth a note in the plan rather than a change.
 
 ### Where each of the 14 deltas belongs
 

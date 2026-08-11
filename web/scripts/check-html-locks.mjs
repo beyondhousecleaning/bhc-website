@@ -121,7 +121,7 @@ const findPostcode = (text) =>
   capitalised name words, then a thoroughfare type. Case-sensitive on the name
   words on purpose — requiring the capitalisation is what keeps it off ordinary
   prose like "3 bedroom deep clean" while still catching "12 High Street" and
-  "84 Acacia Road", which is the exact case SC-2d's own comment named and then
+  "84 Sycamore Road", which is the exact case SC-2d's own comment named and then
   did not check.
 
   ASSUMPTION A1, recorded at the point of risk. Phase 2 adds roughly a thousand
@@ -129,7 +129,7 @@ const findPostcode = (text) =>
   meets real copy at volume, and Phase 3 multiplies that by ~336. A match needs
   a leading number, capitalised name words AND a thoroughfare noun all in
   sequence, so the false-positive risk is low but not zero: an illustrative
-  sentence like "84 Acacia Road" in body copy would trip it. That is why the
+  sentence like "84 Sycamore Road" in body copy would trip it. That is why the
   failure message below prints the MATCHED LINE — a false positive must be
   diagnosable in seconds, not bisected.
 */
@@ -689,7 +689,7 @@ test('SC-2d: the street-address heuristic matches the line its comment names', (
   // would read green forever.
   for (const line of [
     '12 High Street',
-    '84 Acacia Road',
+    '84 Sycamore Road',
     '1a Mill Lane',
     '<p class="bhc-footer__area">Serving 7 Church Crescent and nearby</p>',
     '221 Baker Street, London',
