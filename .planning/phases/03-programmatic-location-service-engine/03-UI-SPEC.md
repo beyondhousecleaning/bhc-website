@@ -39,8 +39,8 @@ budget, focus overrides and copy voice are all inherited **verbatim** and are no
 where Phase 3 uses them differently.
 
 What this document adds is the layer Phase 2 explicitly deferred (§9.6: *"Locations index, town
-hub and combo (Phase 3)"*): **three templates, one data contract, and the rules that keep ~350
-generated pages from reading as ~350 copies of one page.**
+hub and combo (Phase 3)"*): **three templates, one data contract, and the rules that keep 406
+generated pages from reading as 406 copies of one page.**
 
 Three things make this phase different from Phase 2 and they drive most of what follows:
 
@@ -83,8 +83,8 @@ no build step; shadcn components are Radix-backed **client** components and `che
 SC-4g asserts every client module resolves inside `/node_modules/next/`; and a preset would fork
 the locked token layer (D-04).
 
-Phase 3 makes that answer *stronger*, not weaker. A single client boundary would now cost ~350
-pages of hydration on a marketing site whose entire performance case is that seventeen routes
+Phase 3 makes that answer *stronger*, not weaker. A single client boundary would now cost 426
+routes' worth of hydration on a marketing site whose entire performance case is that seventeen routes
 added **zero** client JavaScript (02-15-SUMMARY: 129.8 KB, unchanged from the one-page scaffold).
 
 `Tool: none`. Registry safety gate: not applicable (§6).
@@ -100,8 +100,12 @@ Decorative SVG takes `aria-hidden="true" focusable="false"`; a meaningful SVG ta
 ## 2. Spacing Scale
 
 Inherited whole from `02-UI-SPEC.md` §2 — every value a multiple of 4, every value already in
-`tokens.css`. Phase 3 introduces **no new spacing value**. The three places it uses the scale in a
-way Phase 2 did not:
+`tokens.css`. Phase 3 introduces **no new spacing value**, and it declares touch targets the way
+the shipped CSS already does — `min-height: 44px`, the idiom used in all six existing cases.
+**Padding alone does not reach it**: `padding-block: var(--bhc-space-3)` on `--bhc-text-sm`
+computes to 12 + 12 + (14 × 1.35) = **42.9px** at the mobile end of the clamp, which is under the
+target and looks like it is over it. The three places Phase 3 uses the scale in a way Phase 2 did
+not:
 
 | Element | Token | Value | Why |
 |---|---|---|---|
@@ -110,9 +114,8 @@ way Phase 2 did not:
 | Separation between two stacked InterlinkBlocks | `--bhc-space-12` | 48px | Plus a `1px solid var(--bhc-line)` rule — §9.5 |
 
 **Fixed dimensions** — unchanged: header 64/72px, StickyCallBar 64px + safe area, minimum touch
-target **44 × 44px**, prose measure 68ch. The jump-links row on `/locations` (§9.3) is a run of
-links and each one must meet the 44px target: `padding-block: var(--bhc-space-3)` gives 44px at
-`--bhc-text-sm`.
+target **44 × 44px**, prose measure 68ch. Both new link classes in §7.5 — the jump-links row and
+the per-group back link on `/locations` — declare it as `min-height: 44px`, not as padding.
 
 **Breakpoints:** `480 / 768 / 1024 / 1280`, `min-width` only. The known pre-existing 900px and
 720px deviations in `.bhc-hero__grid` / `.bhc-footer__grid` stay untouched (Phase 5 normalises
@@ -147,7 +150,7 @@ structural roles:
 | `InterlinkBlock` link label / meta | `--bhc-text-base` / `--bhc-text-sm` | Shipped |
 
 **Never a `<div>` or `<span>` styled at heading size.** That pattern is the live-site bug that
-cost 101 of 115 pages their `<h1>`. At ~350 generated pages one templated mistake is ~350
+cost 101 of 115 pages their `<h1>`. At 406 generated pages one templated mistake is 406
 mistakes.
 
 **Outline discipline at scale.** Every generated page is exactly one `<h1>` and a **flat run of
@@ -205,6 +208,19 @@ it and the adjacency lock will not catch a violation involving one.
 immediately before or after a `tone="paper"` `SectionBand`. Two InterlinkBlocks may sit back to
 back (that is design-system.md §3.5's own layout) and are separated by a hairline — §9.5.
 
+> **This breaks eight pages that ship today, and Phase 3 is what breaks them.** Measured in
+> `web/app/page.jsx` and `web/app/services/[service]/page.jsx`, both end
+> `tint (ProcessSteps) → warm (ReviewRail) → paper (FAQAccordion) → navy (CTABand)`. Delta 16
+> requires an InterlinkBlock on Home and on every service page, and the only slot for it — after
+> the rail, before the FAQ, which is where `design-system.md` §3.2 and §3.1 both put it — lands a
+> `paper` interlink immediately above a `paper` FAQ band.
+>
+> **Fix: the FAQ band on Home and all seven service pages moves `paper` → `tint`**, giving
+> `warm → paper (interlink) → tint → navy`. That is exactly what §9.4 and §9.5 already specify for
+> the new templates; the eight existing pages simply have to be brought into line in the same
+> change. One prop per file. Delta 27 catches it if it is forgotten, but a lock that fires on eight
+> pages the moment the phase's headline feature lands is a poor way to find out.
+
 ---
 
 ## 5. Copywriting Contract
@@ -244,8 +260,23 @@ Phase 2 shipped that pattern **incompletely**: `services.js:874` still sets
 `h1: 'Post-Construction Cleaning in ${AREA_LONG}'`, and `standard-home-cleaning`'s `<h1>` is
 *Regular House Cleaning* while its concept is *domestic cleaning*. As it stands the same concept
 would ship two different nouns depending on which template you land on. **One concept, one noun,
-every template** — the table below is the single source, and the four disagreeing service-page
-`<h1>`s are corrected in this phase.
+every template** — the table below is the single source, and four `services.js` records are
+corrected in this phase.
+
+**The correction is to `h1`, `crumb` and `title`, not to `h1` alone.** Measured in source, the
+disagreements are wider than the heading:
+
+| Record | `h1` | `crumb` | `title` subject |
+|---|---|---|---|
+| `standard-home-cleaning` → `domestic-cleaning` | Regular House Cleaning → **Domestic Cleaning** | Regular House Cleaning → **Domestic Cleaning** | Regular Cleaning → **Domestic Cleaning** |
+| `move-out-cleaning` → `end-of-tenancy-cleaning` | Move-Out Cleaning → **End of Tenancy Cleaning** | Move-Out Cleaning → **End of Tenancy Cleaning** | Move-Out Cleaning → **End of Tenancy** |
+| `short-term-rental-cleaning` | Short-Term Rental Cleaning → **Holiday Let Cleaning** | Short-Term Rental Cleaning → **Holiday Let Cleaning** | Rental Cleaning → **Holiday Lets** |
+| `post-construction-cleaning` | Post-Construction Cleaning → **Builders Clean** | already correct | already correct |
+
+`services.js`'s own header states that each `crumb` "matches the `nav.js` label exactly", so
+**`nav.js`'s `NAV` children and `FOOTER_COLUMNS` Services labels change with them** — plus a
+seventh entry each for `/services/apartment-cleaning`. Leave the crumbs alone and one-concept-one-noun
+ships broken in the breadcrumb, which is the one place a reader sees the taxonomy as a taxonomy.
 
 #### The service-concept table — all eight D14 concepts
 
@@ -310,8 +341,21 @@ the cannibalisation problem below. Every town carries exactly **six**, so
 > **Consequence recorded honestly:** the 18 legacy Warwickshire towns carry no
 > `short-term-rental` combo, so Stratford-upon-Avon — a genuine holiday-let market — is served for
 > that job only by the region-wide `/services/short-term-rental-cleaning` page. Adding it to the
-> legacy towns later is **purely additive**: 18 new URLs, no redirect, no D2 exposure. It is a
-> post-cutover batch decision, not a Phase 3 one.
+> legacy towns later is **additive as far as D2 is concerned**: 18 new URLs, no redirect, no
+> preserved-URL exposure.
+>
+> It is **not** free against two invariants this document sets, and both are written to be
+> relaxed rather than to forbid it:
+>
+> - §7.1's *"`serviceCount` is always 6"* becomes *"`serviceCount` is the length of that town's
+>   own service list"* — which is what `TownCard` already accepts, and the constant is a
+>   convenience, not a contract.
+> - §11.1's atomicity rule (*"all six of its combo pages, or it does not publish"*) is about a
+>   town's **first** publication. Adding a seventh service to an already-published town is a
+>   second, independent atomic unit: all 18 or none, so no town ends up with a service its
+>   neighbours lack.
+>
+> Neither is a prohibition. A later batch that reads them as one has misread them.
 
 
 ### The `<h1>` deck — this is Success Criterion 4
@@ -325,8 +369,32 @@ the cannibalisation problem below. Every town carries exactly **six**, so
 - **No adjective.** Arbor Trail prefixes theirs (*Trusted Move Out Cleaning in Taylor, MI*) and the
   live BHC site's whole `<h1>` catastrophe was adjective fragments. The variety lives in the
   eyebrow, which is decoration and renders as a `<p>`.
-- **Combo eyebrow** = the service's shipped Phase 2 eyebrow (`Top to bottom, once`,
-  `Get the deposit back`, …). Seven strings over 348 pages is acceptable for three decorative words.
+- **Combo eyebrow** — one per combo service. Five come across from `services.js`; **two must be
+  authored**, because the rename leaves two concepts without one. `apartment-cleaning` has never
+  had a service record, and `move-out`'s *Get the deposit back* migrates with the record it sits in
+  to `end-of-tenancy`, leaving the `move-out` concept — 18 combo pages, no `services.js` record —
+  with nothing:
+
+  | Combo service | Eyebrow | Source |
+  |---|---|---|
+  | `domestic-cleaning` | Weekly or fortnightly | `services.js`, migrates with the rename |
+  | `deep-cleaning` | Top to bottom, once | `services.js`, unchanged |
+  | `end-of-tenancy-cleaning` | Get the deposit back | `services.js`, migrates with the rename |
+  | `post-construction-cleaning` | After the builders leave | `services.js`, unchanged |
+  | `short-term-rental-cleaning` | Guest-ready between stays | `services.js`, unchanged |
+  | `apartment-cleaning` | **Flats and maisonettes** | **authored here** |
+  | `move-out-cleaning` | **Before you hand over the keys** | **authored here** — and deliberately not a deposit line, which now belongs to end-of-tenancy |
+
+  Seven strings over 348 pages is acceptable for three decorative words.
+
+> **Combo metadata does not live in `services.js`, and this is why.** Two of the seven combo
+> services have no service-page record — `move-out` (18 combo pages, no page) — while
+> `move-in-cleaning` has a record and no combos. Reading combo copy out of `services.js` therefore
+> has no home for one and a dead entry for the other. **The seven combo services are their own
+> table**, `COMBO_SERVICES` in `web/content/towns.js`, keyed by combo slug and carrying the display
+> noun, the title noun, the eyebrow, the description subject and an optional `servicePage` href.
+> `services.js` keeps the seven service-page records. The two tables agree on nouns because both
+> read §5's concept table, and a module-load guard asserts it — the `reviewsForService` idiom.
 - **Town hub eyebrow** = the town's county (`Warwickshire`, `Shropshire`). One word, true, and the
   only place the county appears above the fold.
 - **Locations index** uses `Hero align="centered"` with no image, and its `<h1>` carries neither a
@@ -357,6 +425,7 @@ Phase 2's deck, extended. Rows marked **new** are authored here.
 | InterlinkBlock `nearby` (combo) | {Service} in nearby towns *(geo.js default, unchanged)* |
 | InterlinkBlock `nearby` (town hub) | **new** — Towns near {Town} |
 | InterlinkBlock on a service page | **new** — Towns we cover for {service noun} |
+| InterlinkBlock on `/` — the locations teaser | **new** — Towns we cover |
 | Town hub service grid | **new** — Cleaning services in {Town} |
 | Combo "what's included" | **new** — What's included |
 | Locations index, per county | **new** — {County} *(the county name alone)* |
@@ -364,7 +433,7 @@ Phase 2's deck, extended. Rows marked **new** are authored here.
 > **`What Warwickshire customers say` becomes `What our customers say`, sitewide.** Plan 02-16
 > established that **no review in `reviews.js` carries a town** and that none may be invented. The
 > Phase 2 heading is a claim the data cannot support, and on a Telford or Market Drayton page it is
-> simply false. One heading, honest on all ~350 pages. This is a two-word change to Home and the
+> simply false. One heading, honest on all 414 pages that carry a rail. This is a two-word change to Home and the
 > six service pages; no lock asserts `<h2>` text, so it is safe.
 
 ### Titles and meta descriptions — measured, not patterned
@@ -530,7 +599,14 @@ Two call-site rules:
 
 1. **`nearestTowns` is called with the published town array, never the full one** (§11). This is
    the single line that makes batched rollout safe.
-2. **The `meta` on nearby links is the destination town's county, not the distance.** `geo.js`'s
+2. **`buildInterlinks` reads `town.region` as the URL segment — which `towns.js` calls
+   `urlRegion`.** `geo.js` builds `/location/${town.region}/${town.slug}/${s.slug}`, while
+   `TownCard.region` is the **display county**. The two props share a name and mean opposite
+   things, and a `towns.js` row passed straight in yields `/location/undefined/...` on every link —
+   which delta 6 catches, but only after 406 pages of interlinks have been generated wrong.
+   **Every `geo.js` call site maps explicitly**, `{ ...town, region: town.urlRegion }`. Section 8.2's
+   two-region rule is the reason; this is the one line where it is easy to lose.
+3. **The `meta` on nearby links is the destination town's county, not the distance.** `geo.js`'s
    `buildInterlinks` currently formats `${miles.toFixed(1)} miles away`; that is fine at 1.7 miles
    and actively harmful at 46.2 (Telford), where it advertises how far away we are on a page whose
    entire job is to read as local. The geography stays in the **ordering**, which is where SC-4
@@ -585,8 +661,8 @@ component prop"* — is the right shape for all three. Each is one declaration b
 
 | Class | Declares | Used by |
 |---|---|---|
-| `.bhc-jump-links` | a wrapped `<ul>` of anchor links, gap `--bhc-space-2`, each link `padding-block: var(--bhc-space-3)` for the 44px target, `--bhc-text-sm`/600 | `/locations` |
-| `.bhc-town-group` | `+ .bhc-town-group { margin-top: var(--bhc-space-12) }`, plus `.bhc-town-group__back` — `--bhc-text-sm`, `--bhc-action-hover`, `margin-top: var(--bhc-space-4)`, 44px touch target | `/locations` |
+| `.bhc-jump-links` | a wrapped `<ul>` of anchor links, gap `--bhc-space-2`, `--bhc-text-sm`/600, each link `display: inline-flex; align-items: center; min-height: 44px` | `/locations` |
+| `.bhc-town-group` | `+ .bhc-town-group { margin-top: var(--bhc-space-12) }`, plus `.bhc-town-group__back` — `--bhc-text-sm`, `--bhc-action-hover`, `margin-top: var(--bhc-space-4)`, `display: inline-flex; align-items: center; min-height: 44px` | `/locations` |
 | `.bhc-interlink + .bhc-interlink` | `border-top: 1px solid var(--bhc-line); padding-top: var(--bhc-space-12)` | the combo page's stacked pair |
 
 The third is the hairline `design-system.md` §3.5 draws above and below the interlink pair. None of
@@ -609,7 +685,7 @@ phase would be tempted:
 | A lazy-loaded static map | Needs IntersectionObserver → client boundary; and a map of the service area is a picture of where the business is (D4) | Nothing. §13-N |
 
 Navigation remains plain `<a href>`, no `next/link`. Accepted cost: no prefetch. Accepted benefit:
-the JS budget stays flat as the page count goes 18 → ~350. Every link-bearing component still takes
+the JS budget stays flat as the built-route count goes 18 → 426. Every link-bearing component still takes
 `as?: ElementType` as the one-line escape hatch.
 
 ### 8.2 The towns data file — SC-1
@@ -650,7 +726,7 @@ One module, `web/content/towns.js`, in the `site.js` / `services.js` house style
 **No Phase 3 template renders `QuoteFormEntry`, and none adds a `tel:` link of its own.** All three
 sit at 3 of 4. Conversion on these pages runs through the Hero actions and the `CTABand`, which is
 also what Arbor Trail does (every CTA converges on one destination). This leaves exactly one `tel:`
-slot for Phases 4–5 across ~350 pages, which is the right amount of headroom to leave behind.
+slot for Phases 4–5 across all 426 routes, which is the right amount of headroom to leave behind.
 
 ---
 
@@ -714,6 +790,8 @@ the one town hub the live site has, and the one hub this phase does **not** crea
 | New locations index | 1 |
 | New service page (`/services/apartment-cleaning`, §5) | 1 |
 | **New pages** | **317** |
+| **Built routes after this phase** — 18 + `/services/apartment-cleaning` + `/locations` + 58 hubs + 348 combos | **426** |
+| **of which generated** from `towns.js` — 58 hubs + 348 combos | **406** |
 
 The roadmap's "~56 towns / ~336 combos / ~241 new pages" is an estimate made before the post-town
 list was crossed with the frozen slug set; **58 / 348 / 317** is the derived figure and §11.2's
@@ -878,7 +956,7 @@ its town hub = **~11**, matching `design-system.md`'s design figure.
   what stops 348 pages blocking on photography.
 - `AggregateRating` / `Service` / `LocalBusiness` schema beyond what already ships — Phase 5.
   `RatingBadge.emitSchema` stays **off**; turning it on changes the JSON-LD block counts
-  `PAGE_EXPECTATIONS` asserts, now across ~350 routes.
+  `PAGE_EXPECTATIONS` asserts, now across 426 routes.
 
 ---
 
@@ -905,7 +983,7 @@ column that matters is the last one: what a pair of pages actually shares.
 | 2 | Opening prose (`h2` + 2 `p`) — the town's own character, incl. its housing stock | 180 | **town** | 58 | never |
 | 3 | Service detail (`h2` + `p` + `ul`) | 300 | **service × variant `a`** | 7 × 8 = 56 | iff same `a` — p ≈ 1/8 |
 | 4 | How the job runs (`h3` + `p`) | 260 | **service × variant `b`** | 7 × 8 = 56 | iff same `b` — p ≈ 1/8 |
-| 5 | County note (`p`) | 90 | **service × county** | 7 × 7 = 49 | iff same county — p = 0.240 |
+| 5 | County note (`p`) | 90 | **service × county** | **45** — 5 sitewide services × 7 counties, plus `move-out` × the 5 counties its 18 towns span and `short-term-rental` × the 5 its 40 towns span | iff same county — p = 0.240 |
 | 6 | Local coverage (`h2` + `p`), from `localities` | 130 | **town**, factual | 58 | never |
 | | **Counted prose** | **995** | | **~280 fragments** | |
 | — | *What's included* (`ul`) | *150* | *service* | *7* | **excluded from both the word count and the similarity corpus** |
@@ -913,11 +991,32 @@ column that matters is the last one: what a pair of pages actually shares.
 **The composition index is what bounds the worst case, and it is provable rather than hoped for.**
 Each town carries a pair `(a, b)` with `a, b ∈ 0..7`, and **the map town → (a, b) is injective**
 — 58 towns into a 64-cell grid. Two distinct towns therefore differ in at least one of `a` and
-`b`, so **no pair of pages can share both block 3 and block 4.** One assertion in `towns.js` at
-module load (§12 delta 29) is the whole enforcement.
+`b`, so **no pair of pages can share both block 3 and block 4.**
+
+Injectivity alone bounds the *worst* pair. It does not bound the *mean*, and the two are not the
+same problem: an injective-but-clustered assignment — say `(i mod 8, ⌊i/8⌋)` over the
+distance-ordered list — puts the 18-town `move-out` cohort's 18 towns across only three `b` values,
+which measures **E[J] = 0.078** against delta 23's 0.08 mean ceiling. Injective, provable, and one
+rounding error from red.
+
+**Use the Latin-square form**, over the distance-ordered index `i`:
+
+```
+a = i mod 8
+b = (⌊i / 8⌋ + a) mod 8
+```
+
+Injective by construction (for a fixed `a`, `b` runs over all eight values as `⌊i/8⌋` does), and
+**balanced inside any contiguous prefix**, which is exactly what a batch is. Measured over the
+real 58: max 8 towns per `a` and per `b`; over the first 18, max 3 each; the `move-out` cohort's
+mean falls to **E[J] = 0.048**, and the all-58 cohort to 0.044.
+
+Both properties are asserted in `towns.js` at module load (§12 delta 29) — the formula is the
+recommended default, the assertion is the gate, and the remedy for a failure is to permute the
+ordering rather than to widen the ceiling.
 
 Authoring cost: 58 town openers + 58 locality paragraphs + 58 hub-owned blocks + 56 + 56 service
-variants + 49 county notes ≈ **79,000 words**. Hand-writing 258 new combos and 57 hubs at the
+variants + 45 county notes ≈ **81,000 words**. Hand-writing 258 new combos and 57 hubs at the
 depth bar would be ~240,000. Neither number is small; the point of stating them is that the
 mechanism is a 3× saving on real prose, not a 12× saving on mad-libs.
 
@@ -945,8 +1044,24 @@ depth bar be met without writing anything.
 | Template | Counted prose | Bar | Margin |
 |---|---|---|---|
 | Combo | **995** | ≥ 800 (Lock 11 / SC-4) | +195 |
-| Town hub | **605** | ≥ 600 | +5 |
+| Town hub | **645** | ≥ 600 | +45 |
 | `/locations` | ~340 | ≥ 300 | +40 |
+
+The hub's figure needs the same arithmetic as the combo's, because delta 22 enforces it on 57
+generated pages and a +5 margin is not a margin:
+
+| Block | Words | Axis | Shared with |
+|---|---|---|---|
+| Hero lead | 35 | town | nothing |
+| The town, and us in it (`h2` + 2 `p`) | 260 | **town**, hub-owned | nothing |
+| Which clean do you need (`h2` + 2 `p`) | 220 | **town**, hub-owned | nothing |
+| Local coverage (`h2` + `p`), from `localities` | 130 | **town**, factual | that town's own 6 combos |
+| **Counted prose** | **645** | | |
+
+The hub is deliberately **not** a reuse of its combos' opening block. A hub whose text is a subset
+of the six pages beneath it is the worst possible signal for the page meant to be the canonical
+town entity. Sharing only the locality paragraph puts a hub against its own combo at
+**J = 130 / (645 + 995 − 130) = 0.086**, and against another town's hub at **0.000**.
 
 **Similarity**, with `W = 995` and Jaccard `J = S / (2W − S)` for two pages sharing `S` words of
 contiguous prose. Every row below is derived from the table in §10.2, not estimated:
@@ -967,7 +1082,7 @@ contiguous prose. Every row below is derived from the table in §10.2, not estim
 |---|---|---|---|
 | All-pairs median | ≤ 0.06 | **0.00** (most pairs differ in both town and service) | Live site 0.049 — never worse than the thing we are scaling |
 | Within-service, across-towns median | ≤ 0.10 | **0.00** — 58% of such pairs share nothing | Arbor Trail's overall median is 0.100. Never worse than the competitor |
-| Within-service, across-towns **mean** | ≤ 0.08 | **0.048** | The mean is the honest summary when the median is zero |
+| Within-service, across-towns **mean** | ≤ 0.08 | **0.044** all-58 · **0.048** the 18-town `move-out` cohort | The mean is the honest summary when the median is zero. Both figures assume the balanced assignment in §10.2; a clustered one measures 0.078 on the small cohort |
 | **Worst pair, any two generated pages** | **≤ 0.35** | **0.244** | Phase 2's service pages measured 0.327; hold what already ships, not the 0.6 ceiling |
 | Town-masked delta on the medians | ≤ ±0.02 | — | **The anti-mad-libs gate.** If pages were variable substitution, masking the town would collapse them toward identity and this moves a lot |
 
@@ -976,7 +1091,8 @@ the margin that lets a writer vary a fragment's length without the gate turning 
 nobody can act on.
 
 Cost: 348 combo pages is 60,378 pairs. Shingle sets over ~995 words each is a few seconds in node.
-If it ever exceeds 60s in CI, the within-service cohorts (9,918 pairs) run exhaustively and the
+If it ever exceeds 60s in CI, the within-service cohorts (**9,198** pairs — 5 × C(58,2) + C(40,2) +
+C(18,2), the split sets) run exhaustively and the
 cross-service population samples at 10% — never the reverse, because the within-service cohort is
 the one that can actually collide.
 
@@ -1099,8 +1215,8 @@ design-system locks. These are the deltas Phase 3 cannot ship without.
 |---|---|---|
 | 16 | **`INTERLINK_LOCK_ACTIVE` is not a boolean flip.** Replace it with a per-template rule: an InterlinkBlock is **required** on `/`, **every** `/services/*`, `/locations/*` and `/location/*`, and asserted **zero** on the ten utility routes, `/locations` and `/_not-found` | The roadmap says "Phase 3 flips it". Setting `true` asserts `n >= 1` on **every** app page and turns twelve correct pages red. The self-restoring inverse did its job — it forces the flip — but the flip is a rewrite. **Note what is *not* scoped:** `/services/move-in-cleaning` has zero combos, and the tempting fix is to exempt it. It is not exempted — its block links to the 8 nearest published **town hubs** instead (§5). Scoping the *destination set* rather than the *requirement* keeps Lock 6 a blanket rule, which is what design-system.md §4 actually says |
 | 17 | **Title assertions:** every title ≤ 60; every combo and hub title contains its town; a title omits the brand suffix **only** where adding it would exceed 60 | §5's measured fallback chain. Without assertion 3, titles silently lose the brand |
-| 18 | **`PAGE_EXPECTATIONS` becomes per-template.** A literal for the 18 static routes (unchanged), plus a template-keyed expectation resolver for the generated ones asserting `<h1>` **shape**, breadcrumb depth, JSON-LD block count and `reviewCards` | A route-keyed literal cannot hold ~350 entries, and `expectationsFor()` currently **throws** on an unlisted route — so the first generated page fails the harness before it fails anything else. The harness's own rule still binds: an expectation may not be read from the code it checks |
-| 19 | **At most 60 internal links per built page** | The anti-link-farm guard. A combo page measures ~45; the cap is the distance between "a hub" and "an SEO footer dump" |
+| 18 | **`PAGE_EXPECTATIONS` becomes per-template.** A literal for the **20** static routes — 18 today plus `/services/apartment-cleaning` and `/locations`, both static — plus a template-keyed expectation resolver for the generated ones asserting `<h1>` **shape**, breadcrumb depth, JSON-LD block count and `reviewCards` | A route-keyed literal cannot hold 426 entries, and `expectationsFor()` currently **throws** on an unlisted route — so the first generated page fails the harness before it fails anything else. The harness's own rule still binds: an expectation may not be read from the code it checks |
+| 19 | **At most 60 internal links per built page** | The anti-link-farm guard. A combo page measures ~47; the cap is the distance between "a hub" and "an SEO footer dump" |
 | 20 | **The `{noun} in {town}` phrase appears in exactly one heading** on every combo page | Directly asserts §5's fix for the flaw the Arbor Trail teardown names |
 | 21 | **Delta 8 becomes a template rule:** `data-bhc-photo-state="pending"` on `/`, every `/services/*` and every `/location/*`; zero on `/locations`, `/locations/*` and the utility routes | The current literal route list is seven entries. It is also the Phase 4 hand-off and must keep working at ~340 slider pages |
 | 22 | **Content-depth gate:** unique body words ≥ 800 (combo) / 600 (hub) / 300 (index), over authored prose only | Lock 11 / SC-4. The strip list in §10.3 is part of the assertion, not a detail |
@@ -1108,9 +1224,9 @@ design-system locks. These are the deltas Phase 3 cannot ship without.
 | 24 | **Redirect assertions:** the 90 preserved combo URLs resolve with **no** redirect; the 5 `coventry-south` URLs redirect **once**, to a 200; the four service redirects resolve once | SC-2 and SC-3 are both statements about HTTP, and nothing in the suite currently inspects a redirect |
 | 25 | **No postcode district in rendered output** — extend SC-2d's matchers to the district form (1–2 letters + 1–2 digits as a standalone token) | §5. Lock 5's full-postcode matchers do not catch `B62`, and `localities` data is one careless join away from publishing them |
 | 26 | **`EXPECTED_APP_ROUTES` floor raised per batch, as a hard-coded integer** | The harness's existing argument: without a floor the suite goes green by having less to check. It must **not** be derived from `PUBLISHED_TOWNS`, or it asserts only that the code agrees with itself |
-| 27 | **Band-adjacency assertion extended to treat `.bhc-interlink` as a `paper` band** | §4. The shipped extractor reads `bhc-section--*` modifiers only and is blind to the component that now appears on ~410 pages |
-| 28 | **The rendered county equals the `county` field, never `urlRegion`.** Specifically: no page whose `urlRegion` is `warwickshire` may render `Warwickshire` as its county unless `county === 'Warwickshire'`, asserted with the four known mismatches named (Banbury → Oxfordshire, Daventry → Northamptonshire, Evesham → Worcestershire, Solihull South → West Midlands) | §8.2's split is a rule with nothing behind it. Without this, 24 pages publish a false county — in the breadcrumb-adjacent hub eyebrow, the TownCard meta and the index grouping — and every existing lock reads green, because none of them knows the difference between a URL segment and a place |
-| 29 | **The town → `(a, b)` composition-index map is injective**, asserted in `towns.js` at module load | §10.2. This one assertion is the entire proof that the worst pair is 0.244 rather than 0.485. It is cheap, it runs before any page is built, and without it delta 23 becomes a lottery |
+| 27 | **Band-adjacency assertion extended to treat `.bhc-interlink` as a `paper` band** — with one exemption written into the assertion: **consecutive `.bhc-interlink` siblings do not violate adjacency**, since §4 and `design-system.md` §3.5 both specify the stacked pair and §7.5 supplies the hairline that separates them | §4. The shipped extractor reads `bhc-section--*` modifiers only and is blind to the component that now appears on ~415 of the site's 426 built routes |
+| 28 | **The rendered county equals the `county` field, never `urlRegion`.** Specifically: no page whose `urlRegion` is `warwickshire` may render `Warwickshire` as its county unless `county === 'Warwickshire'`, asserted with the four known mismatches named (Banbury → Oxfordshire, Daventry → Northamptonshire, Evesham → Worcestershire, Solihull South → West Midlands) | §8.2's split is a rule with nothing behind it. Without this, **29 pages** publish a false county: 24 combo pages (4 towns × 6 county notes), the 4 town hubs (the eyebrow), and `/locations` (the grouping and the TownCard meta). Every existing lock reads green, because none of them knows the difference between a URL segment and a place |
+| 29 | **The town → `(a, b)` composition-index map is (i) injective and (ii) balanced** — for the full set *and for each service cohort separately*, no single `a` value and no single `b` value carries more than `⌈n/8⌉ + 1` of that cohort's `n` towns. Asserted in `towns.js` at module load | §10.2. Clause (i) is the entire proof that the worst pair is 0.244 rather than 0.485. Clause (ii) is what keeps the **mean** inside delta 23's 0.08 — the 18-town `move-out` cohort is the small one, and a clustered-but-injective assignment measures 0.078 there. Both run before a single page is built, and without them delta 23 is a lottery |
 
 Carried forward and still open: WR-09 (footer copyright year frozen at build time), WR-11
 (`RatingBadge` does not clamp out-of-range input), CR-05 (`AggregateRating` attaches to an orphaned
@@ -1121,7 +1237,7 @@ entity — Phase 5).
 1. `reviewsForService` **guards its key set against `services.js` at module load**. The D14 service
    renames turn the build red until `reviews.js` is updated in the same change. That is the
    designed behaviour, not a bug.
-2. `check-budget.mjs` walks every route in the prerender manifest. At ~350 routes the worst page is
+2. `check-budget.mjs` walks every route in the prerender manifest. At 426 routes the worst page is
    still dominated by 150.7 KB of shared `woff2`; a combo page's ~1,150 rendered words add roughly 5 KB
    gzipped. Projected worst page ~305 KB against 1024 KB, JS unchanged at 129.8 KB against 500 KB.
    **The performance budget is not at risk in this phase** — but the figure should be recorded per
@@ -1140,13 +1256,13 @@ are one row in a data file.
 | B | Every visible county comes from `county`; only the route reads `urlRegion` | Four legacy towns (Banbury, Daventry, Evesham, Solihull South) sit under `/location/warwickshire/` and are not in Warwickshire. Reading the URL segment would publish a falsehood on 24 pages |
 | C | Town slugs are globally unique | `/locations/<town>` has no region segment. Verified: no collision in the 58-town set |
 | D | **Two six-service sets, not one.** Both carry `apartment`, `deep`, `domestic`, `end-of-tenancy` and `post-construction`; the sixth is `move-out` on the 18 legacy towns (frozen by D2) and `short-term-rental` on the 40 new ones | `move-out-cleaning` and `end-of-tenancy-cleaning` are one UK intent (audit §6). D2 freezes the 36 legacy pages that already compete; it does not require creating 40 more. `move-in-cleaning` is refused for the same reason — it would be a third page on the tenancy-transition intent. `post-construction` has the lowest overlap of what remains and already has a 1,100-word parent page |
-| E | **Five of the 95 frozen URLs do redirect** — the `coventry-south` set 301s to `south-coventry` | D2 says zero redirects for the 95; SC-3 says resolve the duplicate. Both cannot hold. SC-3 is the more specific and more recent instruction, and the alternative (keeping both) is the cannibalisation the requirement exists to fix. `south-coventry` survives because *South Coventry* is the most common rendering in the live titles (3 of 6 vs *Coventry (South)* 2 and *Coventry South* 1). **90 of 95 are untouched** |
+| E | **Five of the 95 frozen URLs do redirect** — the `coventry-south` set 301s to `south-coventry` | D2 says zero redirects for the 95; SC-3 says resolve the duplicate. Both cannot hold. SC-3 is the more specific and more recent instruction, and the alternative (keeping both) is the cannibalisation the requirement exists to fix. **It amends a locked Key Decision, so it is also section 14-5 for Sam to ratify.** `south-coventry` survives because *South Coventry* is the most common rendering in the live titles (3 of 6 vs *Coventry (South)* 2 and *Coventry South* 1). **90 of 95 are untouched** |
 | F | `apartment-cleaning` renders as **Flat Cleaning** | *Apartment* is on the banned-vocabulary list and is greped for in the content modules. The slug is frozen. Exactly the shipped `post-construction-cleaning` → *builders clean* precedent |
 | G | Nearby-town `meta` is the destination **county**, not the distance | `46.2 miles away` on a Telford page advertises the opposite of local. SC-4 requires geography in the **computation**; it does not require publishing a distance matrix. One optional `metaFor` callback on `buildInterlinks`, backwards compatible |
 | H | `/locations` is `Areas We Cover` in the nav and `Locations` in the breadcrumb | One destination, two labels. `Home / Areas We Cover / Stourport-on-Severn / End of Tenancy Cleaning` is three wrapped lines at 375px |
 | I | Three review cards on combo and hub pages, rotated by town | Matches the service pages. Six would be a third of the page's text drawn from a pool shared by 348 pages. Rotation is what stops 348 pages quoting the same three customers |
 | J | `ReviewRail.town` is **not used** and the heading is `What our customers say` **sitewide** | No review carries a town and none may be invented (02-16). The Phase 2 heading is false on any page outside Warwickshire |
-| K | No `QuoteFormEntry` and no fourth `tel:` on any Phase 3 template | The cap is 4 and is exactly met on two routes today. Three templates × ~350 pages is the wrong place to spend the last slot |
+| K | No `QuoteFormEntry` and no fourth `tel:` on any Phase 3 template | The cap is 4 and is exactly met on two routes today. Three templates × 406 generated pages is the wrong place to spend the last slot |
 | L | No `Hero.image` on any of the three templates | `image` is optional, the service pages already ship without one, there is no photography, and 348 hero images would put an LCP element on every generated page for no content |
 | M | The service breadcrumb stays **two** crumbs; `/services` is not built | Phase 2 §13-R promised the middle crumb "when an index exists" and meant a services index. Phase 3 builds the locations index. Recorded so the promise is not read as an unmet commitment |
 | N | **No static map** on the locations index, despite `design-system.md` §3.3 | Every provider is a third-party request under D-14; a lazy-loaded map needs an IntersectionObserver and therefore a client boundary (SC-4g); and a map of the service area is a picture of where the business is (D4) |
@@ -1156,7 +1272,8 @@ are one row in a data file.
 | R | Combo `<h1>`s carry no adjective | Arbor Trail prefixes theirs; the live BHC site's entire `<h1>` failure was adjective fragments. The eyebrow carries the variety and renders as a `<p>` |
 | S | The `move-out` / `end-of-tenancy` overlap is resolved **structurally** (the new towns do not get `move-out`), and only then editorially on the 36 frozen pages | An earlier draft proposed the editorial split alone. It is not a resolution: two textually dissimilar pages can be intent-identical, and delta 23 measures text — so it would report green on the problem it was invoked to solve. Not creating the pages is the only fix that holds, and it is the one irreversible decision in the phase |
 | U | `/services/apartment-cleaning` is built — the phase's one new static route | Without it, 58 towns' `apartment-cleaning` combos have no topical parent: audit §6's orphan defect, reproduced at larger scale by the phase meant to fix it. One page, `EXPECTED_APP_ROUTES` 18 → 19 |
-| V | Four shipped service-page `<h1>`s are corrected to match their concept's display noun | `services.js` renders *Post-Construction Cleaning* as an `<h1>` and *Builders Clean* everywhere else on the same page; *Regular House Cleaning* is the `<h1>` for the domestic concept. One concept, one noun — otherwise the same service ships two names depending on which template you land on |
+| V | Four `services.js` records have their `h1`, `crumb` **and** `title` nouns corrected, and `nav.js` / `FOOTER_COLUMNS` labels follow | `services.js` renders *Post-Construction Cleaning* as an `<h1>` and *Builders Clean* everywhere else on the same page; *Regular House Cleaning* is the `<h1>` and the crumb for the domestic concept. Correcting only the `<h1>` would leave three crumbs and two titles disagreeing — and `services.js`'s own header requires crumb and nav label to match |
+| Z | The seven combo services are their own `COMBO_SERVICES` table, not a read of `services.js` | `move-out` has 18 combo pages and no service record; `move-in` has a record and no combos. One table cannot serve both without a hole and a dead entry |
 | W | Each town carries an injective `(a, b)` composition index | It is the difference between a provable worst-case Jaccard of 0.244 and an unbounded one of 0.485. A design whose ceiling depends on two independent draws not coinciding is a design with no ceiling |
 | X | *What's included* is excluded from both the word count and the similarity corpus | It is service-owned and identical on every page carrying that service — the same class as ProcessSteps, FAQ answers and review quotes, all already excluded. Counted prose is 995 without it, so the ≥800 bar clears with 195 to spare |
 | Y | Batch 1 is 21 towns, not 19 | Nineteen produces 44 new pages, below SC-5's 50–100 floor. The two additions (Henley-in-Arden, Solihull) are the nearest unpublished post towns and the two that most deserve to index first |
@@ -1166,7 +1283,7 @@ are one row in a data file.
 
 ## 14. Needs Sam
 
-Four items. **None blocks planning or execution** — each ships a working default.
+Five items. **None blocks planning or execution** — each ships a working default.
 
 1. **The four service-slug 301s (SC-3) cannot be derived from D14 as written, and this is a
    roadmap defect rather than an open question.** D14's eight canonical concepts already contain
@@ -1194,7 +1311,7 @@ Four items. **None blocks planning or execution** — each ships a working defau
 
 2. **The satisfaction-guarantee wording** — still open from Phase 2 §14-1. Default shipped:
    *"We clean, you check. Not happy with something? Tell us and we'll put it right."* — no time
-   window, no re-clean commitment. It now renders on ~350 more pages, which raises the value of a
+   window, no re-clean commitment. It now renders on 406 more pages, which raises the value of a
    specific promise (e.g. a 24-hour re-clean) and the cost of a vague one.
 
 3. **`/customer-login` and `/gift-cards` destinations** — still open from Phase 2 §14-2, and now
@@ -1202,9 +1319,24 @@ Four items. **None blocks planning or execution** — each ships a working defau
    page for the same route; at cutover each becomes a link from a page to itself, and delta 6 never
    inspects an absolute URL so CI stays green while both are wrong).
 
-4. **Analytics** — still open from 01-CONTEXT.md. Phase 3 takes the page count from 18 to ~350.
-   Retrofitting a tag manager under D-14's 50 KB third-party rule gets harder, not easier, from
-   here. Phase 3 ships none.
+4. **Analytics** — still open from 01-CONTEXT.md. Phase 3 takes the built-route count from 18 to
+   **426**. Retrofitting a tag manager under D-14's 50 KB third-party rule gets harder, not easier,
+   from here. Phase 3 ships none.
+
+5. **D2 needs a one-line amendment, and only Sam can make it.** PROJECT.md's Key Decisions table
+   records D2 as *"Keep existing URL pattern, **zero redirects** for 95 live pages"*. Section 13-E
+   ships **five** — the `coventry-south` set, 301'd to `south-coventry` — because SC-3 requires the
+   duplicate resolved and the two instructions cannot both hold.
+
+   The reasoning is in 13-E and this contract believes it is right: SC-3 is the more specific and
+   more recent instruction, the alternative is the keyword cannibalisation the requirement exists
+   to fix, and **90 of the 95 are untouched**. But D2 is Sam's decision in his own project
+   document, and a phase spec should not amend one silently.
+
+   **Default shipped:** the five redirects, with delta 24 asserting that exactly those five
+   redirect and the other 90 resolve at 200 with no hop — so a 91st is a red build, not a
+   discovery. One line from Sam ratifies it; a "no" costs one data-file change and leaves the
+   Coventry cannibalisation for a later phase to carry.
 
 Not for Sam, tracked elsewhere: before/after originals (SC-3's placeholder is exactly why this
 never gates a page); the logo SVG and final typeface (Claude Design, both with working defaults
