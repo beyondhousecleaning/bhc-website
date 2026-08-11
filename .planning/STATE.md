@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: awaiting-human-checkpoint
-stopped_at: 02-15-PLAN.md task 2 — blocking human-verify checkpoint (12 visual + keyboard checks)
-last_updated: "2026-08-10T13:49:33.491Z"
-last_activity: 2026-08-10
+stopped_at: 02-15-PLAN.md task 2 — blocking human-verify checkpoint (12 visual + keyboard checks); 02-16 reviews work complete on top of it
+last_updated: "2026-08-11T14:50:00.000Z"
+last_activity: 2026-08-11
 progress:
   total_phases: 6
   completed_phases: 1
@@ -26,13 +26,23 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 15 of 15 — PAUSED at a blocking human checkpoint
-Status: 02-15 task 1 COMPLETE (all four Success Criteria proven against build output; `npm run verify`
-        exit 0 at 20 + 31 tests; CI run 31385409769 green on branch head c68f520 for both required
-        checks). 02-15 task 2 is a `checkpoint:human-verify` and has NOT been answered — the twelve
-        visual and keyboard checks in 02-15-SUMMARY.md need Sam. The phase is NOT verified.
+Plan: 15 of 15 — PAUSED at a blocking human checkpoint; 02-16 (unplanned) landed on top
+Status: 02-15 task 1 COMPLETE (all four Success Criteria proven against build output). 02-15 task 2
+        is a `checkpoint:human-verify` and has NOT been answered — the twelve visual and keyboard
+        checks in 02-15-SUMMARY.md still need Sam. The phase is NOT verified.
         `www.beyondhousecleaning.com` still on Webflow, untouched.
-Last activity: 2026-08-10
+
+        **02-16 (2026-08-11, no PLAN.md — Phase 4 work pulled forward at Sam's request):** eighteen
+        real, verbatim Google reviews now render as server HTML on seven routes (six cards on `/`,
+        three on each service page) from `web/content/reviews.js`. The withdrawn `Read Our Reviews`
+        CTA is restored and resolves. Audit a3 and the content half of b5 are closed. `npm run
+        verify` exit 0 at **20 + 37** tests (was 20 + 31); JS unchanged at 129.8 KB, worst page
+        298.4 -> 299.4 KB. NOT yet pushed or CI-run at the time of writing — 02-15's checkpoint is
+        still the phase gate.
+        When re-running 02-15's twelve visual checks, note two are now different: the home page has
+        a seventh band (the review rail, `warm`, between ProcessSteps and the FAQs) and the trust
+        band has a `Read Our Reviews` action under it.
+Last activity: 2026-08-11
 
 Progress: [█████████░] 93%
 
@@ -74,6 +84,7 @@ Progress: [█████████░] 93%
 | Phase 02 P12 | 55min | 3 tasks | 3 files |
 | Phase 02 P13 | 52min | 3 tasks tasks | 3 files files |
 | Phase 02 P15 | 18min | 1 of 2 tasks tasks | 0 files files |
+| Phase 02 P16 | 95min | 5 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -167,6 +178,16 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 02-15: the phase-start budget baseline is NOT comparable to the phase-end figure — WR-06 removed the 38.7 KB noModule polyfill from the JS number and WR-05 added raw woff2 to the page number, both inside Phase 2; the app's modern JS is unchanged from the one-page scaffold
 - [Phase ?]: 02-15: all four ROADMAP Phase 2 Success Criteria proven against build output — 22 four-file components, 18 static app routes each with exactly one h1 (incl. the four previously-headless utility pages), data-bhc-photo-state=pending on exactly 7 pages with two labelled role=img panels, and zero FAQPage occurrences while closed FAQ answers still ship in the HTML
 - [Phase ?]: 02-15: CI run 31385409769 is green on branch head c68f520 for BOTH required checks (locks 6s, build 20s); ruleset 20595020 re-read live — active, contexts exactly [locks, build], strict true, bypass_actors empty
+- [Phase 02]: 02-16: the review aggregate is the PUBLISHED 4.9/175, never recomputed — the 166 extracted reviews average 4.98 because the widget only carries reviews that HAVE comment text, so a recomputed mean overstates the rating against what Google shows; REVIEW_AGGREGATE re-exports site.js RATING so there is still exactly one of it
+- [Phase 02]: 02-16: the 320-char quote cap is honoured by SELECTION, not truncation — every shipped quote already fits (271 max, 90 min), so a whole review reaches each card and no ellipsis is ever authored; that excluded the only review naming a town
+- [Phase 02]: 02-16: review text is quoted VERBATIM including typos and doubled spaces; the only repair was re-decoding the extract as UTF-8 (it had been read a byte at a time), and surnames are cut to an initial per the shipped ReviewCard.d.ts author contract — no date and no town exist in the payload, so ReviewCard.d.ts `date` became optional rather than eighteen fabricated months shipping
+- [Phase 02]: 02-16: a null-rendering component gets no SectionBand; a CONTENT-rendering one does — ReviewRail is now banded `warm` on all seven rail routes, giving Home `paper warm paper tint warm paper navy` and each service page `paper warm tint warm paper navy`; `warm` twice is fine, §4's rule is adjacency not frequency
+- [Phase 02]: 02-16: RatingBadge built `from {count} {source} reviews` from ADJACENT JSX CHILDREN, which React serialises as five text nodes with `<!-- -->` markers between them — the phrase rendered correctly and existed nowhere contiguously in the served bytes; any phrase a lock or a crawler must find has to be assembled in JS first
+- [Phase 02]: 02-16: check:html is now 37 tests, not 31 — SC-4h (review prose extracted from the MARKUP HALF, ≥40 chars, counted per route via the new `reviewCards` field in PAGE_EXPECTATIONS), SC-4i (the figure contiguous in HTML and present in every meta description; NO_META_DESCRIPTION={/_not-found} asserted in the inverse) and delta 15 (every in-page anchor resolves to an id on its own page)
+- [Phase 02]: 02-16: delta 6 only ever resolved hrefs beginning with a slash, and that gap is the SOLE reason UI-SPEC §5 revision 1 deleted the `Read Our Reviews` CTA — delta 15 closes it, and the CTA is restored with its label and href authored in reviews.js beside the constant the rail's id is built from
+- [Phase 02]: 02-16: `.bhc-section__action` is a plain class in SectionBand's CSS block (the .bhc-service-card__grid arrangement), NOT an `actions` prop — a band that carries its own CTA is a second, weaker CTA surface on all 18 call sites, competing with CTABand above the footer
+- [Phase 02]: 02-16: UI-SPEC §5 gained a Revision 2 note, §7.14 was rewritten and §13-P is struck through as REVERSED — the spec had said the CTA was withdrawn and Phase 4 would supply the data, both now false and both would have misinformed Phase 3 planning
+- [Phase 02]: 02-16: twelfth avoided scanner self-collision — the CTA label lives in reviews.js (no grep polices it) precisely so home.js can explain the restoration without instancing the string its own acceptance check greps for
 
 ### Pending Todos
 
@@ -178,7 +199,14 @@ None yet.
   (old logo burned in, ~530×690px recoverable, BEFORE/AFTER labels baked into the image). Sam
   needs to pull originals from canva.com → Projects → Uploads. Phase 2 ships BeforeAfterSlider
   with a placeholder state so this never blocks the critical path; Phase 4 backfills real photos
-  once available. Re-check with Sam before Phase 4 starts.
+  once available. Re-check with Sam before Phase 4 starts. **This is now the ONLY Phase 4 item
+  still stubbed** — 02-16 closed the reviews half on 2026-08-11.
+
+- **Refreshing the reviews (not a blocker):** `reviews_raw.json` was a build input and has been
+  deleted. Re-extracting from the widget payload is the route to newer reviews. The 4.9 / 175
+  aggregate is a SEPARATE, manually verified figure in `web/content/site.js` and must not be
+  recomputed from whatever that extract contains — see 02-16-REVIEWS-SUMMARY.md for the arithmetic.
+  Fabricated or embellished review text is a banned practice under the DMCC Act 2024.
 
 - **Fresh-session handoff:** this roadmap was produced for a new Opus 5 session to execute.
   PROJECT.md's Context section is the condensed version of 5 source docs
@@ -201,6 +229,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-10T13:49:33.491Z
-Stopped at: 02-15-PLAN.md task 2 — blocking `checkpoint:human-verify`, 12 checks pending Sam
-Resume file: .planning/phases/02-component-library-completion-core-templates/02-15-SUMMARY.md
+Last session: 2026-08-11T14:50:00.000Z
+Stopped at: 02-16 complete (reviews, unplanned). 02-15-PLAN.md task 2 is still the open blocking
+            `checkpoint:human-verify` — 12 checks pending Sam, two of which the reviews change
+            altered. The branch is not pushed.
+Resume file: .planning/phases/02-component-library-completion-core-templates/02-16-REVIEWS-SUMMARY.md

@@ -289,6 +289,15 @@ not *Quote*. **Never** "Submit", "Click here", "Learn more".
 > dead-ends on every page — and §12 lock 6 only checks `href^="/"`, so nothing would catch it.
 > Seeding fabricated testimonials to make the anchor resolve is not an option on a site whose
 > entire positioning is "a genuinely local team". The CTA returns in Phase 4 with the data.
+>
+> **Revision 2 (2026-08-11, plan 02-16) restores it.** The Phase 4 review work was pulled forward:
+> `web/content/reviews.js` carries eighteen real, verbatim Google reviews and the rail renders on
+> seven routes. The row is live again — `Read Our Reviews` | same | `secondary` | `#reviews` |
+> home page trust band — with its label and href authored in `reviews.js` beside the constant the
+> rail's `id` is built from, so link and target cannot drift. The gap revision 1 named is closed
+> rather than worked around: §12 gained **delta 15**, which resolves every in-page anchor on every
+> built page against the ids on that page. Nothing was fabricated to make the anchor resolve, and
+> nothing may be.
 
 **`Call` needs an accessible name.** A one-word link is ambiguous out of context for screen-reader
 users listing links. Note the interaction with §12 delta 2(d): that lock must read the element's
@@ -834,10 +843,13 @@ interface ReviewRailProps { heading?: string; reviews: Review[]; town?: string; 
 - The scroll container carries `tabindex="0"` + `role="group"` + `aria-label` so keyboard users
   can scroll it — the standard pattern for a scrollable region, and the reason no arrow buttons
   are needed (arrows would require a client boundary).
-- `id` defaults to `reviews`. **Nothing links to that anchor in Phase 2** — the `Read Our Reviews`
-  CTA was withdrawn from the closed set (§5) precisely because this component renders `null`
-  until Phase 4 supplies data. The `id` is here so Phase 4 reinstates the CTA without an API
-  change.
+- `id` defaults to `reviews`. It was here so the withdrawn `Read Our Reviews` CTA (§5) could be
+  reinstated without an API change, and that is exactly what happened in plan 02-16: the data
+  landed, the CTA came back, one data file was added and no template's structure moved. The rail
+  renders on seven routes — six cards on `/`, three on each service page — and §12 delta 15 now
+  resolves every in-page anchor against the ids on its own page, so the dead-end the CTA was
+  withdrawn over cannot return unnoticed.
+- The `null`-on-empty contract is unchanged and still applies to any caller with nothing to show.
 
 ### 7.15 TrustBar
 
@@ -1193,8 +1205,8 @@ Chosen autonomously because no locked artifact answered them. Each is cheap to r
 | M | The canonical number moves to `src/phone.js` **and the `NAPFooter.jsx:34` literal is deleted** | Three components now need it. Three defaults = three places it can be wrong. Leaving the literal behind would create two sources, which is the exact defect the module exists to kill |
 | N | The Home **and Service** `<h1>`s supersede `Hero.prompt.md`'s heading table and `design-system.md:334` | The Home example carries neither a service nor a region (fails Lock 1 for its own template); the Service example carries a redundant *Services*. All three documents are corrected together in this phase so they cannot drift |
 | O | Existing 900px / 720px breakpoints are left alone; new work uses 480/768/1024/1280 | Changing them re-flows two shipped, visually-verified components for no Phase 2 benefit. Normalise in Phase 5 |
-| P | `Read Our Reviews → #reviews` is withdrawn until Phase 4 rather than seeding review data | The anchor's target renders `null` without data, and §12 lock 6 checks only `href^="/"` so nothing would catch the dead-end. Seeding fabricated testimonials contradicts the entire "genuinely local team" positioning |
-| Q | Review quotes are capped at 320 chars at the **data layer**, not clamped in CSS | With no client JS there is no "read more", so a CSS clamp hides text from sighted users that screen readers still get, and 200% zoom widens the loss (WCAG 1.4.4) |
+| P | ~~`Read Our Reviews → #reviews` is withdrawn until Phase 4 rather than seeding review data~~ **REVERSED 2026-08-11 by plan 02-16** | The original reason was sound: the anchor's target rendered `null` without data, and §12 lock 6 checks only `href^="/"` so nothing would catch the dead-end. Both halves are gone — the Phase 4 review data was pulled forward and is real, and §12 **delta 15** now resolves every in-page anchor against the ids on its own page. The half that has NOT changed: seeding fabricated testimonials contradicts the entire "genuinely local team" positioning, and is a banned practice under the DMCC Act 2024 |
+| Q | Review quotes are capped at 320 chars at the **data layer**, not clamped in CSS | With no client JS there is no "read more", so a CSS clamp hides text from sighted users that screen readers still get, and 200% zoom widens the loss (WCAG 1.4.4). Plan 02-16 honours the cap **by selection rather than truncation** — every shipped quote already fits, so a whole review reaches the card |
 | R | Service breadcrumbs are two crumbs (`Home › {Service}`), and only the last crumb ever carries `aria-current` | `/services` 404s in Phase 2; a linked crumb fails lock 6 and an href-less one produced two `aria-current="page"` elements. Phase 3 reinstates the middle crumb when the index exists |
 
 ---
