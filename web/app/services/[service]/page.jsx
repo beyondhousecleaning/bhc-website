@@ -42,7 +42,7 @@
  *   Prose               paper
  *   BeforeAfterSlider   warm
  *   ProcessSteps        tint
- *   ReviewRail          —            renders nothing until Phase 4
+ *   ReviewRail          warm         see below — it was unbanded while empty
  *   FAQAccordion        paper
  *   CTABand             navy         the ONE dark band, immediately above the footer
  *
@@ -50,6 +50,15 @@
  * summary lists the slider on paper, which would have put two paper grounds
  * side by side under a paper prose band; §4 is the authority it cites and its
  * adjacency rule is the one that has to hold.
+ *
+ * THE REVIEW RAIL IS BANDED NOW, AND IT WAS RIGHT NOT TO BE BEFORE. Plan 02-12
+ * rendered it bare on purpose: it returned null on empty data, so a band around
+ * it would have emitted a headless empty section into every build AND put a
+ * paper ground next to the FAQ band's. With real reviews in it the rail has
+ * content, needs the band's container and vertical rhythm like every other
+ * section, and takes `warm` — neither neighbour's tone. `warm` appears twice on
+ * this page and that is fine; the rule is about adjacency, not about frequency,
+ * and the slider and the rail have `tint` between them.
  *
  * SIX THINGS THIS FILE DELIBERATELY DOES NOT DO, each with a CI gate behind it,
  * so none of them is a style preference:
@@ -98,6 +107,7 @@ import {
 
 import { renderBlocks } from '@/content/blocks.jsx';
 import { PROCESS_STEPS } from '@/content/process.js';
+import { REVIEWS_ANCHOR, reviewsForService } from '@/content/reviews.js';
 import {
   BREADCRUMB_HOME,
   SERVICES,
@@ -168,12 +178,17 @@ export default async function Page({ params }) {
         <ProcessSteps steps={PROCESS_STEPS} />
       </SectionBand>
 
-      {/* An empty array renders null — expected, and composed anyway on purpose.
-          Phase 4 supplies the review data, and when it does this template does
-          not change: a data file does. It is deliberately NOT wrapped in a
-          SectionBand, because an empty band would put two paper grounds
-          adjacent and emit a headless section into every build until Phase 4. */}
-      <ReviewRail reviews={[]} />
+      {/* Three real, verbatim Google reviews per page, and a DIFFERENT three on
+          each: reviewsForService throws on an unknown slug and guards its own
+          key set against services.js at module load, so a slug rename cannot
+          leave a page silently railless. Each trio leads with the review that
+          names this job — the oven, the months of regular visits, the move, the
+          tenancy, the changeovers, the builders clean. Three rather than six,
+          because these pages already carry ~1,000 words of prose and a photo
+          band above the rail. */}
+      <SectionBand tone="warm">
+        <ReviewRail reviews={reviewsForService(service)} id={REVIEWS_ANCHOR} />
+      </SectionBand>
 
       {/* FAQAccordion emits no structured data — ever. Delta 7 greps every built
           page for the schema type it declines to emit, and that type is named in
