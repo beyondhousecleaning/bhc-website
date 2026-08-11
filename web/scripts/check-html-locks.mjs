@@ -13,8 +13,18 @@
  * +44 7861 936533 and DIALS 07441918832 on all 115 pages, with a third number
  * (+447575709361) on /get-a-quote. Three numbers, one business.
  *
- * Covers: SC-1b, SC-2a…2e, SC-4a…4g, D-04, D-07, D-10, D-14b, D-15, and
- * UI-SPEC §12 deltas 1, 2, 3, 4, 5, 6, 7, 11 and 12.
+ * Covers: SC-1b, SC-2a…2e, SC-4a…4i, D-04, D-07, D-10, D-14b, D-15, and
+ * UI-SPEC §12 deltas 1, 2, 3, 4, 5, 6, 7, 11, 12 and 15.
+ *
+ * SC-4h, SC-4i and delta 15 arrived with the real Google reviews. Their subject
+ * is the same defect from three sides, and it is the defect the whole rebuild
+ * exists to fix: the live site's 175 reviews and its 4.9 rating are locked
+ * inside a 528 KB third-party bundle, so they are content on 0 of its 115 pages
+ * and appear in 0 of its 115 meta descriptions. SC-4h asserts the review PROSE
+ * is in the served markup rather than in the flight payload; SC-4i asserts the
+ * aggregate figure is in the markup as one contiguous phrase AND in every meta
+ * description; delta 15 closes the in-page-anchor hole delta 6 leaves open,
+ * which is the hole a call to action was deleted from the design system over.
  *
  *   node --test web/scripts/check-html-locks.mjs
  *
@@ -289,6 +299,53 @@ const NO_RATING_YET = new Set([]);
 const NO_PRIMARY_CTA_YET = new Set([]);
 
 /*
+  The published review figure, RESTATED HERE ON PURPOSE.
+
+  It lives once in `web/content/site.js` and is threaded from there into the
+  badge, the rail and every meta description. This file does not import it, for
+  the same reason `PAGE_EXPECTATIONS` below is a literal rather than a table
+  derived from the content modules: a lock that reads its expectation from the
+  code it is checking can only ever assert "the value was threaded", never "the
+  value is right". Restated, it also catches the case the audit actually cares
+  about — the figure quietly drifting away from what Google shows.
+
+  4.9 from 175 Google reviews, verified 2026-08-06 (`docs/goals.md:18`,
+  `docs/research/seo-audit-2026-08-06.md`). Change it here and in `site.js`
+  together, or this goes red, which is the point.
+
+  NOT the mean of the reviews `web/content/reviews.js` carries, which reads high
+  because the review widget only holds the reviews that have comment text. That
+  module's header states the arithmetic; do not "fix" either number to match the
+  other.
+*/
+const RATING_VALUE = '4.9';
+const RATING_COUNT = '175';
+const RATING_SOURCE = 'Google';
+
+/*
+  `/_not-found` emits no `<meta name="description">` at all, which is correct: a
+  404 is not a landing page, it is noindex either way, and a marketing
+  description on it would be the only description in the site attached to a page
+  with no content of its own. Asserted in the INVERSE below so the set is
+  self-restoring — the moment that route gains a description, the assertion
+  fails and forces the route out of this set rather than out of the lock.
+*/
+const NO_META_DESCRIPTION = new Set(['/_not-found']);
+
+/*
+  The review rail's anchor id, restated for the same reason the rating figures
+  above are: `web/content/reviews.js` builds both the id it passes to the rail
+  and the href of the call to action that points at it from one constant, so
+  those two cannot drift from each other — but they CAN drift from what this
+  file expects, and that is exactly the drift worth catching.
+
+  The anchor lock further down is generic and does not use this constant: it
+  resolves EVERY in-page href on every page against the ids in that page. This
+  one only names the rail's.
+*/
+const REVIEWS_ANCHOR = 'reviews';
+
+/*
   Per-route expectations. Delta 3 replaces the old hardcoded single-town
   constant — which asserted that the one page in the site said "Warwick" — with
   this table. (That constant's declaration is not quoted here: the acceptance
@@ -315,44 +372,61 @@ const NO_PRIMARY_CTA_YET = new Set([]);
   The table may be COMPLETE BEFORE THE ROUTES ARE — every loop iterates over
   routes that actually exist. `expectationsFor` throws on an unknown route, so a
   new route arriving WITHOUT an expectation is a hard failure, not a silent gap.
+
+  `reviewCards` IS A COUNT AND NOT A BOOLEAN, and that is the whole reason it
+  is worth having. Every template composed `ReviewRail` from plan 02-11 onward
+  and every one of them rendered nothing, because the component returns `null`
+  on empty data and no template had any. A boolean would have gone green on a
+  page rendering one card where six were intended, or on a page that lost its
+  data module and kept its section. `0` on the eleven routes with no rail is the
+  negative half, and it is what stops a rail appearing somewhere nobody composed
+  one.
 */
 const PAGE_EXPECTATIONS = {
   // Home. Permanent: UI-SPEC §9.2 has no Breadcrumbs on `/`, so 1 JSON-LD
-  // block (NAPFooter's) is the steady state, not a wave-1 artifact.
+  // block (NAPFooter's) is the steady state, not a wave-1 artifact. Six review
+  // cards: the rail is three columns at 1024px and above, so six is two clean
+  // rows, and `HOME_REVIEWS` picks one per service so the rail reads as varied.
   '/': {
     h1: 'Professional House Cleaning in Warwickshire & the West Midlands',
     hasBreadcrumbs: false,
     ldJsonBlocks: 1,
+    reviewCards: 6,
   },
 
   // The six service routes (UI-SPEC §5, today's live slugs — §13-C defers the
-  // canonical-slug rename to Phase 3, where it is a data change).
-  '/services/deep-cleaning': { h1: 'Deep Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/services/standard-home-cleaning': { h1: 'Regular House Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/services/move-in-cleaning': { h1: 'Move-In Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/services/move-out-cleaning': { h1: 'Move-Out Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/services/short-term-rental-cleaning': { h1: 'Short-Term Rental Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/services/post-construction-cleaning': { h1: 'Post-Construction Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
+  // canonical-slug rename to Phase 3, where it is a data change). Three review
+  // cards each, and a DIFFERENT three: `reviewsForService` guards its key set
+  // against `services.js` at module load, so the rename cannot leave a page
+  // railless.
+  '/services/deep-cleaning': { h1: 'Deep Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
+  '/services/standard-home-cleaning': { h1: 'Regular House Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
+  '/services/move-in-cleaning': { h1: 'Move-In Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
+  '/services/move-out-cleaning': { h1: 'Move-Out Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
+  '/services/short-term-rental-cleaning': { h1: 'Short-Term Rental Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
+  '/services/post-construction-cleaning': { h1: 'Post-Construction Cleaning in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 3 },
 
   // The ten utility routes (UI-SPEC §5). All ten ship, so no nav or footer link
-  // can point at a 404 (delta 6).
-  '/about-us': { h1: 'The Team Behind Beyond House Cleaning', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/contact-us': { h1: 'Contact Our Warwickshire Cleaning Team', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/get-a-quote': { h1: 'Get a Free Cleaning Quote', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/checklist': { h1: "What's Included in Every Clean", hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/work-with-us': { h1: 'Cleaning Jobs in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/gift-cards': { h1: 'House Cleaning Gift Cards', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/customer-login': { h1: 'Manage Your Cleaning Bookings', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/privacy-policy': { h1: 'Privacy Policy', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/terms-of-service': { h1: 'Terms of Service', hasBreadcrumbs: true, ldJsonBlocks: 2 },
-  '/customer-service-agreement': { h1: 'Customer Service Agreement', hasBreadcrumbs: true, ldJsonBlocks: 2 },
+  // can point at a 404 (delta 6). None carries a review rail: UI-SPEC §9.4 gives
+  // these templates no rail, and the rating badge in each Hero already states
+  // the aggregate.
+  '/about-us': { h1: 'The Team Behind Beyond House Cleaning', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/contact-us': { h1: 'Contact Our Warwickshire Cleaning Team', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/get-a-quote': { h1: 'Get a Free Cleaning Quote', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/checklist': { h1: "What's Included in Every Clean", hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/work-with-us': { h1: 'Cleaning Jobs in Warwickshire & the West Midlands', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/gift-cards': { h1: 'House Cleaning Gift Cards', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/customer-login': { h1: 'Manage Your Cleaning Bookings', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/privacy-policy': { h1: 'Privacy Policy', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/terms-of-service': { h1: 'Terms of Service', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
+  '/customer-service-agreement': { h1: 'Customer Service Agreement', hasBreadcrumbs: true, ldJsonBlocks: 2, reviewCards: 0 },
 
   // MEASURED, not aspirational. `app/not-found.jsx` is a real §9.4 template
   // rendered inside our RootLayout, so this heading is ours and not the
   // framework's. `hasBreadcrumbs: false` and one tag-form JSON-LD block (the
   // footer's business node) are PERMANENT: a 404 has no position in the
   // hierarchy to describe, and a trail here would add a second block.
-  '/_not-found': { h1: "We Couldn't Find That Page", hasBreadcrumbs: false, ldJsonBlocks: 1 },
+  '/_not-found': { h1: "We Couldn't Find That Page", hasBreadcrumbs: false, ldJsonBlocks: 1, reviewCards: 0 },
 };
 
 const expectationsFor = (route) => {
@@ -431,6 +505,7 @@ test('delta 1: every app route declares an expectation, and the table is honest'
     assert.equal(typeof e.h1, 'string', `${p.route}: expectation has no h1 string`);
     assert.equal(typeof e.hasBreadcrumbs, 'boolean', `${p.route}: expectation has no hasBreadcrumbs boolean`);
     assert.equal(typeof e.ldJsonBlocks, 'number', `${p.route}: expectation has no ldJsonBlocks number`);
+    assert.equal(typeof e.reviewCards, 'number', `${p.route}: expectation has no reviewCards number`);
   }
 
   assert.throws(
@@ -746,6 +821,64 @@ test('delta 6: every internal link resolves to a prerendered route', () => {
   assert.deepEqual(dead, [], `internal link(s) pointing at a URL that is not prerendered: ${dead.join(', ')}`);
 });
 
+/*
+  Delta 15 — the OTHER half of "no dead internal link", and the half that was
+  missing.
+
+  Delta 6 above resolves hrefs beginning with a slash and skips everything else.
+  That gap is not hypothetical and it is not theoretical: UI-SPEC §5 revision 1
+  WITHDREW a call to action from the closed set specifically because its in-page
+  href would have dead-ended on every page while its target rendered nothing,
+  and the reason given for withdrawing it rather than shipping it was that
+  nothing here would have caught it. That reasoning was correct, and the right
+  answer was always to close the gap rather than to keep removing links from the
+  site. This closes it.
+
+  Scoped to `<a`, like delta 6, and matched by ATTRIBUTE form so the flight
+  payload cannot contribute a false positive: the payload serialises `href` as a
+  JSON key, never as `href="…"` inside a tag.
+
+  `#` alone and `#top` are both valid document-top links per HTML and need no
+  matching element, so both are permitted without an id.
+*/
+test('delta 15: every in-page anchor resolves to an element on the same page', () => {
+  const dead = [];
+  let checked = 0;
+
+  for (const p of APP_PAGES) {
+    for (const m of p.html.matchAll(/<a\b[^>]*\bhref="#([^"]*)"/g)) {
+      const target = m[1];
+      if (!target || target.toLowerCase() === 'top') continue;
+      checked += 1;
+      if (!p.html.includes(`id="${target}"`)) dead.push(`${p.route} -> #${target}`);
+    }
+  }
+
+  assert.deepEqual(dead, [], `in-page anchor(s) with no matching id on the same page: ${dead.join(', ')}`);
+
+  // Non-vacuity. Every page carries the skip link's `#main`, so a zero here
+  // means the matcher stopped matching rather than that the site has no
+  // anchors — the exact way a lock reads green forever for the wrong reason.
+  assert.ok(checked >= APP_PAGES.length, `only ${checked} in-page anchor(s) found across ${APP_PAGES.length} pages — the matcher is no longer reading them`);
+});
+
+test('delta 15: the in-page anchor matcher catches a dead one', () => {
+  // Regression guard. The lock above passes today, so the matcher has to be
+  // shown to fail on the shape it exists to reject.
+  const live = '<a href="#reviews">Read Our Reviews</a><section id="reviews"></section>';
+  const dead = '<a href="#reviews">Read Our Reviews</a><section id="something-else"></section>';
+
+  const resolve = (html) =>
+    [...html.matchAll(/<a\b[^>]*\bhref="#([^"]*)"/g)]
+      .map((m) => m[1])
+      .filter((target) => target && target.toLowerCase() !== 'top')
+      .filter((target) => !html.includes(`id="${target}"`));
+
+  assert.deepEqual(resolve(live), [], 'a resolving anchor was reported dead');
+  assert.deepEqual(resolve(dead), ['reviews'], 'a dead anchor was not caught');
+  assert.deepEqual(resolve('<a href="#">Back to top</a>'), [], 'a bare document-top link needs no id');
+});
+
 /* --- SC 4 / Locks 1, 2, 3, 6, 9 — component integration ------------------ */
 
 test('SC-4b: breadcrumbs render exactly where the expectation says, and nowhere else', () => {
@@ -784,6 +917,170 @@ test('SC-4c: RatingBadge renders server-side on every templated page', () => {
   assert.ok(
     APP_PAGES.some((p) => !NO_RATING_YET.has(p.route)),
     'every app page is exempt from SC-4c — the lock would be vacuous'
+  );
+});
+
+/*
+  SC-4h — THE REVIEWS ARE IN THE FILE, AND THE FILE IS WHAT A CRAWLER READS.
+
+  This is the assertion the whole reviews change exists to make, and nothing in
+  this suite made it before. The live site holds 175 Google reviews inside a
+  528 KB third-party widget, so not one of them is indexed content on any of its
+  115 pages — recommendation b5 of the 2026-08-06 audit. Counting a class name
+  would only prove a rail was mounted; what matters is that the WORDS a customer
+  wrote are in the served bytes with JavaScript switched off.
+
+  So this reads the MARKUP HALF ONLY — everything before the first flight-payload
+  chunk — pulls each `<blockquote>` out of it, strips its tags, and requires
+  real prose inside. A rail rendered by client JavaScript would put its text in
+  the payload and nothing in the markup half, and would fail here.
+
+  40 characters is the floor, and it is deliberately low: it is not a quality
+  bar, it is the line below which a "quote" is a placeholder. The shortest real
+  review in the data module is 90 characters.
+*/
+const markupHalf = (html) => html.split('self.__next_f')[0];
+
+const BLOCKQUOTE = /<blockquote\b[^>]*class="[^"]*bhc-review__quote[^"]*"[^>]*>([\s\S]*?)<\/blockquote>/g;
+const MIN_QUOTE_CHARS = 40;
+
+test('SC-4h: real review text is server-rendered on exactly the routes their expectation names', () => {
+  for (const p of APP_PAGES) {
+    const wanted = expectationsFor(p.route).reviewCards;
+
+    // `class="` form, per rule 2 in the header — the flight payload carries a
+    // serialised `"className":"bhc-review__quote"` too.
+    const cards = count(p.html, /class="[^"]*bhc-review__quote/g);
+    assert.equal(cards, wanted, `${p.route}: expected ${wanted} review card(s), found ${cards}`);
+
+    const rails = count(p.html, /class="[^"]*bhc-reviewrail"/g);
+    const anchors = p.html.split(`id="${REVIEWS_ANCHOR}"`).length - 1;
+
+    if (!wanted) {
+      assert.equal(rails, 0, `${p.route}: a review rail renders on a page whose contract has none`);
+      assert.equal(anchors, 0, `${p.route}: the review anchor exists on a page with no rail`);
+      continue;
+    }
+
+    assert.equal(rails, 1, `${p.route}: expected exactly 1 review rail, found ${rails}`);
+    assert.equal(anchors, 1, `${p.route}: expected exactly 1 id="${REVIEWS_ANCHOR}", found ${anchors}`);
+
+    // The half that is not the flight payload. This is the clause that makes
+    // the lock about server rendering rather than about class names.
+    const quotes = [...markupHalf(p.html).matchAll(BLOCKQUOTE)].map((m) =>
+      decodeEntities(stripTags(m[1])).replace(/\s+/g, ' ').trim()
+    );
+
+    assert.equal(
+      quotes.length,
+      wanted,
+      `${p.route}: ${quotes.length} review quote(s) in the SERVER-RENDERED markup, expected ${wanted} — a rail whose text lives only in the flight payload is client-rendered`
+    );
+
+    for (const quote of quotes) {
+      assert.ok(
+        quote.length >= MIN_QUOTE_CHARS,
+        `${p.route}: review quote is ${quote.length} characters, below the ${MIN_QUOTE_CHARS}-character floor — placeholder text: ${JSON.stringify(quote)}`
+      );
+    }
+  }
+
+  assert.ok(
+    APP_PAGES.some((p) => expectationsFor(p.route).reviewCards > 0),
+    'no app page expects a review card — the positive half of this lock would be vacuous'
+  );
+  assert.ok(
+    APP_PAGES.some((p) => expectationsFor(p.route).reviewCards === 0),
+    'every app page expects review cards — the negative half of this lock would be vacuous'
+  );
+});
+
+test('SC-4h: the quote extractor reads the markup half and not the payload', () => {
+  /*
+    Regression guard, the same reasoning as the postcode and street-line guards
+    above: this lock passes today, so an extractor that quietly stopped matching
+    would read green on a page that had lost every review. The second case is
+    the failure it exists to catch — the class name present in the serialised
+    payload while the markup half holds nothing.
+  */
+  const quote = 'Tadi was amazing. Would highly recommend. It was so lovely to come home to a sparkly clean house.';
+  const served = `<blockquote class="bhc-review__quote"><p>${quote}</p></blockquote>`;
+  const found = [...markupHalf(served).matchAll(BLOCKQUOTE)].map((m) => stripTags(m[1]));
+  assert.deepEqual(found, [quote], 'the shipped blockquote form is no longer matched');
+
+  const payloadOnly = `<div id="app"></div><script>self.__next_f.push([1,'${served}'])</script>`;
+  assert.equal(
+    [...markupHalf(payloadOnly).matchAll(BLOCKQUOTE)].length,
+    0,
+    'a quote that exists only in the flight payload must not count as server-rendered'
+  );
+});
+
+/*
+  SC-4i — THE RATING FIGURE, IN THE HTML AND IN THE DESCRIPTION.
+
+  Audit recommendation a3, and it is two claims rather than one:
+
+    (i)  the figure is in the served HTML — hero or trust bar, server-rendered;
+    (ii) it is in the homepage and service-page meta descriptions.
+
+  Both were true before this lock existed and neither was asserted, which is how
+  the live site got to 0 of 115 descriptions mentioning a rating it has had for
+  years. Arbor Trail opens EVERY description with their review count.
+
+  CONTIGUITY IS THE POINT OF THE FIRST CLAUSE. React serialises adjacent JSX
+  children as separate text nodes with a comment marker between them, so the
+  phrase used to exist in the file only as fragments with markers in the gaps.
+  It rendered correctly and could not be found by anything reading the bytes.
+  `RatingBadge` now assembles the summary in JavaScript, and this is what keeps
+  it that way.
+*/
+test('SC-4i: the review figure is server-rendered as one contiguous phrase', () => {
+  const summary = `from ${RATING_COUNT} ${RATING_SOURCE} reviews`;
+
+  for (const p of APP_PAGES) {
+    if (NO_RATING_YET.has(p.route)) continue;
+
+    const mk = markupHalf(p.html);
+    assert.ok(
+      mk.includes(`bhc-rating__value">${RATING_VALUE}`),
+      `${p.route}: no server-rendered rating value in the markup half of the built HTML`
+    );
+    assert.ok(
+      mk.includes(summary),
+      `${p.route}: the phrase "${summary}" is not a contiguous run of text in the served HTML — check that RatingBadge still assembles it in JS rather than from adjacent JSX children`
+    );
+  }
+});
+
+test('SC-4i: the review figure leads every meta description that exists', () => {
+  for (const p of APP_PAGES) {
+    const found = p.html.match(/<meta name="description" content="([^"]*)"/);
+
+    if (NO_META_DESCRIPTION.has(p.route)) {
+      // The inverse, so the exemption is self-restoring rather than permanent.
+      assert.equal(
+        found,
+        null,
+        `${p.route} now emits a meta description — remove it from NO_META_DESCRIPTION so the positive lock takes over`
+      );
+      continue;
+    }
+
+    assert.ok(found, `${p.route}: no meta description in built HTML`);
+    const description = decodeEntities(found[1]);
+
+    for (const token of [RATING_VALUE, RATING_COUNT, RATING_SOURCE]) {
+      assert.ok(
+        description.includes(token),
+        `${p.route}: meta description does not carry "${token}" — audit a3 wants the rating in every description: ${JSON.stringify(description)}`
+      );
+    }
+  }
+
+  assert.ok(
+    APP_PAGES.some((p) => !NO_META_DESCRIPTION.has(p.route)),
+    'every app page is exempt from SC-4i — the lock would be vacuous'
   );
 });
 
