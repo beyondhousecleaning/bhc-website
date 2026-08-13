@@ -226,6 +226,7 @@ None yet.
 |----------|------|--------|-------------|
 | Ops (off-site) | OPS-01/02/03 — GBP citation building, review-generation system, dedicated local-SEO project skill | v2, tracked in REQUIREMENTS.md | Initial roadmap, 2026-08-08 |
 | Map-pack expansion | EXPAND-01 — second staffed premises/GBP for B/DY/TF/WS/WV | v2, tracked in REQUIREMENTS.md | Initial roadmap, 2026-08-08 |
+| Content (post-cutover) | BATCH-02..05 — town + hub prose for the 37 towns outside batch 1, ~29,400 authored words (~800/town). `PUBLISHED_BATCHES` cannot be incremented without it: `towns.js`'s prose-coverage guard fails at module load. No phase owns it; it is post-cutover work paced by the 2-4 week indexation interval SC-5 requires. | Backlog, not in the v1 roadmap | Phase 3 planning, 2026-08-11 |
 
 ## Session Continuity
 

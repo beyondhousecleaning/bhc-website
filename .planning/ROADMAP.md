@@ -145,8 +145,16 @@ Plans:
 > `docs/research/service-area-coverage.md`'s 39 post towns with the frozen sitemap's 19 town slugs.
 > The "~56 / ~336 / ~241" figures above predate that cross and are stale. **Phase 3 completes with
 > batch 1 published** — 21 towns, 58 new pages, **167 app routes** — because the site is `noindex`
-> until cutover (D-15), so the indexation interval SC-5 exists to protect only starts then. Batches
-> 2-5 are post-cutover data changes: one `PUBLISHED_BATCHES` increment plus a raised route floor.
+> until cutover (D-15), so the indexation interval SC-5 exists to protect only starts then.
+>
+> **Batches 2-5 are NOT a one-line increment, and no phase currently owns them.** Plans 03-11, 03-12
+> and 03-13 author town and hub prose for the 21 batch-1 towns only — about 16,700 words. The other
+> **37 towns need roughly 29,400 more authored words** (opener, locality paragraph and two hub blocks
+> each), which `03-VALIDATION.md` already states. Plan 03-16's prose-coverage guard makes a bare
+> `PUBLISHED_BATCHES` increment a **red build at module load**, deliberately — a batch cannot publish
+> towns whose prose does not exist. Each batch is therefore ~29,400/37 ≈ 800 words per town plus the
+> increment plus a raised route floor. Tracked as a post-v1 backlog item in STATE.md's Deferred Items
+> table; Phases 4, 5 and 6 do not carry it.
 >
 > Two items ship as working defaults and are ratified by Sam in plan 03-24, not assumed:
 > **five** of the 95 frozen URLs 301 (the `coventry-south` set — D2 says zero, SC-3 says resolve the
