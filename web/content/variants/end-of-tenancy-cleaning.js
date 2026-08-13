@@ -148,12 +148,12 @@ export const A_VARIANTS = [
     {
       type: 'p',
       text:
-        'The clean at the end of a tenancy is the only one anybody writes down. Somebody walks the ' +
+        'The clean that closes a tenancy is the only one anybody writes down. Somebody walks the ' +
         'property with a camera and a printed template, room by room, and produces a document that ' +
         'is then read by people who never stood in it — you, the agent, a landlord who may live ' +
         'nowhere near, possibly somebody settling a disagreement months afterwards. That changes ' +
         'what the job is. A home people are living in gets judged by how it feels. An empty property ' +
-        'at the end of a tenancy gets judged by a close photograph lit by a phone flash, taken by ' +
+        'being handed back gets judged by a close photograph lit by a phone flash, taken by ' +
         'somebody kneeling at an open cupboard door. Very little of that is ' +
         'about effort, and most of it is about whether anybody thought to look where the camera is ' +
         'going to look.',
@@ -176,8 +176,8 @@ export const A_VARIANTS = [
         'Knowing the shape of that document is what makes the work sensible rather than anxious. The ' +
         'recurring phrases are graded: a room called clean is finished with, a room needing attention ' +
         'is a line somebody has to answer, and a note about a domestic rather than a professional ' +
-        'standard is a remark on thoroughness rather than on mess. None of it is ours to decide and ' +
-        'we will not pretend to know what any particular agent accepts. What we can do is work to the ' +
+        'standard is a remark on thoroughness rather than on mess. None of it is ours to decide, and ' +
+        'we do not claim to know what any particular agent accepts. What we can do is work to the ' +
         'tightest reading of it: everything opened that opens, everything lifted that lifts, and ' +
         'every surface a camera could be pointed at treated as though one will be.',
     },
@@ -339,8 +339,8 @@ export const A_VARIANTS = [
         'If a carpet needs washing rather than cleaning, that is a separate booking, and what decides ' +
         'when it happens is the drying rather than the washing. A carpet done the evening before an ' +
         'appointment is still damp in the morning, it smells of damp, and damp carpet in a photograph ' +
-        'reads worse than dry carpet that was only hoovered. So it goes first in the sequence with a ' +
-        'clear day behind it and the rest of the property is arranged around that. Where a mark is in ' +
+        'reads worse than dry carpet that was only hoovered. So it goes first, with a full day of ' +
+        'drying behind it, and everything else is arranged around it. Where a mark is in ' +
         'the fibre rather than on it we say so before anybody pays for a machine on the hope that it ' +
         'shifts. And we do not decide what counts as ordinary use of a floor over three years; that ' +
         'is not a judgement a cleaner is in any position to make.',
@@ -360,7 +360,7 @@ export const A_VARIANTS = [
         "anybody's cleaning and are still part of the property. They turn up on a report as a " +
         'surprise because nobody thinks of them as rooms. A loft with three boxes in it. A meter ' +
         'cupboard with a year of junk mail on the floor. A shed with a bag of charcoal in it. None of ' +
-        'those is anywhere near a hoover in an ordinary week, and every one is on the inventory.',
+        'those goes anywhere near a hoover in an ordinary week, and all of them are on the inventory.',
     },
     {
       type: 'ul',
@@ -421,8 +421,9 @@ export const A_VARIANTS = [
         'What has to be out before we start is everything of yours, and the list people leave on ' +
         'purpose is remarkably consistent: food in the freezer, bags stacked by the back door, a mop ' +
         'and a bucket left as a kindness, and the ' +
-        'hangers that turn out to be yours after all. Each of those is somewhere we cannot clean and ' +
-        'somebody else has to shift, and a bag standing in a hallway is the easiest line on a report ' +
+        'hangers that turn out to be yours after all. Each is a patch of floor or a shelf nobody can ' +
+        'get at, and something somebody else has to shift, and a bag standing in a hallway is the ' +
+        'easiest line on a report ' +
         'to have avoided. If something genuinely cannot go beforehand, say where it will be, so that ' +
         'it lives in one room and we plan around one room rather than finding it in four. And if the ' +
         'property will not be empty at all — a share where one room is ending and the rest of the ' +
@@ -467,6 +468,320 @@ export const A_VARIANTS = [
         'about how any of it will be treated or whether it will be raised at all, because that sits ' +
         'between you, the agent and whatever was recorded when you moved in. We would rather say so ' +
         'plainly than let a clean be sold as the answer to something it was never going to reach.',
+    },
+  ],
+];
+
+/**
+ * Block 4 — how the job runs. Eight stages, indexed by a town's second variant
+ * value, each a sub-heading and three paragraphs, and no list.
+ *
+ * The stages, in order: booking against dates nobody controls; who arrives; the
+ * two passes an empty property is worked in; arriving somewhere with nothing left
+ * in it; getting in; how long it takes; what gets photographed before we lock up;
+ * and the days either side of the appointment. They are chosen to be ORTHOGONAL
+ * to the deck above — that one is eight things the job is done to, this one is
+ * eight stages of one fixed day — which is what lets the two axes be selected
+ * independently without any pair of pages ever sharing both.
+ *
+ * EVERY STAGE HERE TURNS ON A DEADLINE SOMEBODY ELSE SET, AND THAT IS WHAT KEEPS
+ * IT AWAY FROM ITS SIBLINGS. The seven decks in this directory are structurally
+ * parallel by instruction — the same eight stages of a working day for seven
+ * different services — so this is the one region where two of them can quietly
+ * converge, and it has already happened once: a deck in this directory drafted a
+ * whole sub-heading its sibling had used, and every prose gate passed on it,
+ * because a shared nine-word heading inside two 280-word passages measures almost
+ * nothing on a lexical metric. The way out is that the ARGUMENT has to be this
+ * service's own, not the wording. Here that argument is a fixed external
+ * appointment. The routine deck describes a standing arrangement and the deep
+ * clean deck describes a one-off day; both can run late and be finished
+ * differently tomorrow. This one cannot. There is no next visit, there is no
+ * tomorrow morning, and the property stops being reachable at a time nobody here
+ * chose — so the team is sized backwards from a clock, the day cannot fall back
+ * on dropping work, and what is handed over at the end is evidence rather than a
+ * standard.
+ *
+ * NOTHING BELOW RESTATES THE SHARED PROCESS STEPS, which render on every page
+ * carrying that band and are stripped out of the counted corpus for that reason.
+ * Note that the third of those steps records its remedy wording as a commercial
+ * promise still awaiting sign-off, so no passage here states a time window, a
+ * return visit or a re-clean commitment. It says what is useful to tell us, what
+ * we hand over, and where our part stops.
+ *
+ * No list block in this deck. The service-detail block above already carries one,
+ * both land inside the same prose container, and two bulleted runs back to back
+ * is where a page starts reading like a specification.
+ */
+export const B_VARIANTS = [
+  // 0 — the three dates nobody controls, and what a quote actually needs.
+  [
+    { type: 'h3', text: 'Booking the clean into dates that are already fixed' },
+    {
+      type: 'p',
+      text:
+        'Almost every other cleaning job gets arranged around what suits you. This one gets arranged ' +
+        'around three dates you do not control: the day the property is empty, the day the check-out ' +
+        'appointment is booked for, and the day the keys go back. The clean has to sit between the ' +
+        'first two, ideally with a clear day behind it, and there is no version of it that can slide ' +
+        'into the following week. So the first thing we ask for is not the size of the property. It ' +
+        'is the appointment.',
+    },
+    {
+      type: 'p',
+      text:
+        'The second thing is a description, and unlike most quotes it can be done over the phone, ' +
+        'because the standard here does not vary from one household to the next. There is very little ' +
+        'to interpret: how many bedrooms and bathrooms, whether it is furnished, whether a carpet ' +
+        'wants a machine, what state the oven is in, and whether the property will be genuinely ' +
+        'empty. Those five answers are most of a quote. If the oven has been left to itself for the ' +
+        'whole tenancy, that belongs in the description rather than in the surprise.',
+    },
+    {
+      type: 'p',
+      text:
+        'Two other things are worth a sentence now. Some agents issue a cleaning standard as a ' +
+        'document, and if you have been sent one, send it on rather than summarising it, because now ' +
+        'and again it asks for something that is not cleaning at all. And tell us whether the water ' +
+        'and the power will still be connected, since both are decided by an account being closed ' +
+        'rather than by anybody\'s arrangements, and a property with the supply off cannot be cleaned.',
+    },
+  ],
+
+  // 1 — the team, sized backwards from a clock, for a customer who is not there.
+  [
+    { type: 'h3', text: 'Who arrives, and why the number is worked back from your appointment' },
+    {
+      type: 'p',
+      text:
+        'A team on this job is sized backwards from a time somebody else has set. If the check-out is ' +
+        'at ten tomorrow morning then the property has to be finished tonight, and how many people ' +
+        'come follows from that rather than from how many bedrooms there are. A property that would ' +
+        'take one person two comfortable days gets three people for one day, because the second day ' +
+        'does not exist. That is the whole of the arithmetic, and it is why we want the appointment ' +
+        'before we say who is coming.',
+    },
+    {
+      type: 'p',
+      text:
+        'The other thing shaping it is that you are usually not there, and often not in the area any ' +
+        'more. Nobody is walking round with us pointing at things and there is nobody in the next ' +
+        'room to ask. So what would ordinarily be a conversation on the day has to be a written scope ' +
+        'settled beforehand, one person on the team owns that scope, and anything that comes up goes ' +
+        'to you as a message with a photograph attached.',
+    },
+    {
+      type: 'p',
+      text:
+        'Vetting and insurance are not the interesting part of this, and they are not optional either, ' +
+        'so: everybody who comes has been through both. What is particular to this job is the ' +
+        'position it puts us in. We are inside a building nobody lives in, holding a key that came ' +
+        "over an agent's counter, and we are the last people in there before somebody arrives to " +
+        'inspect it. So the day ends in writing rather than on a doorstep: who was in the property, ' +
+        'the time it was locked, and where the keys went afterwards. Nobody should have to take any ' +
+        'of that on trust about a house they are no longer standing in.',
+    },
+  ],
+
+  // 2 — the sequence: one dry pass down the building, one wet pass back up it.
+  [
+    { type: 'h3', text: 'Two passes through an empty property: everything dry, then everything wet' },
+    {
+      type: 'p',
+      text:
+        'An empty property is worked in two passes rather than room by room, and the first has no ' +
+        'water in it at all. It starts at the top of the building and goes through every room, ' +
+        'cupboard, drawer and shelf, taking out whatever is still in them and taking down the loose ' +
+        'material — and there is a great deal of it: furniture dragged out of a house brings down ' +
+        'more dust in an hour than a month of living in it. All of that leaves the building ' +
+        'before anything gets wet. Wet dust is mud, and mud on a skirting board is a job made twice.',
+    },
+    {
+      type: 'p',
+      text:
+        'The second pass is the wet one and it runs the other way, from the bottom of the building ' +
+        'upwards. That is deliberately the opposite of how a lived-in house gets cleaned, where the ' +
+        'argument for working downwards is that whatever comes off the high surfaces has to land ' +
+        'somewhere. Here the high surfaces have already been done dry, so what decides the order ' +
+        'instead is where water gets filled and emptied, and which floors get walked on last.',
+    },
+    {
+      type: 'p',
+      text:
+        'So the kitchen is where the wet pass starts and where it ends, since it is in use all day. ' +
+        'And the ' +
+        'floors are last, working out of the building, because the difference between this job and ' +
+        'every other one is what happens next: the door is locked and nobody walks on any of it ' +
+        'again. A floor finished at four in an empty property is exactly as good at ten the following ' +
+        'morning, which is when it is being looked at.',
+    },
+  ],
+
+  // 3 — a property stripped of every consumable, and everything leaving in the van.
+  [
+    { type: 'h3', text: 'Arriving at a property with nothing left in it' },
+    {
+      type: 'p',
+      text:
+        'By the time we arrive the property has been emptied of everything, including all the things ' +
+        'a cleaner would ordinarily borrow without thinking. There is no bin and no bag. No hand ' +
+        'towel, no kitchen roll, no washing-up liquid, no ladder, and often no ' +
+        'bulb in the fitting on the landing because the lamps went with the furniture. Sometimes ' +
+        'there is no light at all, because the account has already been closed. So the van arrives ' +
+        'self-contained: water carriers in case the supply has gone, a work light, a step, our own ' +
+        'sacks, and enough of everything that nothing has to be improvised.',
+    },
+    {
+      type: 'p',
+      text:
+        'Everything leaves with us as well. There is no ' +
+        'collection to put anything in and no bin to leave anything in, so the dust, the dirty water, ' +
+        'the used cloths, the packaging and whatever the final days of a move left behind in the ' +
+        'kitchen all go into the van. A property we have finished has nothing of ours in it and ' +
+        'nothing waiting by the door for somebody else to deal with, because a full sack standing in ' +
+        'a hallway is exactly the sort of thing that ends up in a photograph.',
+    },
+    {
+      type: 'p',
+      text:
+        'Two requests, both about services rather than about cleaning. Leave the water on until after ' +
+        'the appointment. And if a final reading is being taken, have it taken after us rather than ' +
+        'before, or expect the figures to have moved a little, since a day of hot water and a machine ' +
+        'running is a day of use. Both are easier to arrange now than to work around then.',
+    },
+  ],
+
+  // 4 — the three ways in, and the one that ends the job before it starts.
+  [
+    { type: 'h3', text: 'Getting in when the property is not yours any more' },
+    {
+      type: 'p',
+      text:
+        'There are three ways into a property once a tenancy is ending, and each has its own way of ' +
+        'going wrong. You meet us and let us in, which is the simplest and the rarest. A key comes ' +
+        'out of a safe, which works until the code has been changed by whoever emptied it last. Or ' +
+        'the agent holds the keys, and that is where the planning goes: an office opening at nine ' +
+        'when the work needs to start at eight, a set signed out to a viewing that afternoon, and a ' +
+        'form to sign at the counter before anything is handed over.',
+    },
+    {
+      type: 'p',
+      text:
+        'So the way in gets settled when the job is booked rather than on the morning, and we would ' +
+        'sooner ring an agent a week early than turn up and discover they have no record of us. The ' +
+        'failure that ends this job before it starts is a set of keys handed back early. It is an ' +
+        'easy mistake when the end of a tenancy and the move feel like the same day, and once they ' +
+        'are over a counter nobody can get in.',
+    },
+    {
+      type: 'p',
+      text:
+        'Whoever lets us in has often never met you and cannot answer a question about the property, ' +
+        'so the questions come to you. We photograph the meters when we arrive and again when we ' +
+        'leave and send you both, so you have a dated record, and we report a reading to nobody — ' +
+        "that is yours to do. And a residents' permit ends with a tenancy, so if parking needs one, " +
+        'say so: a team carrying kit from a street away loses time the property was meant to have.',
+    },
+  ],
+
+  // 5 — the two ends of the estimate, and the doorstep call when it is not the job described.
+  [
+    { type: 'h3', text: 'One day, two days, or a call from the doorstep' },
+    {
+      type: 'p',
+      text:
+        'The two ends of this are further apart than people expect. An empty two-bedroom flat with a ' +
+        'clean oven and almost no carpet is comfortably a day for two people. A furnished ' +
+        'four-bedroom house where the oven has had a whole tenancy of use, with two bathrooms and ' +
+        'every piece of furniture a line on an inventory, is two days or a bigger team. None of it is ' +
+        'about how quickly anybody works; it is about how many separate items are in the building.',
+    },
+    {
+      type: 'p',
+      text:
+        'When a day turns out to be short, this job cannot do what other cleaning jobs do. There is ' +
+        'no next visit and no coming back in the morning, because in the morning the property is ' +
+        'being inspected. So the answer is people rather than priorities: another pair of hands that ' +
+        'afternoon rather than an agreed list of things to leave out. Leaving things out is how a ' +
+        'report comes to be written about the room that ran out of time.',
+    },
+    {
+      type: 'p',
+      text:
+        'The limit is the case where the property is not the job that was described at all. Furniture ' +
+        'still in it. A fridge switched off a fortnight ago and never emptied. A room locked and ' +
+        'nobody with a key. None of those is more cleaning; each is a different job with different ' +
+        'hours in it, so it is a call from the doorstep and a decision made with you before anything ' +
+        'is touched. What we do not do is start quietly, run out of the day and hand back a ' +
+        'property half finished with an explanation attached.',
+    },
+  ],
+
+  // 6 — the deliverable is evidence: a dated set of images and a written list.
+  [
+    { type: 'h3', text: 'What we photograph before we lock up, and what you are left holding' },
+    {
+      type: 'p',
+      text:
+        'What you actually want from this job is not a clean property. It is a clean property and ' +
+        'something that shows it was clean when we left, because between our locking the door and ' +
+        'somebody opening it with a camera there is usually a day or two in which nobody is ' +
+        'responsible for the place. So the final thing that happens before the door is locked is a set ' +
+        'of photographs, taken a room at a time and at roughly the distance an inspection works at, ' +
+        'and you get all of them the same evening. They are dated, they are taken before anybody else ' +
+        'has been in, and they cost us twenty minutes.',
+    },
+    {
+      type: 'p',
+      text:
+        'They are taken on dry surfaces with the lights on, and the awkward ones are taken on ' +
+        'purpose: inside the oven with the door open, a shower screen from the side, the tops of the ' +
+        'doors, the floor where the sofa stood. Anywhere that would not come further is photographed ' +
+        'too, beside a note of what it is. A record showing only the good half of a property is not ' +
+        'much of a record, and the half we could not change is the half most worth having a date ' +
+        'against.',
+    },
+    {
+      type: 'p',
+      text:
+        'Alongside the images comes a short written list in two parts: what was already damaged, ' +
+        'missing or worn when we arrived, room by room, and what we could not bring further, with the ' +
+        'reason for each. That is all of it. There is no ticked sheet and no certificate, because a ' +
+        'certificate would be us grading our own work, and it is not our grade that counts.',
+    },
+  ],
+
+  // 7 — the gap before the appointment, the appointment itself, and the three kinds of finding.
+  [
+    { type: 'h3', text: 'After the door is locked: the gap, the appointment, and what follows' },
+    {
+      type: 'p',
+      text:
+        'There is a gap and it is worth understanding who owns it. From the moment the property is ' +
+        'locked until somebody arrives with a camera, nobody is in it and the photographs are still ' +
+        'true. If anybody does go in — you for a last bag, a trades visit the landlord arranged — ' +
+        'part of it is not true any more, which is no disaster as long as somebody says so. A hall ' +
+        'walked over in wet weather is ten minutes of work if we know, and an unexplained set of ' +
+        'prints if we do not.',
+    },
+    {
+      type: 'p',
+      text:
+        'We are not at the appointment and we will not contact the agent. That surprises people, and ' +
+        'the reason is plain: the tenancy is yours and the deposit is yours, and a cleaner writing to ' +
+        'an agent adds a third party to a conversation with room for two. What we will do is answer ' +
+        'anything you ask about what we did, in writing, including what was recorded as not ours ' +
+        'before we started.',
+    },
+    {
+      type: 'p',
+      text:
+        'Afterwards there are three kinds of finding and they are not treated alike. Something ' +
+        'already on the list we handed you is answered, which is why the list exists. Something that ' +
+        'was never cleaning — a mark on a wall, a missing shelf, the garden — we will say so, in ' +
+        'writing if that helps. And something that is cleaning, in a room nobody has used since we ' +
+        'were in it, is ours to look at, and better heard in the days after the appointment while ' +
+        'everybody can still tell what happened when. What we will not come ' +
+        'back for is a property that has been lived in, emptied or worked in since we left it.',
     },
   ],
 ];
