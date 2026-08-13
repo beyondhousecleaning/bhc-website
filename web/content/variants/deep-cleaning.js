@@ -441,3 +441,313 @@ export const A_VARIANTS = [
     },
   ],
 ];
+
+/**
+ * Block 4 — how the job runs. Eight stages, indexed by a town's second variant
+ * value, each a sub-heading and three paragraphs, and no list.
+ *
+ * The stages, in order: the look round that produces the quote; who arrives and
+ * how many; the order of the day; kit and products; access and clearing; time;
+ * the check at the end; and afterwards. They are chosen to be ORTHOGONAL to the
+ * deck above — that one is eight things a deep clean is done to, this one is
+ * eight stages of the day it is done in — which is what lets the two axes be
+ * selected independently without any pair of pages ever sharing both.
+ *
+ * THIS IS A ONE-OFF JOB AND EVERY STAGE BELOW TURNS ON THAT. The routine
+ * service's deck describes a standing arrangement: a round, cover, continuity, a
+ * slot that repeats. Nothing here does, and it is not a stylistic difference —
+ * it is why the same eight stage headings produce different arguments. The
+ * quote is per job rather than per hour, so the look round has to see the state
+ * of things. It takes a team rather than a cleaner, so the brief carries the job
+ * where continuity would. There is no next visit, so anything not caught before
+ * the door shuts is what the customer is left with. The seven decks in this
+ * directory are structurally parallel by instruction, which makes this the one
+ * region where two of them could quietly converge; the way out is that the
+ * argument, not the wording, has to be the service's own.
+ *
+ * NOTHING HERE RESTATES THE SHARED PROCESS STEPS, which render on every page
+ * carrying that band and are stripped out of the counted corpus for that reason.
+ * Note also that the third of those steps records its remedy wording as a
+ * commercial promise still awaiting sign-off — so no passage below states a time
+ * window, a return visit or a re-clean commitment. It says what is useful to
+ * tell us and stops there.
+ *
+ * No list block in this deck. The service-detail block above already carries
+ * one, both land inside the same prose container, and two bulleted runs back to
+ * back is where a page starts reading like a specification.
+ */
+export const B_VARIANTS = [
+  // 0 — the look round: why the quote needs eyes on the state of things.
+  [
+    { type: 'h3', text: 'The look round before we quote, and why a photo will not settle it' },
+    {
+      type: 'p',
+      text:
+        'A deep clean is priced as a job rather than by the hour, so the figure depends entirely on ' +
+        'the state of things, and the state of things has to be seen. What we want to look at is a ' +
+        'short list, and the number of bedrooms is not on it: the oven with its door open, every ' +
+        'bathroom, the tops of the kitchen units, whether the windows open, and what is standing in ' +
+        'front of what. Those five move a quote much further than the size of the house does.',
+    },
+    {
+      type: 'p',
+      text:
+        'Photographs help and they do not settle it. A picture of a cavity is taken in the dark ' +
+        'with a flash, which flattens the one thing being judged — whether the carbon is a film or ' +
+        'a crust, and that is the difference between a soak and most of a day. Where a visit is ' +
+        'genuinely impractical we will quote off photographs and say plainly which parts of the ' +
+        'figure are provisional and what would move them.',
+    },
+    {
+      type: 'p',
+      text:
+        'It takes about a quarter of an hour and nothing needs tidying for it. What is worth doing ' +
+        'beforehand is deciding what you actually want out of the day, because the whole house and ' +
+        'the kitchen and both bathrooms properly are two different jobs at two different figures — ' +
+        'and deciding what is not to be touched at all, which is a question we would much rather ' +
+        'ask than guess at. What you get back is a figure and a length of time, and both are ' +
+        'settled before the day is booked.',
+    },
+  ],
+
+  // 1 — the team: the arithmetic of the waits, and what carries the job instead of continuity.
+  [
+    { type: 'h3', text: 'How many people come, and why one is rarely enough' },
+    {
+      type: 'p',
+      text:
+        'A routine clean is usually one person. A deep clean usually is not, and the reason is ' +
+        'arithmetic rather than ambition. The work has long waits built into it — degreaser sitting ' +
+        'on a cavity, an acid gel on a screen, a product soaking down into a grout line — and one ' +
+        'cleaner either stands and watches those or loses the afternoon to them. Two or three ' +
+        'people start three of those waits at once and then work round them in turn, which is why ' +
+        'the same house takes a team a day and one person the better part of three.',
+    },
+    {
+      type: 'p',
+      text:
+        'They divide up the house rather than the room list. One of them owns the kitchen from the ' +
+        'first ten minutes, because the oven soak sets the clock everybody else works to. Somebody ' +
+        'starts at the top, so whatever comes down off the high surfaces lands in rooms nobody has ' +
+        'finished. And one of them runs the day and is the person to point things out to, which ' +
+        'matters more than ' +
+        'it sounds: with three people in a house, telling one of them something is not the same as ' +
+        'telling us.',
+    },
+    {
+      type: 'p',
+      text:
+        'Two things follow from a team rather than a cleaner. You are told how many to expect and ' +
+        'roughly when. And continuity cannot carry this job the way it carries a round, ' +
+        'since you may well never see these particular people again — so the brief carries it ' +
+        'instead. Everything said at the look round is written into the quote, and whoever is ' +
+        'running the day goes through it before anybody opens a bottle.',
+    },
+  ],
+
+  // 2 — the sequence: two soaks, top down, and the kitchen as the workroom.
+  [
+    { type: 'h3', text: 'Why the kitchen is not the first room we do' },
+    {
+      type: 'p',
+      text:
+        'The day is built around its two longest waits, and both are started before anything in ' +
+        'the house is actually cleaned. Within the first ten minutes the oven is in pieces with its ' +
+        'parts in a soak, and the descaler is on the screens and the taps upstairs. Neither can be ' +
+        'hurried and both improve for being left, so they begin while everybody is fresh and get ' +
+        'returned to twice.',
+    },
+    {
+      type: 'p',
+      text:
+        'After that the house goes from the top down: a deep clean brings a lot of material down off ' +
+        'high surfaces, and none of it should land on a floor somebody has finished. A room is ' +
+        'taken as far as it goes and then its door is shut, which is less about tidiness than about ' +
+        'traffic. A day like this moves a surprising amount through a house — oven parts, buckets, ' +
+        'water going out and coming back — and the sequence exists to keep all of it off ground ' +
+        'that is already done.',
+    },
+    {
+      type: 'p',
+      text:
+        'The kitchen is last for the same reason it was first. It is the workroom: the sink, a ' +
+        'length of worktop and a patch of floor are in use all day for soaking, filling and ' +
+        'standing things on, so it cannot be finished until nothing else needs it. Its floor goes ' +
+        'at the very end, with the hall. If something about your day makes that order wrong — one ' +
+        'bathroom that has to be usable by four, a room somebody is working in, a school run — say ' +
+        'so at the look round and the day gets built the other way round instead.',
+    },
+  ],
+
+  // 3 — kit, dwell time, and the two-way refusal list.
+  [
+    { type: 'h3', text: 'The kit a deep clean arrives with, and what will not go on a surface' },
+    {
+      type: 'p',
+      text:
+        'The difference between this and a routine visit sits in the van rather than in the effort. ' +
+        'A soak tray and an alkaline degreaser for the oven parts. An acid gel and a citric paste ' +
+        'for scale. An oxygen product for grout, plastic blades, a ceramic scraper, nylon brushes ' +
+        'narrow tools for the machine, a squeegee and a scrim for glass, and poles long enough that ' +
+        'nothing indoors needs a ladder. Nearly all of it puts chemistry and time where pressure ' +
+        'would otherwise go, because pressure is what damages surfaces.',
+    },
+    {
+      type: 'p',
+      text:
+        'Dwell time is the part that looks like nothing happening and is in fact the job. A product ' +
+        'left as long as it needs will do what twenty minutes of scrubbing will not, and without ' +
+        'taking the finish off along with the dirt. So there will be points in the day when a ' +
+        'bathroom has been sprayed and abandoned and a cavity sits open looking exactly as it did. ' +
+        'That is not somebody having a break.',
+    },
+    {
+      type: 'p',
+      text:
+        'There is a refusal list and it runs both ways. Nothing caustic near an aluminium fan blade ' +
+        'or an anodised trim. No acid on natural stone. No blade on coated glass. No abrasive cream ' +
+        'on a resin tray or a brushed metal finish. And nothing acidic anywhere near a bleach ' +
+        'product, which is a ventilation matter rather than a finish one. And say before the day if ' +
+        'something is delicate — an oiled worktop rather than a sealed one, a ' +
+        'mirror that is only glued to the wall, a light fitting nobody has ever taken down.',
+    },
+  ],
+
+  // 4 — access, and the clearing the price assumes.
+  [
+    { type: 'h3', text: 'Access, and what needs to be clear before we start' },
+    {
+      type: 'p',
+      text:
+        'Access is simpler on a one-off than on a round because it is one day: somebody is in, or ' +
+        'there is a key or a code. Either way it helps to have somebody reachable for the questions ' +
+        'that only come up once we are inside. A team also wants somewhere to park within carrying ' +
+        'distance of the door, a tap and a socket. In a flat, say whether the lift is working and ' +
+        'whether there is a back way in.',
+    },
+    {
+      type: 'p',
+      text:
+        'The clearing matters more, because a deep clean is priced on getting at things and what is ' +
+        'standing on a surface decides how much of that surface gets cleaned. What we ask for is ' +
+        'short. Worktops clear of what lives on them. Floors clear of what stands on them. The tops ' +
+        'of the wall units clear. The fridge down to one shelf if the inside is on the list. That ' +
+        'is all. The house does not need cleaning first and we would rather you did not.',
+    },
+    {
+      type: 'p',
+      text:
+        'What we will not do is shift anything that wants three people or a trolley, or disconnect ' +
+        'anything. A sofa, a table and a bed get moved; a unit bolted to the plaster does not, and ' +
+        'nothing is drawn out further than the slack in its own hose. Whatever is left standing on ' +
+        'a surface gets moved aside, cleaned round and put back, which is a worse result than a ' +
+        'clear surface gets — the honest reason for asking. Anything irreplaceable is better off in ' +
+        'a room we are not working in: three people in a house for a day are near far more of it ' +
+        'than one cleaner on a round.',
+    },
+  ],
+
+  // 5 — time: what the hours actually go on, and the decision made before the day.
+  [
+    { type: 'h3', text: 'How long a deep clean really takes, and what happens if a day is short' },
+    {
+      type: 'p',
+      text:
+        'The honest answer is that it is measured in ovens and bathrooms rather than in bedrooms. A ' +
+        'cavity left for years is a large slice of a whole day for one person, on its own. A ' +
+        'screen that has never been descaled is most of a morning. Bedrooms, even with the ' +
+        'paintwork on the list, are steady and predictable. Which is why the quote asks pointed ' +
+        'questions about the first two and barely mentions the third.',
+    },
+    {
+      type: 'p',
+      text:
+        'What happens when a day is not enough gets decided before we start rather than at four in ' +
+        'the afternoon. Either it is quoted as two days from the beginning, which on a house that ' +
+        'has never had one is far more common than people expect, or we agree an order of priority ' +
+        'at the look round and work down it. Then whatever runs out of time is the thing you cared ' +
+        'least about, and it is never a bathroom left halfway. A part-finished room is worse than ' +
+        'an untouched one, because you cannot see what you paid for.',
+    },
+    {
+      type: 'p',
+      text:
+        'It goes the other way sometimes. A house in better order than it looked from the doorstep ' +
+        'finishes early; the figure was settled before we started and it stays settled, and the ' +
+        'spare hours go into whatever was at the bottom of the priority list rather than into ' +
+        'leaving at two. We would far rather do that than build a reputation for quoting long, and ' +
+        'it is a better use of a team that is already standing in the house with the kit out.',
+    },
+  ],
+
+  // 6 — the check at the end, on dry surfaces, and the definition of finished.
+  [
+    { type: 'h3', text: 'The last walk round, and what counts as finished' },
+    {
+      type: 'p',
+      text:
+        'What changes the check at the end of a deep clean is that there is no next time. On a ' +
+        'fortnightly round anything missed comes back around in a fortnight and costs nobody very ' +
+        'much. Here, whatever is not caught before the door closes is what you are left with, so ' +
+        'the last part of the day runs longer than it would on a routine visit, and it is done with ' +
+        'you if you are in the house.',
+    },
+    {
+      type: 'p',
+      text:
+        'It happens on dry surfaces and in daylight wherever there is any left. A wet surface ' +
+        'always looks clean: grease and scale only declare themselves once things have dried, which ' +
+        'is why the kitchen and the bathrooms get looked at again at the end of the day instead of ' +
+        'being signed off the moment they were finished. A cavity gets the same treatment once it ' +
+        'has gone cold, because a warm oven flatters itself. And it goes room by room in the order ' +
+        'they were worked, because a day that touched this much of a house is not something anybody ' +
+        'should be checking from memory.',
+    },
+    {
+      type: 'p',
+      text:
+        'As for what finished means: the rooms on the quote, taken as far as their surfaces will ' +
+        'go, with a spoken list of everything that would not come further and the reason attached ' +
+        'to each one. Nothing gets hung on the back of a door with boxes down the side of it. A ' +
+        'one-off has no history to be measured against — no last fortnight, no standard already ' +
+        'set — so what stands in place of a checklist is the quote on one side and that list of ' +
+        'exceptions on the other. Both are things you can hold us to.',
+    },
+  ],
+
+  // 7 — afterwards: uneven decay, the habits that hold it, and the one-off asymmetry.
+  [
+    { type: 'h3', text: 'Keeping it, when the next one is due, and what to tell us' },
+    {
+      type: 'p',
+      text:
+        'A deep clean does not decay evenly, and knowing which parts go first is worth more than ' +
+        'anything in a bottle. Some of it holds for a long time: an oven cavity, the tops of the ' +
+        'units, the insides of the cupboards, washed paintwork. Some of it starts going the same ' +
+        'week — scale is back on a shower screen inside a month where the water is hard, and a fan ' +
+        'cover greys over again quietly. That gap is usually why somebody books the whole house ' +
+        'when what they actually wanted was the kitchen.',
+    },
+    {
+      type: 'p',
+      text:
+        'Holding the rest is a handful of habits and not one of them is something to buy. Dry the ' +
+        'glass and the taps when the shower goes off. Run the fan after rather than during. Wipe ' +
+        'the hob while it is still warm. Do the oven door glass in the week it needs it. Those ' +
+        'four are most of the difference between one deep clean a year and one ' +
+        'every other year. For a good many houses the next step is a regular visit: a deep clean ' +
+        'sets a standard and a routine clean is what holds one.',
+    },
+    {
+      type: 'p',
+      text:
+        'If something was missed, timing matters more here than on a round. On a standing ' +
+        'arrangement a missed shelf goes onto the list for the next visit; on a one-off there is ' +
+        'nothing to add it to, so it wants saying in the days afterwards rather than in six ' +
+        'weeks, by which point nobody can honestly tell whether a surface was left or has simply ' +
+        'been used since. What helps is which room and which surface. What is not needed is a ' +
+        'justification: nobody here requires persuading that a thing you paid to have cleaned ' +
+        'should have been cleaned.',
+    },
+  ],
+];
