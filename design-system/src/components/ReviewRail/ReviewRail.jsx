@@ -40,6 +40,18 @@
  * the moment a link is added inside a card it becomes a redundant tab stop
  * immediately before that link. The coupling is recorded in both prompt docs.
  *
+ * THE DEFAULT HEADING NAMES NO COUNTY. Plan 02-16 established that not one of
+ * the eighteen shipped reviews carries a town, and that none may be given one —
+ * so a heading that attributes them to a named county is a claim the data cannot
+ * support. On a Telford or Market Drayton page it is not merely unsupported, it
+ * is false, and Phase 3 puts this rail on 406 further routes. The default says
+ * only what is true of every one of them.
+ *
+ * The `town` prop stays, and still narrows the heading when a caller passes one.
+ * No template in Phase 3 passes it; Phase 4 owns the question of town-filtered
+ * reviews, and removing the prop now would turn that into a breaking API change
+ * instead of a data change.
+ *
  * NO REVIEW STRUCTURED DATA, here or in the card.
  */
 
@@ -57,8 +69,8 @@ const slugify = (value) =>
     .filter(Boolean)
     .join('-');
 
-/** UI-SPEC §5's <h2> deck. */
-const DEFAULT_HEADING = 'What Warwickshire customers say';
+/** UI-SPEC §5's <h2> deck — sitewide, and true on every route. */
+const DEFAULT_HEADING = 'What our customers say';
 
 export function ReviewRail({ heading, reviews = [], town, id = 'reviews', className = '' }) {
   /*

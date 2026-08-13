@@ -2,10 +2,14 @@ import type { Review } from '../ReviewCard/ReviewCard';
 
 export interface ReviewRailProps {
   /**
-   * Defaults to `What Warwickshire customers say`, or to
-   * `What {town} customers say` when `town` is given and no heading is. An
-   * explicit heading always wins — a page that has said what it wants said does
-   * not get it rewritten underneath it.
+   * Defaults to `What our customers say`, or to `What {town} customers say`
+   * when `town` is given and no heading is. An explicit heading always wins — a
+   * page that has said what it wants said does not get it rewritten underneath
+   * it.
+   *
+   * The default names no county on purpose: no review in the data carries a
+   * town (02-16) and none may be invented one, so a county in the heading is a
+   * claim the data cannot support — and outside Warwickshire it is simply false.
    */
   heading?: string;
   /**

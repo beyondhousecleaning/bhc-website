@@ -60,12 +60,27 @@ to `BeforeAfterSlider`'s State B — see that component's doc.
 region rather than as a list of three items. A scrollable rail is a region before it is a list, and
 the name is what tells a keyboard user what they have landed on.
 
+## The default heading names no county
+
+The default `<h2>` is **`What our customers say`**, sitewide.
+
+Plan 02-16 settled that no review in the data carries a town and that none may be given one. A
+heading that attributes the reviews to a named county is therefore a claim the data cannot support,
+and on a Telford or Market Drayton page it is straightforwardly false. Phase 3 puts this rail on 406
+further routes across five new postcode areas, so the heading has to be true of all of them.
+
+If a page genuinely has something narrower and truthful to say, it passes `heading` explicitly.
+
 ## `town`
 
 Narrows the default heading to `What {town} customers say` and the track's accessible name to
 `Customer reviews from {town}`. An explicit `heading` always wins — a page that has already said
-what it wants said does not get it rewritten underneath it. Phase 3's town and combo templates are
-where this starts being passed.
+what it wants said does not get it rewritten underneath it.
+
+**No template passes it.** Phase 3's town hubs and combo pages deliberately do not (§13-J): the rail
+would then claim reviews from a town no review in the data belongs to. The prop is kept rather than
+deleted because Phase 4 owns the question of town-filtered reviews, and deleting it now would make
+that a breaking API change instead of a data change.
 
 ## It emits no review structured data
 
@@ -82,5 +97,8 @@ entity-graph only and `RatingBadge` emits it once per page.
   boundary.
 - Don't add a link inside `ReviewCard`. It makes this component's `tabindex="0"` a redundant tab
   stop, and the card's own doc says the same thing from the other side.
+- Don't put a county or a town in the default heading. It attributes the reviews to a place the data
+  does not record, and it is false on most of the site's routes.
+- Don't pass `town` to make a rail look local. There is no town on any review to filter by.
 - Don't link anything to `#reviews` until the data exists.
 - Don't emit review structured data.
