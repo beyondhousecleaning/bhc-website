@@ -45,10 +45,18 @@ decoration.** Never the reverse.
 
 | Template | `eyebrow` | `heading` → `<h1>` |
 |---|---|---|
-| Home | `Warwickshire & the West Midlands` | `Professional House Cleaning You Can Actually Rely On` |
-| Service | `Reliable & Affordable` | `Deep Cleaning Services in Warwickshire` |
+| Home | `DBS-checked, insured, local` | `Professional House Cleaning in Warwickshire & the West Midlands` |
+| Service | `Top to bottom, once` | `Deep Cleaning in Warwickshire & the West Midlands` |
 | Town hub | `Local, DBS-checked cleaners` | `House Cleaning in Warwick` |
-| Combo | `Reliable & Affordable` | `Deep Cleaning in Warwick` |
+| Combo | `Local, DBS-checked cleaners` | `Deep Cleaning in Warwick` |
+
+Two of these rows changed in Phase 2, and both were failures of the lock this component enforces.
+The old Home heading closed on a reassurance clause and named no region at all, so the reference
+example for the template failed Lock 1 on its own terms — an `<h1>` carrying neither a service area
+nor a place. The old Service heading carried the redundant word *Services*: the page is about a service,
+the noun phrase already says so, and the word costs a keyword slot in the most valuable string on
+the page. The eyebrow lines move with them, because *"Reliable & Affordable"* is the exact adjective
+line the live site promoted into its `<h1>` on 30 pages.
 
 ## The image is the LCP element
 

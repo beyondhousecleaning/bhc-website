@@ -16,10 +16,29 @@
     "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.jsx",
     "RatingBadge": "src/components/RatingBadge/RatingBadge.jsx",
     "NAPFooter": "src/components/NAPFooter/NAPFooter.jsx",
-    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx"
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.jsx",
+    "SectionBand": "src/components/SectionBand/SectionBand.jsx",
+    "Prose": "src/components/Prose/Prose.jsx",
+    "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.jsx",
+    "CTABand": "src/components/CTABand/CTABand.jsx",
+    "ServiceCard": "src/components/ServiceCard/ServiceCard.jsx",
+    "TownCard": "src/components/TownCard/TownCard.jsx",
+    "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.jsx",
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.jsx",
+    "TrustBar": "src/components/TrustBar/TrustBar.jsx",
+    "ReviewCard": "src/components/ReviewCard/ReviewCard.jsx",
+    "ReviewRail": "src/components/ReviewRail/ReviewRail.jsx",
+    "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.jsx",
+    "SkipLink": "src/components/SkipLink/SkipLink.jsx",
+    "Footer": "src/components/Footer/Footer.jsx",
+    "Header": "src/components/Header/Header.jsx",
+    "StickyCallBar": "src/components/StickyCallBar/StickyCallBar.jsx"
   },
   "overrides": {
-    "NAPFooter": { "cardMode": "column" }
+    "NAPFooter": { "cardMode": "column" },
+    "Footer": { "cardMode": "column" },
+    "Header": { "cardMode": "column" },
+    "StickyCallBar": { "cardMode": "column" }
   },
   "docsMap": {
     "Button": "src/components/Button/Button.prompt.md",
@@ -27,6 +46,22 @@
     "Breadcrumbs": "src/components/Breadcrumbs/Breadcrumbs.prompt.md",
     "RatingBadge": "src/components/RatingBadge/RatingBadge.prompt.md",
     "NAPFooter": "src/components/NAPFooter/NAPFooter.prompt.md",
-    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md"
+    "InterlinkBlock": "src/components/InterlinkBlock/InterlinkBlock.prompt.md",
+    "SectionBand": "src/components/SectionBand/SectionBand.prompt.md",
+    "Prose": "src/components/Prose/Prose.prompt.md",
+    "ProcessSteps": "src/components/ProcessSteps/ProcessSteps.prompt.md",
+    "CTABand": "src/components/CTABand/CTABand.prompt.md",
+    "ServiceCard": "src/components/ServiceCard/ServiceCard.prompt.md",
+    "TownCard": "src/components/TownCard/TownCard.prompt.md",
+    "FAQAccordion": "src/components/FAQAccordion/FAQAccordion.prompt.md",
+    "QuoteFormEntry": "src/components/QuoteFormEntry/QuoteFormEntry.prompt.md",
+    "TrustBar": "src/components/TrustBar/TrustBar.prompt.md",
+    "ReviewCard": "src/components/ReviewCard/ReviewCard.prompt.md",
+    "ReviewRail": "src/components/ReviewRail/ReviewRail.prompt.md",
+    "BeforeAfterSlider": "src/components/BeforeAfterSlider/BeforeAfterSlider.prompt.md",
+    "SkipLink": "src/components/SkipLink/SkipLink.prompt.md",
+    "Footer": "src/components/Footer/Footer.prompt.md",
+    "Header": "src/components/Header/Header.prompt.md",
+    "StickyCallBar": "src/components/StickyCallBar/StickyCallBar.prompt.md"
   }
 }

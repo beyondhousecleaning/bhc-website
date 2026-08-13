@@ -1,0 +1,64 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">With a heading — the standalone form, on tint</p>
+  <section class="bhc-section bhc-section--tint">
+    <div class="bhc-container">
+      <section class="bhc-steps__band">
+        <h2 class="bhc-steps__heading">How it works</h2>
+        <ol class="bhc-steps">
+          <li class="bhc-steps__item">
+            <h3 class="bhc-steps__title">Tell us about your home</h3>
+            <p class="bhc-steps__body">A two-minute form or one phone call. Rooms, extras, and how often you'd like us.</p>
+          </li>
+          <li class="bhc-steps__item">
+            <h3 class="bhc-steps__title">We match you with a local cleaner</h3>
+            <p class="bhc-steps__body">The same DBS-checked cleaner each visit wherever we can, so they learn your home rather than starting from scratch.</p>
+          </li>
+          <li class="bhc-steps__item">
+            <h3 class="bhc-steps__title">You get your evening back</h3>
+            <p class="bhc-steps__body">We clean, you check. Not happy with something? Tell us and we'll put it right.</p>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </section>
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">Composed — no heading prop, a SectionBand supplies the h2</p>
+  <section class="bhc-section bhc-section--warm">
+    <div class="bhc-container">
+      <div class="bhc-section__head">
+        <h2 class="bhc-section__heading">How it works</h2>
+        <p class="bhc-section__intro">Three steps, and the third one is the point of the other two.</p>
+      </div>
+      <ol class="bhc-steps">
+        <li class="bhc-steps__item">
+          <h3 class="bhc-steps__title">Tell us about your home</h3>
+          <p class="bhc-steps__body">A two-minute form or one phone call. Rooms, extras, and how often you'd like us.</p>
+        </li>
+        <li class="bhc-steps__item">
+          <h3 class="bhc-steps__title">We match you with a local cleaner</h3>
+          <p class="bhc-steps__body">The same DBS-checked cleaner each visit wherever we can, so they learn your home rather than starting from scratch.</p>
+        </li>
+        <li class="bhc-steps__item">
+          <h3 class="bhc-steps__title">You get your evening back</h3>
+          <p class="bhc-steps__body">We clean, you check. Not happy with something? Tell us and we'll put it right.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <div style="padding:32px 48px;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why this component exists</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Not one of the numerals above is in the markup. They come from
+      <strong>counter-increment</strong> on the list item and <strong>content: counter()</strong> on
+      its disc, so the numbering is the list's own ordinal. From Phase 3 these steps come from a data
+      file that copywriters edit; a hand-typed <em>1.</em> survives exactly until the first reorder.
+      The disc is <strong>--bhc-action</strong> with an <strong>--bhc-ink</strong> numeral at
+      <strong>5.17:1</strong>, and it is 44px so it matches every other touch target on the page.
+    </p>
+  </div>
+
+</div>

@@ -1,0 +1,62 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:24px 48px 0">One open, two closed — defaultOpen is 0 and the others stay shut</p>
+  <section class="bhc-section">
+    <div class="bhc-container">
+      <section class="bhc-faq" aria-labelledby="bhc-faq-questions-we-get-asked">
+        <h2 class="bhc-faq__heading" id="bhc-faq-questions-we-get-asked">Questions we get asked</h2>
+
+        <details class="bhc-faq__item" open>
+          <summary class="bhc-faq__summary">
+            <h3 class="bhc-faq__q">How long does a deep clean take?</h3>
+            <svg class="bhc-faq__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 7.5 5 5 5-5" /></svg>
+          </summary>
+          <div class="bhc-faq__a">
+            <p>Most three-bedroom homes take five to seven hours with two cleaners. We quote the hours before we start, so the price does not move once we are in the door.</p>
+          </div>
+        </details>
+
+        <details class="bhc-faq__item">
+          <summary class="bhc-faq__summary">
+            <h3 class="bhc-faq__q">Do I need to be home?</h3>
+            <svg class="bhc-faq__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 7.5 5 5 5-5" /></svg>
+          </summary>
+          <div class="bhc-faq__a">
+            <p>No. Most of our regular customers give us a key or a door code. Every cleaner is DBS-checked and we are fully insured.</p>
+          </div>
+        </details>
+
+        <details class="bhc-faq__item">
+          <summary class="bhc-faq__summary">
+            <h3 class="bhc-faq__q">Do you bring your own products?</h3>
+            <svg class="bhc-faq__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 7.5 5 5 5-5" /></svg>
+          </summary>
+          <div class="bhc-faq__a">
+            <p>Yes, everything including the vacuum. If you would rather we used yours — a particular floor product, or something for an allergy — tell us and we will.</p>
+          </div>
+        </details>
+
+      </section>
+    </div>
+  </section>
+
+  <div style="padding:32px 48px;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Why this component exists</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      There is <strong>no JavaScript here at all</strong>. The user agent owns the open state, so it
+      works with scripting disabled and the page stays a server component. The two closed answers
+      above are <strong>already in this document</strong> — a closed
+      <strong>&lt;details&gt;</strong> still ships its full text, so a crawler or a language model
+      reads every answer whatever the browser does with the disclosure. And there is
+      <strong>no &lt;details name&gt;</strong>: exclusive-accordion behaviour would collapse the
+      answer the reader is halfway through.
+    </p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:12px 0 0;max-width:70ch">
+      It emits <strong>no structured data</strong>. See the prompt doc for the decision, the date and
+      the CI grep that keeps it that way.
+    </p>
+  </div>
+
+</div>

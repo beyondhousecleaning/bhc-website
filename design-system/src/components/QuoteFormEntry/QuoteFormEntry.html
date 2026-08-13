@@ -1,0 +1,50 @@
+<!-- @dsCard group="Actions" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <section class="bhc-section bhc-section--warm">
+    <div class="bhc-container bhc-container--narrow">
+      <aside class="bhc-quote-entry" aria-labelledby="bhc-quote-entry-get-a-free-quote-in-under-two-minutes">
+        <h2 class="bhc-quote-entry__heading" id="bhc-quote-entry-get-a-free-quote-in-under-two-minutes">Get a free quote in under two minutes</h2>
+        <ul class="bhc-quote-entry__bullets">
+          <li>
+            <svg class="bhc-quote-entry__tick" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 10.5 4 4 8-9" /></svg>
+            <span>No obligation</span>
+          </li>
+          <li>
+            <svg class="bhc-quote-entry__tick" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 10.5 4 4 8-9" /></svg>
+            <span>Fixed price before we start</span>
+          </li>
+          <li>
+            <svg class="bhc-quote-entry__tick" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 10.5 4 4 8-9" /></svg>
+            <span>DBS-checked, insured cleaners</span>
+          </li>
+        </ul>
+        <div class="bhc-quote-entry__actions">
+          <a class="bhc-btn bhc-btn--primary bhc-btn--lg" href="#"><span>Get a Free Quote</span></a>
+          <a class="bhc-btn bhc-btn--secondary bhc-btn--lg" href="tel:+447861936533"><span>Call +44 7861 936533</span></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div style="padding:32px 48px;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">An entry point, not a form</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      There is no <strong>&lt;form&gt;</strong> and no <strong>&lt;input&gt;</strong> in this panel,
+      and there is not going to be one. Booking-flow UX belongs to a separate product and is out of
+      scope for this site; on top of that, a real form needs validation state, validation state needs
+      a client boundary, and a first-party client boundary turns <strong>SC-4g</strong> red — the
+      lock that asserts every client module in the build resolves inside Next itself. One text input
+      would cost the phase its central architectural claim.
+    </p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:12px 0 0;max-width:70ch">
+      The number is not typed into this component. It arrives from
+      <strong>src/phone.js</strong>; the label comes from <strong>formatPhone()</strong> and the href
+      from <strong>toDial()</strong>, both derived from that same one value. The live site
+      <strong>displays</strong> one number and <strong>dials</strong> another on all 115 pages, which
+      is only possible when the two are separate inputs.
+    </p>
+  </div>
+
+</div>

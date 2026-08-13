@@ -12,6 +12,8 @@
  * Schema is emitted inline and server-rendered (Lock 9) — never JS-injected.
  */
 
+import { safeJsonLd } from '../../jsonLd.js';
+
 const SITE = 'https://www.beyondhousecleaning.com';
 
 export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
@@ -24,7 +26,15 @@ export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.label,
-      ...(item.href ? { item: `${siteUrl}${item.href}` } : {}),
+      /*
+        Resolved against the origin rather than concatenated onto it. From
+        Phase 3 these hrefs come from a data file, and `siteUrl + href` turns a
+        missing leading slash into `https://www.example.comwarwick` and a
+        trailing slash on siteUrl into a double slash — both of which serialise
+        into BreadcrumbList as a URL Google will fetch. `new URL` normalises
+        instead, and throws on something genuinely unresolvable.
+      */
+      ...(item.href ? { item: new URL(item.href, siteUrl).toString() } : {}),
     })),
   };
 
@@ -38,18 +48,43 @@ export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
           {items.map((item, i) => {
             const isLast = i === items.length - 1;
             return (
-              <li key={item.href || item.label} style={{ display: 'contents' }}>
+              /*
+                WR-12. The <li> carried an inline display-contents style so the
+                list's flex gap applied evenly across crumbs and separators.
+                Chrome and Safari drop a display-contents element from the
+                accessibility tree, which removes the <li> and with it the
+                ol/li relationship that makes a trail announceable as "list,
+                3 items" — the entire reason an <ol> was used. The layout it
+                bought is now a `.bhc-breadcrumbs__list li` rule in CSS.
+
+                The key is index-prefixed because two crumbs can legitimately
+                share a label with no href (a repeated town name in a deep
+                Phase-3 trail), and `item.href || item.label` collides then.
+              */
+              <li key={`${i}-${item.href ?? item.label}`}>
                 {i > 0 ? (
                   <span className="bhc-breadcrumbs__sep" aria-hidden="true">
                     /
                   </span>
                 ) : null}
-                {isLast || !item.href ? (
+                {/*
+                  §13-R. aria-current="page" means "this crumb IS the page you
+                  are on", so exactly one crumb may carry it — the last —
+                  whatever the trail's length. The old condition was
+                  `isLast || !item.href`, which marked EVERY href-less crumb,
+                  so a trail with an intermediate crumb whose parent URL does
+                  not exist yet announced two current pages. Phase 2 has 17
+                  trails and Phase 3 has ~336; this branch is the rule they
+                  both inherit.
+                */}
+                {isLast ? (
                   <span className="bhc-breadcrumbs__current" aria-current="page">
                     {item.label}
                   </span>
-                ) : (
+                ) : item.href ? (
                   <a href={item.href}>{item.label}</a>
+                ) : (
+                  <span className="bhc-breadcrumbs__current">{item.label}</span>
                 )}
               </li>
             );
@@ -58,7 +93,7 @@ export function Breadcrumbs({ items = [], siteUrl = SITE, className = '' }) {
       </div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
     </nav>
   );

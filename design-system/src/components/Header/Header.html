@@ -1,0 +1,75 @@
+<!-- @dsCard group="Navigation" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:32px 48px 16px">One real instance — mobile and desktop are the same DOM, driven entirely by CSS</p>
+
+  <header class="bhc-header">
+    <div class="bhc-container bhc-header__inner">
+      <a class="bhc-header__brand" href="/" aria-label="Beyond House Cleaning — home">
+        <span class="bhc-header__wordmark">Beyond House Cleaning</span>
+      </a>
+
+      <nav aria-label="Primary" class="bhc-nav">
+        <details class="bhc-nav__disclosure">
+          <summary class="bhc-nav__toggle" aria-controls="primary-nav" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16" /><path d="M4 12h16" /><path d="M4 17h16" /></svg>
+          </summary>
+        </details>
+
+        <ul class="bhc-nav__list" id="primary-nav">
+          <li class="bhc-nav__item">
+            <details class="bhc-nav__submenu">
+              <summary class="bhc-nav__summary">
+                <span>Services</span>
+                <svg class="bhc-nav__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" /></svg>
+              </summary>
+              <ul class="bhc-nav__sublist">
+                <li><a class="bhc-nav__link" href="/services/deep-cleaning">Deep Cleaning</a></li>
+                <li><a class="bhc-nav__link" href="/services/standard-home-cleaning">Regular House Cleaning</a></li>
+                <li><a class="bhc-nav__link" href="/services/move-in-cleaning">Move-In Cleaning</a></li>
+                <li><a class="bhc-nav__link" href="/services/move-out-cleaning">Move-Out Cleaning</a></li>
+                <li><a class="bhc-nav__link" href="/services/short-term-rental-cleaning">Short-Term Rental Cleaning</a></li>
+                <li><a class="bhc-nav__link" href="/services/post-construction-cleaning">Builders Clean</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="bhc-nav__item"><a class="bhc-nav__link" href="/about-us">About</a></li>
+          <li class="bhc-nav__item"><a class="bhc-nav__link" href="/checklist">Checklist</a></li>
+          <li class="bhc-nav__item"><a class="bhc-nav__link" href="/contact-us">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="bhc-header__actions">
+        <a class="bhc-header__phone" href="tel:+447861936533">+44 7861 936533</a>
+        <a class="bhc-btn bhc-btn--primary bhc-btn--md" href="/get-a-quote"><span>Get a Free Quote</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div style="padding:32px 48px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">The mechanism, and why the disclosure looks empty</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0 0 16px;max-width:70ch">
+      The <code>&lt;details class="bhc-nav__disclosure"&gt;</code> above holds a
+      <code>&lt;summary&gt;</code> and nothing else. It is a <strong>state carrier</strong>. The one
+      <code>&lt;ul&gt;</code> is its <strong>sibling</strong>, and a sibling combinator in
+      <code>styles.css</code> shows the list while the disclosure is open. A user agent only hides a
+      disclosure's own children, so a sibling is untouched by it.
+    </p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0 0 16px;max-width:70ch">
+      Below 1024px the toggle is the navigation. At 1024px and above the toggle is removed and the
+      list is unconditionally <code>display:flex</code>, so the open state stops mattering. One
+      <code>&lt;nav aria-label="Primary"&gt;</code>, one <code>&lt;ul&gt;</code>, every link in the
+      DOM exactly once, and no JavaScript anywhere.
+    </p>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">What breaks if the list is moved inside the disclosure</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Desktop navigation disappears. A closed disclosure's non-summary children are hidden by the
+      user agent, not by a <code>display</code> rule a stylesheet can override, so hiding the toggle
+      at 1024px would leave the list permanently invisible. The empty element is deliberate. The
+      Services submenu below it is the other case — an ordinary disclosure that <em>does</em> contain
+      its own list, opened by the user agent, no combinator involved.
+    </p>
+  </div>
+
+</div>

@@ -14,7 +14,10 @@
  * `formatPhone` derives the display string FROM the dial string, so the two
  * cannot diverge. There is no prop for the displayed text.
  *
- * Lock 5: the registered office (84 Acacia Road, CV32 6EQ) is residential.
+ * Lock 5: the registered office is a residential address, so it is not written
+ * out here — this repository is public, and a comment explaining why an address
+ * must never ship is a poor place to keep the address. Companies House holds it
+ * if it is ever needed.
  * The GBP is a service-area business with the address suppressed, so the
  * footer carries a service-area statement and no address. Schema uses
  * areaServed with no streetAddress — JSON-LD ships in page HTML, so putting
@@ -22,6 +25,8 @@
  */
 
 import { formatPhone, toDial } from './formatPhone.js';
+import { CANONICAL_PHONE } from '../../phone.js';
+import { safeJsonLd } from '../../jsonLd.js';
 
 const SITE = 'https://www.beyondhousecleaning.com';
 
@@ -30,7 +35,7 @@ export { formatPhone, toDial };
 export function NAPFooter({
   businessName = 'Beyond House Cleaning',
   /** The ONE number. Everything displayed is derived from it. */
-  phone = '+447861936533',
+  phone = CANONICAL_PHONE,
   serviceArea = 'Serving Warwickshire, Coventry and the West Midlands',
   hours = 'Mon–Sat, 8am–7pm',
   /** The GBP place URL — not a link to the town. */
@@ -45,6 +50,16 @@ export function NAPFooter({
   const display = formatPhone(phone);
   const dial = toDial(phone);
 
+  /*
+    WR-10. `mapsUrl` is a literal today and a Phase-3 data-file value tomorrow,
+    and it is rendered straight into an href. A value that is not http(s) —
+    `javascript:`, `data:`, or a half-written relative path — has no useful
+    rendering here, so the whole block is dropped rather than shipped broken.
+    The same guarded value feeds schema `sameAs`: an origin Google is told the
+    business also lives at is a claim, not decoration.
+  */
+  const safeMapsUrl = /^https?:\/\//i.test(mapsUrl ?? '') ? mapsUrl : null;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'HomeAndConstructionBusiness',
@@ -56,8 +71,8 @@ export function NAPFooter({
     ...(areaServed.length
       ? { areaServed: areaServed.map((a) => ({ '@type': 'City', name: a })) }
       : {}),
-    ...(mapsUrl || social.length
-      ? { sameAs: [mapsUrl, ...social.map((s) => s.href)].filter(Boolean) }
+    ...(safeMapsUrl || social.length
+      ? { sameAs: [safeMapsUrl, ...social.map((s) => s.href)].filter(Boolean) }
       : {}),
   };
 
@@ -76,20 +91,32 @@ export function NAPFooter({
 
             <p className="bhc-footer__hours">{hours}</p>
 
-            {mapsUrl ? (
+            {safeMapsUrl ? (
               <p className="bhc-footer__hours" style={{ marginTop: 'var(--bhc-space-3)' }}>
-                <a href={mapsUrl} rel="noopener">
+                {/*
+                  `rel="noopener"` without `target="_blank"` is inert — the
+                  opener it severs is the one a new browsing context would have
+                  had. The two change together or neither does anything.
+                */}
+                <a href={safeMapsUrl} target="_blank" rel="noopener noreferrer">
                   Find us on Google
                 </a>
               </p>
             ) : null}
           </div>
 
-          {columns.map((col) => (
+          {/*
+            Guards only — the markup, class names, props and defaults below are
+            unchanged. `col.links.map` on a column without `links` throws
+            during server render, and this footer is in the root layout, so a
+            single malformed entry in a Phase-3 nav data file would 500 EVERY
+            route rather than break one list.
+          */}
+          {columns.filter(Boolean).map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
               <p className="bhc-footer__col-heading">{col.heading}</p>
               <ul className="bhc-footer__links">
-                {col.links.map((l) => (
+                {(col.links || []).map((l) => (
                   <li key={l.href}>
                     <a href={l.href}>{l.label}</a>
                   </li>
@@ -115,7 +142,7 @@ export function NAPFooter({
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
     </footer>
   );

@@ -49,16 +49,44 @@ so it can be tested without a JSX toolchain and reused at build time.
 
 | Component | Group | Lock |
 |---|---|---|
-| `Button` | Actions | — |
-| `Hero` | Content | **1** — the `<h1>` |
 | `Breadcrumbs` | Navigation | **2** — trail + `BreadcrumbList` |
-| `RatingBadge` | Trust | **3** — server-rendered rating |
 | `NAPFooter` | Navigation | **4, 5** — one `tel:`, no address |
 | `InterlinkBlock` | Navigation | **6** — geography-derived links |
+| `Header` | Navigation | — |
+| `Footer` | Navigation | — |
+| `SkipLink` | Navigation | — |
+| `Hero` | Content | **1** — the `<h1>` |
+| `Prose` | Content | **11** — 800–1,100 words, readably |
+| `FAQAccordion` | Content | **SC-4** — answers in the served HTML, no rich-result schema |
+| `SectionBand` | Content | — |
+| `ServiceCard` | Content | — |
+| `TownCard` | Content | — |
+| `ProcessSteps` | Content | — |
+| `CTABand` | Content | — |
+| `RatingBadge` | Trust | **3** — server-rendered rating |
+| `BeforeAfterSlider` | Trust | **SC-3** — placeholder-capable |
+| `TrustBar` | Trust | — |
+| `ReviewCard` | Trust | — |
+| `ReviewRail` | Trust | — |
+| `Button` | Actions | — |
+| `QuoteFormEntry` | Actions | — |
+| `StickyCallBar` | Actions | — |
 
-First sync is foundations plus the five locked components. The remaining ~15 follow once the
-direction has been reacted to in Claude Design — the sync guidance is explicitly incremental,
-"one component at a time, never as a wholesale replace."
+**22 components, in four groups: Navigation 6, Content 8, Trust 5, Actions 3.** Six shipped in
+Phase 1; the other sixteen were authored across Phase 2. A dash in the Lock column means the
+component answers no numbered lock — it exists for a landmark, for composition or for the band
+rhythm, not for a finding in the audit.
+
+The four group names are a closed set. A fifth would leave the component silently uncategorised,
+which is the same failure shape as not registering it at all, so `test/locks.test.js` fails any
+`@dsCard` group outside those four.
+
+The package still ships **no `src/index.d.ts` barrel and no `types` field** in `package.json`. That
+is a deliberate deferral, and it is exactly why every one of the 22 has to be registered by hand in
+both `.design-sync` maps: discovery has no entry point to read, so an unregistered component is
+skipped by `/design-sync` **with no error at all**. The delta 9 lock makes that a hard failure in
+both directions — a component missing from either map, and a map entry pointing at a directory that
+has gone.
 
 ## Two rules you will want to break, and shouldn't
 
@@ -77,10 +105,18 @@ Both were measured, not eyeballed. Every ratio in
 npm test
 ```
 
-Eight assertions covering Locks 4, 5 and 7, the `@dsCard` markers, and the interlink geometry —
-including a check that the pin distances from the SEO audit reproduce (Birmingham 18.8 miles,
-Telford 46.2). They exist because the live site regressed silently on nearly every lock;
+Twenty assertions covering Locks 4, 5 and 7, the `@dsCard` markers, the four-file component shape
+and its `.design-sync` registration, inline-`<svg>` labelling, JSON-LD escaping, and the interlink
+geometry — including a check that the pin distances from the SEO audit reproduce (Birmingham 18.8
+miles, Telford 46.2). They exist because the live site regressed silently on nearly every lock;
 guidance caught none of them.
+
+`npm test` runs `test/run-locks.mjs`, not `node --test` directly, because the latter fails **open**:
+a glob matching nothing exits 0 having asserted nothing. The runner refuses to report green on zero
+matched files or on fewer passing tests than its floor. Several assertions carry their own
+anti-vacuity floors for the same reason — the preview and component floors are both **22**, the
+exact number that exists, so a component or a preview that silently disappears turns the suite red
+instead of quietly shrinking what is checked. Adding a component raises both.
 
 The most useful one is Lock 4. The live footer displays `+44 7861 936533` and dials
 `07441918832` on all 115 pages. `NAPFooter` takes a single `phone` prop and **derives** the
@@ -93,4 +129,7 @@ displayed string from it — there is no prop for display text, so the two canno
 | Typefaces | Placeholder stacks (Public Sans / Figtree). Claude Design picks the real pair |
 | Photography | 🔴 Blocked — all 199 Canva exports have the old logo burned in. Pull originals from canva.com → Projects → Uploads |
 | Logo | SVG rebuild + four lockups. Brief in [`brand-brief.md`](../docs/brand/brand-brief.md) |
-| ~15 more components | ReviewRail, BeforeAfterSlider, ServiceCard, TownCard, ProcessSteps, FAQAccordion, Header, … |
+| Authored sync previews | `.design-sync/previews/*.tsx` covers the original six only. The other sixteen get auto-generated cards — cosmetic and reversible, see [`.design-sync/NOTES.md`](.design-sync/NOTES.md) |
+| Types barrel | No `src/index.d.ts` and no `types` field, so both `.design-sync` maps stay pinned by hand |
+
+The component set itself is **not** on this list any more: all 22 are shipped.

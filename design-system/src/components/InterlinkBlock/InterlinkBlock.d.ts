@@ -45,6 +45,16 @@ export declare function buildInterlinks(input: {
   allTowns: Town[];
   allServices: Service[];
   nearbyCount?: number;
+  /**
+   * The secondary line under each **nearby** link, given the destination town
+   * and its distance in miles. Defaults to the distance string, so omitting it
+   * is today's behaviour. Return `undefined` to render no line at all.
+   *
+   * The geography belongs in the ordering, not in the copy: a spoke page whose
+   * job is to read as local should not annotate its links with how far away
+   * they are. At page scale the caller returns the destination's county.
+   */
+  metaFor?: (destination: Town, miles: number) => string | undefined;
 }): { services: InterlinkBlockProps; nearby: InterlinkBlockProps };
 
 export default InterlinkBlock;

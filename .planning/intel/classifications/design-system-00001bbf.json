@@ -1,0 +1,25 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/design/design-system.md",
+  "type": "SPEC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Design system — Beyond House Cleaning",
+  "summary": "Technical contract between Claude Design and Claude Code defining design tokens, component contracts, page templates and SEO-driven CI locks for the BHC website rebuild.",
+  "scope": [
+    "design tokens (colour, type, spacing, radii, motion)",
+    "React component library (Hero, Breadcrumbs, RatingBadge, NAPFooter, InterlinkBlock, Button)",
+    "page templates (home, service, locations index, town hub, combo, utility)",
+    "SEO CI-enforced assertions",
+    "JSON-LD schema markup",
+    "Claude Design sync workflow",
+    "BHC website rebuild"
+  ],
+  "cross_refs": [
+    "brand-brief.md",
+    "../research/seo-audit-2026-08-06.md",
+    "../research/service-area-coverage.md"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "Document embeds an ADR-like '## Decisions locked' table (colour strategy, visual direction, prescriptiveness, deliverable format) but is not structured as a standalone ADR (no Status/Context/Consequences, not numbered/filed as one decision). The dominant and larger portion of the document is an implementation contract: CSS custom-property tokens, TypeScript component prop interfaces, page-template composition, and a table of build-time CI assertions plus JSON-LD schema to emit — matching SPEC hallmarks. Classified as SPEC per the ADR>SPEC precedence tie-break being inapplicable (no true ADR structure present) and SPEC being the strongest sustained signal. Synthesizer may want to also lift the 'Decisions locked' table entries as locked-decision candidates."
+}

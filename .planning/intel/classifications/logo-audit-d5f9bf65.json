@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/brand/logo-audit.md",
+  "type": "DOC",
+  "confidence": "medium",
+  "manifest_override": false,
+  "title": "Logo audit — step 1 \"make it pop\"",
+  "summary": "Audit of the current Beyond House Cleaning logo's palette, geometry, and design flaws with recommendations for an SVG rebuild and lockup family.",
+  "scope": ["logo", "brand identity", "wordmark", "color palette", "SVG source", "favicon", "lockup variants", "Beyond House Cleaning branding"],
+  "cross_refs": ["assets/logo/beyond-hc-01.png", "assets/logo/beyond-hc-01.jpg"],
+  "locked": false,
+  "precedence": null,
+  "notes": "Prose audit with findings/recommendations tables (palette hex values, geometry measurements, variant list); no Status/Accepted field, no user stories, no API/schema contract, so classified DOC over SPEC despite the tabular measurement data. Recommendations are proposed next steps, not locked decisions, so not ADR."
+}

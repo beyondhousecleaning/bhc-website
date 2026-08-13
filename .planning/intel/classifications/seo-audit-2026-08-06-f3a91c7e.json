@@ -1,0 +1,31 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/research/seo-audit-2026-08-06.md",
+  "type": "DOC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "SEO audit — beyondhousecleaning.com (live Webflow site)",
+  "summary": "Tier-0 measured SEO audit of the live BHC Webflow site covering technical, on-page, schema, linking, content-duplication, local/maps, and AI-readiness findings with a prioritized fix list.",
+  "scope": [
+    "beyondhousecleaning.com",
+    "Webflow site",
+    "SEO",
+    "structured data / JSON-LD schema",
+    "internal linking architecture",
+    "location combo pages",
+    "thin/duplicate content analysis",
+    "Google Business Profile / local maps",
+    "page performance / JS weight",
+    "AI search readiness",
+    "Coventry slug cannibalisation",
+    "service taxonomy",
+    "336-page scaling plan"
+  ],
+  "cross_refs": [
+    "goals.md",
+    "docs/research/current-site-sitemap-2026-08-06.xml",
+    "claude-seo (plugin/rubric)"
+  ],
+  "locked": false,
+  "precedence": null,
+  "notes": "Research/audit report, not a decision or requirements doc — but §10's prioritized fix list (a1-a11 current-site fixes, b1-b13 rebuild items) reads like a backlog of technical constraints and action items the synthesizer may want to surface as candidate requirements/constraints rather than pure context. Also references a decision already made and dated 2026-08-06 by Sam (residential address hidden site-wide, GBP as service-area business) that could be worth capturing as a locked fact even though this document itself is not an ADR."
+}

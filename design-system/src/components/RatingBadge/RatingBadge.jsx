@@ -13,7 +13,12 @@
  * so is third-party-widget review data. Use it once per page at most.
  */
 
-function Star({ filled }) {
+import { safeJsonLd } from '../../jsonLd.js';
+
+/* Exported because ReviewCard renders the same five-star row (UI-SPEC §7.13).
+   Keeping it module-local would put this path string in two files — the exact
+   second-source defect this phase is otherwise eliminating. */
+export function Star({ filled }) {
   return (
     <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
       <path
@@ -39,6 +44,21 @@ export function RatingBadge({
   const rounded = Math.round(rating);
   const label = `Rated ${rating} out of 5 from ${count} ${source} reviews`;
 
+  /*
+    ONE STRING, BUILT IN JS, AND THAT IS THE WHOLE POINT OF THIS CONST.
+
+    React serialises adjacent JSX children as separate text nodes with a
+    `<!-- -->` marker between them, so writing `from {count} {source} reviews`
+    inline emitted the audit's headline trust signal into the served HTML as
+    five fragments with comment markers in the gaps. It rendered correctly and
+    read correctly, but the phrase did not EXIST as a contiguous run of text in
+    the file — which is precisely the form anything scanning the HTML looks for,
+    and audit recommendation a3 is a claim about the HTML.
+
+    The visible output is unchanged; the bytes are not.
+  */
+  const summary = `from ${count} ${source} reviews`;
+
   return (
     <div className={['bhc-rating', bare ? 'bhc-rating--bare' : '', className].filter(Boolean).join(' ')}>
       <span className="bhc-rating__stars" role="img" aria-label={label}>
@@ -48,16 +68,14 @@ export function RatingBadge({
       </span>
       <span aria-hidden="true">
         <span className="bhc-rating__value">{rating}</span>{' '}
-        <span className="bhc-rating__count">
-          from {count} {source} reviews
-        </span>
+        <span className="bhc-rating__count">{summary}</span>
       </span>
 
       {emitSchema ? (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: safeJsonLd({
               '@context': 'https://schema.org',
               '@type': 'LocalBusiness',
               name: businessName,

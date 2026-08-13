@@ -7,12 +7,14 @@
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
+    "./geo": "./src/components/InterlinkBlock/geo.js",
     "./tokens.css": "./tokens.css",
-    "./styles.css": "./styles.css"
+    "./styles.css": "./styles.css",
+    "./fonts/*": "./fonts/*"
   },
-  "files": ["src", "tokens.css", "styles.css"],
+  "files": ["src", "tokens.css", "styles.css", "fonts"],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node test/run-locks.mjs"
   },
   "peerDependencies": {
     "react": ">=18"

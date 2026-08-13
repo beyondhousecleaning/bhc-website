@@ -1,0 +1,68 @@
+# CI — the Phase 1 gate. The repo had no CI of any kind before this file.
+#
+# Why the gate lives here and not in the Vercel deployment:
+#   1. Vercel's Root Directory sandbox cannot traverse `..` to reach the
+#      sibling design-system package, so the lock suite is simply unreachable
+#      from a web-rooted deployment.
+#   2. npm hoists workspace dependencies to the workspace root rather than to
+#      web/node_modules, so there is no `..`-free path to the test files either.
+#   3. Decisively — a red Vercel preview does not block a merge, and D-13 says
+#      a lock suite that runs but does not gate is not a lock.
+# Leave the Vercel Build Command at its default.
+#
+# D-13 is only FULLY satisfied once both jobs below are marked as required
+# status checks on main. That is a repo-admin action, handled in Plan 05.
+#
+# Push-only, deliberately: required status checks match by job name against the
+# head commit regardless of which event produced the run, so push-only gates
+# pull requests too — without the double run that adding pull_request causes.
+
+name: CI
+
+on:
+  push:
+    branches: ['**']
+
+# Read-only token. This workflow publishes nothing and consumes no secrets;
+# keeping the token unable to write is the whole mitigation.
+permissions:
+  contents: read
+
+jobs:
+  locks:
+    # Zero-install by design. @bhc/design-system has no dependencies and no
+    # build step, so this job returns a verdict even when the app build is
+    # broken — which is what makes it a fast, independent D-13 gate. There is
+    # nothing to cache, so there is no cache step.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      # Via the runner, not `node --test design-system/test/*.test.js`: a glob
+      # that matches nothing exits 0 with `# tests 0`, so the old form left this
+      # required check green after a rename. run-locks.mjs fails on zero matched
+      # files and on a suite that ran fewer tests than expected. Still
+      # zero-install — the runner uses builtins only.
+      - name: Design-system lock tests (D-12)
+        run: node design-system/test/run-locks.mjs
+
+  build:
+    # Node 22 is pinned: Next.js 16 requires Node >= 20.9.0 and local
+    # development runs 22.23.1. Vercel's project setting is pinned to 22 too.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install from the committed lockfile
+        run: npm ci
+      - name: Build the web app
+        run: npm run build --workspace @bhc/web
+      - name: Built-HTML locks (SC-1b, SC-2a-2e, SC-4a-4g, D-14b, D-15)
+        run: node --test web/scripts/check-html-locks.mjs
+      - name: Performance budget (D-14)
+        run: node web/scripts/check-budget.mjs

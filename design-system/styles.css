@@ -84,6 +84,19 @@ img { max-width: 100%; height: auto; display: block; }
 .bhc-section--navy { background: var(--bhc-navy); color: var(--bhc-paper); }
 .bhc-section--navy :where(h1, h2, h3, h4) { color: var(--bhc-paper); }
 
+/* The intro paragraph that sits under a section <h2>. InterlinkBlock borrowed
+   .bhc-hero__lead for this — a cross-block reuse that binds a section's intro
+   copy to the hero's type scale, so changing one silently changes the other.
+   SectionBand, CTABand and ReviewRail all take an intro in later waves; giving
+   it a name here stops the borrow propagating into four more components. */
+.bhc-section__intro {
+  font-size: var(--bhc-text-lg);
+  line-height: 1.35;
+  color: var(--bhc-ink-muted);
+  margin-bottom: var(--bhc-space-6);
+  max-width: var(--bhc-container-prose);
+}
+
 /* --- Button --------------------------------------------------------------
    Orange fills take INK labels, never white. White on --bhc-action is
    3.05:1 against a 4.5:1 requirement.                                     */
@@ -182,7 +195,13 @@ img { max-width: 100%; height: auto; display: block; }
   object-fit: cover;
 }
 
-/* --- Breadcrumbs ---------------------------------------------------------- */
+/* --- Breadcrumbs ----------------------------------------------------------
+   WR-12: the <li> elements used to carry `display: contents` so the list's
+   flex gap applied evenly across crumbs and separators. Chrome and Safari
+   drop a `display: contents` element from the accessibility tree, taking the
+   ol/li relationship — and therefore "list, 3 items" — with it. The <li> is
+   a flex row here instead, which buys the same even spacing without costing
+   the semantics the <ol> exists for.                                       */
 
 .bhc-breadcrumbs { padding-block: var(--bhc-space-4); }
 .bhc-breadcrumbs__list {
@@ -191,6 +210,10 @@ img { max-width: 100%; height: auto; display: block; }
   list-style: none; margin: 0; padding: 0;
   font-size: var(--bhc-text-sm);
   color: var(--bhc-ink-muted);
+}
+.bhc-breadcrumbs__list li {
+  display: flex; align-items: center;
+  gap: var(--bhc-space-2);
 }
 .bhc-breadcrumbs__sep { color: var(--bhc-line); }
 .bhc-breadcrumbs a { color: var(--bhc-ink-muted); text-decoration: none; }
@@ -217,11 +240,16 @@ img { max-width: 100%; height: auto; display: block; }
 .bhc-rating__count { color: var(--bhc-ink-muted); }
 
 /* --- InterlinkBlock -------------------------------------------------------
-   The critical path. Must look deliberate, not like an SEO footer dump.   */
+   The critical path. Must look deliberate, not like an SEO footer dump.
+
+   The heading was --bhc-text-xl, which UI-SPEC §3's binding table assigns to
+   <h3>; every <h2> takes --bhc-text-2xl. This was the only shipped <h2> that
+   disagreed, and Phase 2 authors sixteen more <h2> blocks against it, so the
+   deviation is corrected here rather than replicated sixteen times.        */
 
 .bhc-interlink { padding-block: var(--bhc-space-12); }
 .bhc-interlink__heading {
-  font-size: var(--bhc-text-xl);
+  font-size: var(--bhc-text-2xl);
   margin-bottom: var(--bhc-space-6);
 }
 .bhc-interlink__list {
@@ -247,6 +275,92 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .bhc-interlink__label { font-weight: var(--bhc-weight-semibold); }
 .bhc-interlink__meta  { font-size: var(--bhc-text-sm); color: var(--bhc-ink-muted); }
+
+/* --- SectionBand ----------------------------------------------------------
+   The band rhythm wrapper. .bhc-section, --warm, --tint and --navy all
+   shipped in Phase 1 and are NOT re-declared here; nor is
+   .bhc-section__intro, which plan 02-01 added. Only what is new.
+
+   The heading rules are tag-scoped rather than set on the class, because
+   headingLevel 3 must land on --bhc-text-xl and headingLevel 2 on
+   --bhc-text-2xl. A single class-level font-size would render a nested
+   band's <h3> at the <h2> step and silently break the type binding.     */
+
+.bhc-section__head { margin-bottom: var(--bhc-space-6); }
+
+.bhc-section__heading {
+  font-weight: var(--bhc-weight-bold);
+  line-height: 1.15;
+  margin-bottom: var(--bhc-space-4);
+}
+h2.bhc-section__heading { font-size: var(--bhc-text-2xl); }
+h3.bhc-section__heading { font-size: var(--bhc-text-xl); }
+
+/* Headings on navy already flip to paper via the shipped rule above. The
+   intro does not — it sets --bhc-ink-muted directly, which measures 1.10:1
+   against --bhc-navy. Paper on navy is 5.97:1. Every page carries one navy
+   band, so this is not an edge case.                                     */
+.bhc-section--navy .bhc-section__intro { color: var(--bhc-paper); }
+
+/* One optional action under a band's content, separated from it by the same
+   step .bhc-section__head uses above it.
+
+   A PLAIN CLASS, NOT A COMPONENT PROP, and the precedent is deliberate:
+   .bhc-service-card__grid is the same thing — a class a template applies
+   directly, documented in the component's prompt doc rather than wrapped in
+   an API. SectionBand renders many kinds of children and gaining an
+   `actions` prop would put a second, weaker CTA surface beside CTABand's on
+   every one of eighteen call sites. The only user today is the home page's
+   trust band, whose action jumps to the review rail's anchor further down
+   the same page.                                                          */
+.bhc-section__action { margin-block-start: var(--bhc-space-6); }
+
+/* --- Prose ----------------------------------------------------------------
+   800 to 1,100 words on ~336 pages. Live service pages already median
+   1,183 words, which is the one metric beating the competition; setting
+   that at full container width throws it away.
+
+   Every descendant rule goes through :where() so specificity stays at
+   zero and a bhc- component dropped into the copy still wins.           */
+
+.bhc-prose {
+  max-width: var(--bhc-container-prose);
+  font-size: var(--bhc-text-base);
+  line-height: 1.65;
+}
+/* Wider than the default measure, not narrower — it is named for the
+   container token it uses. Reference copy only, never body copy.        */
+.bhc-prose--narrow { max-width: var(--bhc-container-narrow); }
+
+.bhc-prose :where(p) { margin-block-end: var(--bhc-space-4); }
+.bhc-prose :where(h2) {
+  margin-block-start: var(--bhc-space-12);
+  font-size: var(--bhc-text-2xl);
+}
+.bhc-prose :where(h3) {
+  margin-block-start: var(--bhc-space-8);
+  font-size: var(--bhc-text-xl);
+}
+.bhc-prose :where(ul, ol) {
+  line-height: 1.65;
+  margin-block-end: var(--bhc-space-4);
+  padding-inline-start: var(--bhc-space-6);
+}
+.bhc-prose :where(li) { margin-block-end: var(--bhc-space-2); }
+.bhc-prose :where(a) {
+  color: var(--bhc-action-hover);
+  text-underline-offset: 0.15em;
+}
+
+.bhc-prose__pullquote {
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+  background: var(--bhc-paper-tint);
+  border-inline-start: var(--bhc-space-1) solid var(--bhc-action);
+  border-radius: var(--bhc-radius-md);
+  padding: var(--bhc-space-6);
+  margin-block: var(--bhc-space-8);
+}
 
 /* --- NAPFooter ------------------------------------------------------------
    Exactly one tel:. href digits MUST equal displayed digits — the live
@@ -301,4 +415,987 @@ img { max-width: 100%; height: auto; display: block; }
   justify-content: space-between;
   font-size: var(--bhc-text-sm);
   color: #C9D4E4;
+}
+
+/* --- ProcessSteps ---------------------------------------------------------
+   Every numeral here comes from the list's own ordinal. counter-reset on the
+   <ol>, counter-increment on the item, content: counter() on the disc — so
+   reordering the data cannot desynchronise them, and no step object carries
+   a number. From Phase 3 the steps are a data file edited by copywriters.
+
+   Disc: --bhc-action fill with an --bhc-ink numeral, 5.17:1. White on
+   --bhc-action is 3.05:1 and is not an option.                            */
+
+.bhc-steps__heading { margin-bottom: var(--bhc-space-8); }
+
+.bhc-steps {
+  counter-reset: bhc-step;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--bhc-space-8);
+}
+@media (min-width: 768px) {
+  .bhc-steps {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bhc-space-6);
+  }
+}
+
+.bhc-steps__item { counter-increment: bhc-step; }
+.bhc-steps__item::before {
+  content: counter(bhc-step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px is UI-SPEC §2's minimum touch target, reused as the disc size so the
+     discs line up with every other affordance on the page.                */
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--bhc-space-4);
+  background: var(--bhc-action);
+  color: var(--bhc-ink);
+  border-radius: var(--bhc-radius-full);
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-lg);
+  font-weight: var(--bhc-weight-bold);
+  line-height: 1;
+}
+
+/* Tag-scoped for the same reason as .bhc-section__heading: headingLevel 3
+   steps the titles down to <h4>, and the type binding must follow.        */
+.bhc-steps__title { margin-bottom: var(--bhc-space-2); }
+h3.bhc-steps__title { font-size: var(--bhc-text-xl); }
+h4.bhc-steps__title { font-size: var(--bhc-text-lg); }
+
+.bhc-steps__body {
+  font-size: var(--bhc-text-base);
+  color: var(--bhc-ink-muted);
+  margin: 0;
+}
+
+/* --- CTABand --------------------------------------------------------------
+   The one dark band, always immediately above the footer. It composes
+   SectionBand, so there is no padding here — --bhc-section-y is declared in
+   one place and this is not the second one.
+
+   On navy the second action is `ghost` (currentColor, 5.97:1), never
+   `secondary`, which is outlined ink at 2.65:1.                           */
+
+.bhc-cta { text-align: center; }
+.bhc-cta .bhc-section__head { margin-bottom: var(--bhc-space-8); }
+.bhc-cta .bhc-section__intro { margin-inline: auto; }
+.bhc-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-4);
+  justify-content: center;
+}
+
+/* --- ServiceCard ----------------------------------------------------------
+   Deliberately the SAME card as .bhc-interlink__link (:260-277), with card
+   padding and the larger radius. From Phase 3 a service page carries a
+   ServiceCard grid and two InterlinkBlocks, and two card languages on one
+   page reads as two sites (UI-SPEC §7.6).
+
+   The whole card is the target via a stretched pseudo-element on the card's
+   ONE anchor, never an outer wrapper link: an <a> may not have interactive
+   content as a descendant, so a wrapper plus a title link is parsed into two
+   sibling links and a six-card grid announces twelve.
+
+   Measured, not assumed: lightningcss rewrites ::after to the single-colon
+   :after in the built stylesheet. No lock may grep built CSS for the
+   double-colon form.
+
+   Heading sizes are tag-scoped, not set on the class — a headingLevel of 2
+   must land on --bhc-text-2xl and 4 on --bhc-text-lg, per UI-SPEC §3's
+   binding table and the precedent set by .bhc-section__heading.          */
+
+.bhc-service-card__grid {
+  display: grid;
+  gap: var(--bhc-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.bhc-service-card {
+  /* The containing block for the stretched anchor below. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+  color: var(--bhc-ink);
+  transition: border-color var(--bhc-dur) var(--bhc-ease),
+              box-shadow var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-service-card:hover {
+  border-color: var(--bhc-action);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+/* No colour of its own: it inherits --bhc-ink from the card. --bhc-action is
+   a fill and its reserved-for list (UI-SPEC §4) does not include icon
+   glyphs on a light ground.                                              */
+.bhc-service-card__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.bhc-service-card__title {
+  margin: 0;
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+h2.bhc-service-card__title { font-size: var(--bhc-text-2xl); }
+h3.bhc-service-card__title { font-size: var(--bhc-text-xl); }
+h4.bhc-service-card__title { font-size: var(--bhc-text-lg); }
+
+.bhc-service-card__link {
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+/* The card-sized hit area. Focus stays on the anchor's own text box, which
+   is the shipped :focus-visible behaviour and is not overridden here.    */
+.bhc-service-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.bhc-service-card:hover .bhc-service-card__link { color: var(--bhc-action-hover); }
+
+.bhc-service-card__summary {
+  margin: 0;
+  font-size: var(--bhc-text-base);
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-service-card__includes {
+  margin: 0;
+  padding-inline-start: var(--bhc-space-6);
+  font-size: var(--bhc-text-sm);
+  color: var(--bhc-ink-muted);
+}
+.bhc-service-card__includes li { margin-block-end: var(--bhc-space-1); }
+
+/* --- TownCard -------------------------------------------------------------
+   The dense card: ~56 on a locations index and six more on every town hub,
+   so it is a title and one meta line. Same family as ServiceCard and
+   .bhc-interlink__link, at --bhc-radius-md rather than --bhc-radius-lg
+   because it is the size of an interlink link, not of a service card.
+
+   Grid is minmax(200px, 1fr) with a --bhc-space-3 gap against
+   ServiceCard's 240px / --bhc-space-6 — an order of magnitude more cards,
+   each of them shorter.                                                  */
+
+.bhc-town-card__grid {
+  display: grid;
+  gap: var(--bhc-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.bhc-town-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-1);
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-md);
+  color: var(--bhc-ink);
+  transition: border-color var(--bhc-dur) var(--bhc-ease),
+              box-shadow var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-town-card:hover {
+  border-color: var(--bhc-action);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+.bhc-town-card__title {
+  margin: 0;
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+h2.bhc-town-card__title { font-size: var(--bhc-text-2xl); }
+h3.bhc-town-card__title { font-size: var(--bhc-text-xl); }
+h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
+
+.bhc-town-card__link {
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+.bhc-town-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.bhc-town-card:hover .bhc-town-card__link { color: var(--bhc-action-hover); }
+
+.bhc-town-card__meta {
+  margin: 0;
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+
+/* --- FAQAccordion ---------------------------------------------------------
+   Success Criterion 4, and it runs on ZERO JavaScript: <details>/<summary>
+   is native, so the user agent owns the open state.
+
+   The marker suppression is scoped to .bhc-faq__summary rather than declared
+   on the bare `summary` element. Header's mobile nav is a second <details>
+   consumer in a later wave and repeats these two lines in its own block; a
+   package-wide `summary` rule would reach into a component that does not
+   exist yet.
+
+   No :focus-visible rule here, and none may be added: `summary` is already
+   in the shipped base rule at :45-49, and nothing in this package changes
+   the indicator except the two scoped overrides at the end of this file.
+
+   The chevron rotates through --bhc-dur/--bhc-ease, so the token-level
+   prefers-reduced-motion override — which zeroes all three duration tokens
+   — applies with no second media query.
+
+   The question and the answer set NO colour of their own; they inherit
+   currentColor. The only direct colours here are the --bhc-action-hover
+   hover and open states, which are on that token's reserved-for list in
+   UI-SPEC §4.                                                             */
+
+.bhc-faq__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-faq__item { border-bottom: 1px solid var(--bhc-line); }
+
+.bhc-faq__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bhc-space-4);
+  /* UI-SPEC §2's minimum touch target, applied to the whole row. */
+  min-height: 44px;
+  padding-block: var(--bhc-space-3);
+  cursor: pointer;
+  transition: color var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-faq__summary:hover { color: var(--bhc-action-hover); }
+
+/* Both markers, per UI-SPEC §8 rule 2. lightningcss emits the pseudo-element
+   below with a single colon in the built stylesheet.                      */
+.bhc-faq__summary { list-style: none; }
+.bhc-faq__summary::-webkit-details-marker { display: none; }
+
+.bhc-faq__q {
+  margin: 0;
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-semibold);
+  line-height: var(--bhc-leading-snug);
+}
+
+.bhc-faq__chevron {
+  flex: none;
+  transition: transform var(--bhc-dur) var(--bhc-ease);
+}
+.bhc-faq__item[open] .bhc-faq__chevron {
+  transform: rotate(180deg);
+  color: var(--bhc-action-hover);
+}
+
+.bhc-faq__a {
+  font-size: var(--bhc-text-base);
+  line-height: var(--bhc-leading-body);
+  padding-block-end: var(--bhc-space-4);
+  max-width: var(--bhc-container-prose);
+}
+.bhc-faq__a :where(p) { margin-block: 0 var(--bhc-space-4); }
+.bhc-faq__a :where(p:last-child) { margin-block-end: 0; }
+
+/* --- QuoteFormEntry -------------------------------------------------------
+   An entry point, not a form. There is no input styling here because there
+   is no input: a form needs validation state, which needs a client
+   boundary, which turns SC-4g red.
+
+   Tint ground with ink copy is 13.84:1. The second action is `secondary`
+   (outlined ink), which is correct here and is the variant that would
+   disappear on navy at 2.65:1 — this panel does not go on the navy band. */
+
+.bhc-quote-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-6);
+  padding: var(--bhc-space-8);
+  background: var(--bhc-paper-tint);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+}
+
+.bhc-quote-entry__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin: 0;
+}
+
+.bhc-quote-entry__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--bhc-text-base);
+}
+.bhc-quote-entry__bullets li {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+}
+/* The tick inherits currentColor. --bhc-action is a fill and its
+   reserved-for list (UI-SPEC §4) does not include a glyph on a tint
+   ground.                                                                */
+.bhc-quote-entry__tick { flex: none; }
+
+.bhc-quote-entry__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-4);
+  align-items: center;
+}
+
+/* --- TrustBar -------------------------------------------------------------
+   Three claims, inline at 768px and above, stacked below.
+
+   THE TONE SET HAS NO NAVY MEMBER AND MUST NOT GAIN ONE. Measured:
+   --bhc-sponge on --bhc-navy is 2.49:1, which fails; on --bhc-ink it is
+   6.59:1, which is why the sponge glyph rule below is scoped to
+   .bhc-trustbar--ink and to nothing else. The navy pairing was authorised in
+   an early revision of the colour contract and withdrawn before anyone acted
+   on it.
+
+   Labels take --bhc-weight-semibold, which the weight policy permits for
+   exactly this element and five others. They are --bhc-text-sm, the meta step.
+
+   The tone lives on the <ul>, not on the wrapping <section>: an ink bar sits
+   on a paper band, which is what makes the two separate elements worth
+   having.                                                                  */
+
+.bhc-trustbar__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-trustbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bhc-trustbar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+}
+
+.bhc-trustbar__icon {
+  flex: none;
+  display: inline-flex;
+}
+
+.bhc-trustbar__label {
+  font-size: var(--bhc-text-sm);
+  font-weight: var(--bhc-weight-semibold);
+  line-height: var(--bhc-leading-snug);
+}
+
+@media (min-width: 768px) {
+  .bhc-trustbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--bhc-space-8);
+  }
+}
+
+/* The two toned grounds get padding and a radius: a colour with no padding
+   puts the labels on the edge of the band.                                */
+.bhc-trustbar--tint,
+.bhc-trustbar--ink {
+  padding: var(--bhc-space-6);
+  border-radius: var(--bhc-radius-lg);
+}
+.bhc-trustbar--tint { background: var(--bhc-paper-tint); }
+.bhc-trustbar--ink {
+  background: var(--bhc-ink);
+  color: var(--bhc-paper);
+}
+/* 6.59:1. This selector is the ONLY place sponge is paired with a ground in
+   this block, and --bhc-ink is the only ground it is measured against.    */
+.bhc-trustbar--ink .bhc-trustbar__icon { color: var(--bhc-sponge); }
+
+/* --- ReviewCard -----------------------------------------------------------
+   The tint card, at the same radius and padding as ServiceCard.
+
+   THERE IS NO CLAMP RULE HERE AND THERE MAY NOT BE ONE. With no client
+   JavaScript there is no "read more", so a CSS clamp hides text from sighted
+   readers that screen readers still receive, and 200% zoom widens the loss
+   (WCAG 1.4.4). The quote is capped at 320 characters at the DATA layer,
+   which is why nothing in this block truncates anything.
+
+   The stars set no colour, so they inherit --bhc-ink at 13.85:1 on this
+   ground. --bhc-action — the colour the same glyph takes in RatingBadge,
+   where it sits on white at 3.05:1 — measures 2.68:1 here and fails the 3:1
+   a graphic that carries meaning needs.
+
+   The quote is --bhc-text-lg / 1.35, the lead step, and the attribution is
+   --bhc-text-sm, the meta step. Both are direct --bhc-ink and
+   --bhc-ink-muted, so this card belongs on paper, warm or tint and never on
+   the one navy band.                                                       */
+
+.bhc-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  height: 100%;
+  padding: var(--bhc-space-6);
+  background: var(--bhc-paper-tint);
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-lg);
+  color: var(--bhc-ink);
+}
+
+.bhc-review__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.bhc-review__quote {
+  margin: 0;
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+}
+.bhc-review__quote p { margin: 0; }
+
+.bhc-review__by {
+  margin: 0;
+  margin-block-start: auto;
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+.bhc-review__by cite { font-style: normal; font-weight: var(--bhc-weight-semibold); }
+
+/* --- ReviewRail -----------------------------------------------------------
+   A rail below 1024px, a three-column grid at and above it. The horizontal
+   browse is CSS only: overflow-x plus scroll-snap. Arrow buttons would need
+   a pointer handler, which needs a client component, for a control the
+   platform already provides.
+
+   The track carries tabindex="0", role="group" and an aria-label in the
+   markup so a keyboard user can reach and scroll it. That is correct ONLY
+   because ReviewCard has no focusable children — Chrome's automatic
+   keyboard-focusable-scroller behaviour applies only to a scroller that
+   contains none.
+
+   overflow-x is returned to `visible` in the grid form, because a scroll
+   container that cannot scroll still clips a focus ring at its edge.      */
+
+.bhc-reviewrail__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-6);
+}
+
+.bhc-reviewrail__track {
+  display: flex;
+  gap: var(--bhc-space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bhc-space-6);
+}
+
+.bhc-reviewrail__item {
+  scroll-snap-align: start;
+  flex: none;
+  min-width: min(320px, 80vw);
+}
+
+@media (min-width: 1024px) {
+  .bhc-reviewrail__track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bhc-space-6);
+    overflow-x: visible;
+  }
+  .bhc-reviewrail__item { min-width: 0; }
+}
+
+/* --- BeforeAfterSlider ----------------------------------------------------
+   Success Criterion 3. Two states, and the component never renders nothing:
+   a missing photograph must not silently remove a section from a page.
+
+   THE COMPARISON IS CSS ONLY. Side by side at 768px and above, a two-pane
+   scroll-snap track below. A drag handle would need a pointer listener,
+   which needs a client component, which turns the client-boundary gate red
+   for content that does not exist yet.
+
+   The track is focusable in the markup (tabindex="0") so the two panes can
+   be scrolled by keyboard, and the pending state's one link sits OUTSIDE it,
+   in the figcaption — a focusable child inside a focusable scroller is a
+   redundant tab stop immediately before itself.
+
+   BEFORE and AFTER are real text at --bhc-text-xs, uppercase and
+   letter-spaced, never baked into the image. Baked labels were one of the two
+   reasons the 199 existing exports were rejected as source. There is no
+   positive letter-spacing token, so 0.08em is written literally here and in
+   nowhere else in this file.
+
+   Both --bhc-ink-muted uses below are direct colour, so this component
+   belongs on paper, warm or tint and never on the one navy band, where that
+   token is 1.10:1.                                                          */
+
+.bhc-ba__heading {
+  font-size: var(--bhc-text-2xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  margin-bottom: var(--bhc-space-4);
+}
+
+.bhc-ba__intro {
+  font-size: var(--bhc-text-lg);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+  margin-bottom: var(--bhc-space-6);
+  max-width: var(--bhc-container-prose);
+}
+
+.bhc-ba {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-8);
+  margin: 0;
+}
+.bhc-ba--pending { gap: var(--bhc-space-6); }
+
+.bhc-ba__pair {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-3);
+  margin: 0;
+}
+
+.bhc-ba__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(85%, 480px);
+  gap: var(--bhc-space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bhc-space-6);
+}
+
+.bhc-ba__pane {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--bhc-space-2);
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .bhc-ba__track {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--bhc-space-4);
+    /* A scroll container that cannot scroll still clips a focus ring. */
+    overflow-x: visible;
+  }
+}
+
+.bhc-ba__label {
+  margin: 0;
+  font-size: var(--bhc-text-xs);
+  line-height: var(--bhc-leading-snug);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-ba__panel,
+.bhc-ba__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--bhc-line);
+  border-radius: var(--bhc-radius-md);
+}
+
+.bhc-ba__caption {
+  font-size: var(--bhc-text-sm);
+  line-height: var(--bhc-leading-snug);
+  color: var(--bhc-ink-muted);
+}
+
+.bhc-ba__pending {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bhc-space-3);
+}
+
+.bhc-ba__pending-title {
+  margin: 0;
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+}
+
+.bhc-ba__pending-body {
+  margin: 0;
+  max-width: var(--bhc-container-prose);
+  color: var(--bhc-ink-muted);
+}
+
+/* --- Header ---------------------------------------------------------------
+   The navigation runs on the user agent alone. The disclosure element is a
+   state carrier holding only its summary, and the one list is its SIBLING, so
+   a sibling combinator drives it. A UA only hides a disclosure's own children,
+   which is why the list has to sit outside it: were it inside, no `display`
+   rule here could reveal it once the toggle is hidden at desktop width. The
+   two rejected alternatives are set out in Header.prompt.md.
+
+   The list is rendered ONCE. There is no second desktop copy — that would put
+   every navigation link in the DOM twice and break the one-primary-nav rule.
+
+   Grounds and measured contrast. The header is always --bhc-paper. The
+   wordmark and every navigation link set --bhc-ink directly, 15.81:1 against
+   that ground, so this component belongs on paper and nowhere else; it is
+   never a band and never sits on --bhc-navy, where --bhc-ink is 2.65:1.
+
+   No :focus-visible rule of its own. Both <a> and <summary> are already
+   covered by the base rule at the top of this file.                        */
+
+.bhc-header {
+  position: relative;
+  z-index: 30;
+  background: var(--bhc-paper);
+  border-bottom: 1px solid var(--bhc-line);
+}
+
+.bhc-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bhc-space-4);
+  min-height: 64px;
+}
+
+@media (min-width: 1024px) {
+  .bhc-header__inner { min-height: 72px; }
+}
+
+.bhc-header__brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bhc-ink);
+  text-decoration: none;
+}
+.bhc-header__brand:hover { color: var(--bhc-ink); }
+
+.bhc-header__wordmark {
+  font-family: var(--bhc-font-display);
+  font-size: var(--bhc-text-xl);
+  font-weight: var(--bhc-weight-bold);
+  line-height: var(--bhc-leading-tight);
+  letter-spacing: var(--bhc-tracking-tight);
+}
+
+/* Hidden below 768px, which is exactly where StickyCallBar leaves. The two
+   are complementary: no viewport shows both call actions, and none shows
+   neither. Both are CSS-gated rather than conditionally rendered, which is
+   what keeps the whole header a server render. */
+.bhc-header__actions { display: none; }
+
+@media (min-width: 768px) {
+  .bhc-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--bhc-space-4);
+  }
+}
+
+.bhc-header__phone {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: var(--bhc-weight-semibold);
+  color: var(--bhc-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.bhc-header__phone:hover { color: var(--bhc-action-hover); }
+
+.bhc-nav { display: flex; align-items: center; }
+
+.bhc-nav__toggle,
+.bhc-nav__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--bhc-space-2);
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--bhc-ink);
+}
+.bhc-nav__toggle::-webkit-details-marker,
+.bhc-nav__summary::-webkit-details-marker { display: none; }
+
+.bhc-nav__toggle {
+  padding-inline: var(--bhc-space-2);
+  min-width: 44px;
+  justify-content: center;
+}
+
+.bhc-nav__list {
+  display: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  z-index: 30;
+  margin: 0;
+  padding: var(--bhc-space-2) var(--bhc-space-6) var(--bhc-space-4);
+  list-style: none;
+  background: var(--bhc-paper);
+  border-bottom: 1px solid var(--bhc-line);
+  box-shadow: var(--bhc-shadow-md);
+}
+
+.bhc-nav__disclosure[open] ~ .bhc-nav__list { display: block; }
+
+.bhc-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bhc-ink);
+  font-weight: var(--bhc-weight-medium);
+  text-decoration: none;
+}
+.bhc-nav__link:hover { color: var(--bhc-action-hover); }
+
+.bhc-nav__sublist {
+  margin: 0;
+  padding: 0 0 0 var(--bhc-space-4);
+  list-style: none;
+}
+
+.bhc-nav__chevron { transition: transform var(--bhc-dur) var(--bhc-ease); }
+.bhc-nav__submenu[open] > .bhc-nav__summary .bhc-nav__chevron { transform: rotate(180deg); }
+
+@media (min-width: 1024px) {
+  /* The toggle goes entirely; the list is unconditionally visible. */
+  .bhc-nav__disclosure { display: none; }
+
+  .bhc-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--bhc-space-6);
+    position: static;
+    padding: 0;
+    background: none;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  .bhc-nav__item { position: relative; }
+  .bhc-nav__submenu { position: relative; }
+
+  /* Ordinary disclosure usage: this one CONTAINS its list, so the UA hides
+     and shows it and no combinator is involved. */
+  .bhc-nav__sublist {
+    position: absolute;
+    top: calc(100% + var(--bhc-space-2));
+    left: 0;
+    z-index: 40;
+    min-width: 260px;
+    padding: var(--bhc-space-2);
+    background: var(--bhc-paper);
+    border: 1px solid var(--bhc-line);
+    border-radius: var(--bhc-radius-md);
+    box-shadow: var(--bhc-shadow-lg);
+  }
+
+  .bhc-nav__sublist .bhc-nav__link { padding-inline: var(--bhc-space-3); }
+}
+
+/* --- StickyCallBar --------------------------------------------------------
+   The ONE documented narrow-viewport media query in this file. Every other
+   block here is min-width only; this component is defined by its absence
+   above a breakpoint rather than its presence below one, and UI-SPEC §7.12
+   authorises the exception.
+
+   HIDDEN IS THE DEFAULT STATE. The bar is `display: none` outside the query,
+   so above the breakpoint it is removed from the accessibility tree rather
+   than merely painted out of view — a desktop keyboard user must not tab into
+   an invisible bar. Writing it this way also keeps the narrow query to a
+   single occurrence in this file, which is what the harness counts.
+
+   `body { padding-bottom: 64px }` sits inside the same query so the bar never
+   covers the footer's last row. It is a global rule declared by a component
+   block, which is unusual and deliberate: the bar is `position: fixed`, so
+   nothing in normal flow can reserve the space for it, and the component is
+   rendered once from the root layout on every page.
+
+   The 64px height and the safe-area inset were both authored, built and read
+   back out of the emitted chunk unchanged.
+
+   Ground and measured contrast: --bhc-paper with a --bhc-line top border. The
+   bar sets no text colour of its own — both actions are Buttons and carry
+   their own measured pairings (primary is an orange fill with an ink label at
+   5.17:1, never white at 3.05:1). It is fixed to the viewport rather than
+   placed in a band, so it never sits on --bhc-navy.                        */
+
+.bhc-callbar { display: none; }
+
+@media (max-width: 767px) {
+  .bhc-callbar {
+    display: flex;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    align-items: center;
+    gap: var(--bhc-space-3);
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding: var(--bhc-space-2) var(--bhc-space-4)
+      calc(var(--bhc-space-2) + env(safe-area-inset-bottom));
+    background: var(--bhc-paper);
+    border-top: 1px solid var(--bhc-line);
+    box-shadow: var(--bhc-shadow-lg);
+  }
+
+  /* 50/50, and both at least 44px tall — UI-SPEC §2's touch-target floor. */
+  .bhc-callbar__action {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  body { padding-bottom: 64px; }
+}
+
+/* --- Locations index and the stacked interlink pair -----------------------
+   Three plain classes a template applies, following plan 02-16's
+   .bhc-section__action precedent. None of them adds a prop to a component and
+   none is a new component: a 23rd component directory would cost four files,
+   two .design-sync registrations and a raised delta-9 floor to deliver one
+   gap and one border.
+
+   THE 44px FLOOR IS DECLARED, NEVER LEFT TO PADDING. --bhc-text-sm is a clamp
+   whose mobile end is 14px; that text plus a --bhc-space-2 pad above and below
+   computes to 42.9px, which reads as if it clears UI-SPEC §2's 44 × 44 target
+   and does not. Both link rules below state min-height outright.
+
+   Descendant rules go through :where() so specificity stays at zero and a
+   bhc- component dropped inside still wins — the .bhc-prose convention.
+
+   .bhc-jump-links is the wrapped row of county anchors on /locations, and the
+   only substitute for a filter box that survives the zero-JavaScript rule. The
+   class carries the flex row itself and also applies it to a nested <ul>, so it
+   works whether the template puts it on the <nav> or on the list.            */
+
+.bhc-jump-links,
+.bhc-jump-links :where(ul) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-2);
+}
+
+.bhc-jump-links :where(ul) { list-style: none; margin: 0; padding: 0; }
+
+.bhc-jump-links :where(a) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--bhc-text-sm);
+  font-weight: var(--bhc-weight-semibold);
+}
+
+/* One SectionBand holds every county group — seven bands would stack seven
+   lots of --bhc-section-y into a page whose job is to be scanned — so the
+   separation between groups is declared here, on the adjacent sibling only.
+   No leading margin on the first group, which the band already spaces.
+
+   __back is part of this block, not a fourth class. Every group ends with an
+   anchor back to the jump row because at 375px the grid is one column and a
+   reader who has passed sixteen cards is ~20 screens from it with no
+   scroll-to-top gesture available.                                          */
+
+.bhc-town-group + .bhc-town-group { margin-top: var(--bhc-space-12); }
+
+.bhc-town-group__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--bhc-space-4);
+  font-size: var(--bhc-text-sm);
+  color: var(--bhc-action-hover);
+}
+
+/* The hairline between the combo page's stacked interlink pair — the two
+   blocks sit one above the other with no band between them, so without this
+   they read as one long list. .bhc-interlink already pads its block axis by
+   the same token; the padding is restated so the rule reads as one shape.   */
+
+.bhc-interlink + .bhc-interlink {
+  border-top: 1px solid var(--bhc-line);
+  padding-top: var(--bhc-space-12);
+}
+
+/* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
+   Every later plan appends its component block ABOVE this banner, never
+   below it. These two rules are scoped overrides of the base
+   :focus-visible rule at the top of the file; that base rule is not
+   touched, and nothing else in this package may change the indicator.
+   No rule anywhere may suppress the ring.
+
+   Rule 1 — dark grounds. --bhc-focus-ring is --bhc-action-hover, which
+   measures 1.15:1 on --bhc-navy: effectively invisible. --bhc-paper is
+   5.97:1 on navy, 15.81:1 on ink, and 3.05:1 on an orange fill, which
+   clears 1.4.11's 3:1 for a non-text indicator. Every page carries a navy
+   CTABand and an ink footer, so this is not an edge case.
+
+   The first selector exists because ink on navy is 2.65:1 — a primary
+   button inside the CTABand must take the white ring rather than the ink
+   one from rule 2, and at three compound parts it wins on specificity
+   against rule 2's two.
+
+   Rule 2 — primary buttons on light bands. An orange ring abutting an
+   orange fill reads as one blob, especially on hover, when the fill IS
+   --bhc-action-hover. Ink is 15.81:1 against the band and 5.17:1 against
+   the fill. Paper would be 1:1 on a white band, which is why it is ink. */
+
+.bhc-section--navy .bhc-btn--primary:focus-visible,
+.bhc-section--navy :focus-visible,
+.bhc-footer :focus-visible {
+  outline-color: var(--bhc-paper);
+}
+
+.bhc-btn--primary:focus-visible {
+  outline-color: var(--bhc-ink);
 }

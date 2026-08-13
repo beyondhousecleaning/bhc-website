@@ -1,0 +1,46 @@
+<!-- @dsCard group="Actions" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="background:var(--bhc-paper)">
+
+  <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0;padding:32px 48px 16px">At mobile width — fixed to the bottom of the viewport, 50/50, both actions at least 44px tall</p>
+
+  <!-- The shipped component is `position: fixed` and `display: none` above the
+       breakpoint. A preview is a static document, so the bar is shown here in
+       a 375px frame with those two properties overridden inline. Every other
+       value is the shipped rule. -->
+  <div style="width:375px;margin:0 48px 8px;border:1px solid var(--bhc-line);border-radius:var(--bhc-radius-lg);overflow:hidden">
+    <div style="height:140px;background:var(--bhc-paper-warm);display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px">
+      <p style="font:400 13px/1.5 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0">…the last row of the footer sits here…</p>
+    </div>
+    <div class="bhc-callbar" style="display:flex;position:static">
+      <a class="bhc-btn bhc-btn--secondary bhc-btn--lg bhc-callbar__action" href="tel:+447861936533" aria-label="Call Beyond House Cleaning" style="flex:1 1 0;min-height:44px"><span>Call</span></a>
+      <a class="bhc-btn bhc-btn--primary bhc-btn--lg bhc-callbar__action" href="/get-a-quote" style="flex:1 1 0;min-height:44px"><span>Get a Quote</span></a>
+    </div>
+  </div>
+
+  <div style="padding:24px 48px 32px">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 12px">Two rules that are easy to miss</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0 0 16px;max-width:70ch">
+      The component declares <code>body { padding-bottom: 64px }</code> inside its own narrow media
+      query. The bar is <code>position: fixed</code>, so nothing in normal flow can reserve space for
+      it, and without that rule it would cover the footer's last row on every mobile page.
+      Above the breakpoint the bar is <code>display: none</code> — <strong>removed from the
+      accessibility tree</strong>, not merely painted out of view, so a desktop keyboard user cannot
+      tab into an invisible bar.
+    </p>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">Never — a call label carrying the wrong form of the number</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+      <span class="bhc-btn bhc-btn--secondary bhc-btn--lg">Call 07861 936533</span>
+    </div>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Shown once, inline, so the failure is recognisable. The digit-equality check normalises a
+      leading <code>44</code> and not a leading <code>0</code>, so this label disagrees with its own
+      href and fails. The shipped label is the single word <strong>Call</strong> with no digits at
+      all, which is out of that clause's scope, plus
+      <code>aria-label="Call Beyond House Cleaning"</code> so the link is not ambiguous out of
+      context. A digit-bearing label here would have to read exactly
+      <code>+44 7861 936533</code>.
+    </p>
+  </div>
+
+</div>

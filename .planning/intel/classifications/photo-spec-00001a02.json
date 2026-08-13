@@ -1,0 +1,13 @@
+{
+  "source_path": "/Users/samgastonclarke/projects/bhc-website/docs/brand/photo-spec.md",
+  "type": "SPEC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Before/after photo spec",
+  "summary": "Technical requirements for sourcing, formatting, naming, and SEO-optimizing before/after cleaning photos for the site.",
+  "scope": ["before/after photos", "photo format and resolution", "image SEO", "file naming convention", "Canva export audit", "brand photo assets"],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": ""
+}

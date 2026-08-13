@@ -1,0 +1,97 @@
+<!-- @dsCard group="Content" -->
+<link rel="stylesheet" href="../../../styles.css" />
+<div style="padding:48px;display:grid;gap:40px;background:var(--bhc-paper-warm)">
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Default — the /locations grid, twelve of about fifty-six</p>
+    <div class="bhc-town-card__grid">
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Warwick</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Leamington Spa</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Kenilworth</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Coventry</a></h3>
+        <p class="bhc-town-card__meta">West Midlands · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Stratford-upon-Avon</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Rugby</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Solihull</a></h3>
+        <p class="bhc-town-card__meta">West Midlands · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Nuneaton</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Southam</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Wellesbourne</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Balsall Common</a></h3>
+        <p class="bhc-town-card__meta">West Midlands · 6 services</p>
+      </article>
+
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Henley-in-Arden</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+
+    </div>
+  </div>
+
+  <div>
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-ink-muted);margin:0 0 16px">Hover, and a town with no region yet — the separator only appears when both halves do</p>
+    <div class="bhc-town-card__grid" style="max-width:440px">
+      <article class="bhc-town-card" style="border-color:var(--bhc-action);box-shadow:var(--bhc-shadow-md)">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Kenilworth</a></h3>
+        <p class="bhc-town-card__meta">Warwickshire · 6 services</p>
+      </article>
+      <article class="bhc-town-card">
+        <h3 class="bhc-town-card__title"><a class="bhc-town-card__link" href="#">Barford</a></h3>
+        <p class="bhc-town-card__meta">6 services</p>
+      </article>
+    </div>
+  </div>
+
+  <div style="padding:32px 0 0;border-top:1px solid var(--bhc-line)">
+    <p style="font:600 12px/1 var(--bhc-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--bhc-danger);margin:0 0 12px">The data-file bug this prevents</p>
+    <p style="font:400 15px/1.6 var(--bhc-font-body);color:var(--bhc-ink-muted);margin:0;max-width:70ch">
+      Every card above names a <strong>post town or a named suburb</strong>. A bare postcode district
+      is never a town name — nobody lives in or searches for one — and a full postcode is forbidden
+      outright by D4 and Lock 5, because the registered office is residential. From Phase 3 this grid
+      is generated from a data file, so a single bad row would publish it across every locations page
+      at once. Lock 5 scans the package source and SC-2d scans the built HTML.
+    </p>
+  </div>
+
+</div>
