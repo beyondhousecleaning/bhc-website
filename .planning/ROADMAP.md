@@ -171,7 +171,7 @@ Plans:
 - [x] 03-01-PLAN.md — Wave 0 harness rewrite: metadata-route filter, delta 18 template resolver, delta 16 and 21 per-template rules, delta 26 floor mechanism, one commit (wave 1)
 - [x] 03-02-PLAN.md — Package: `geo.js` `metaFor`, the `./geo` subpath export, three CSS classes, the honest rail heading (wave 1)
 - [x] 03-03-PLAN.md — Service-variant grid: domestic cleaning, 8 subjects x 8 stages (wave 1)
-- [ ] 03-04-PLAN.md — Service-variant grid: deep cleaning (wave 1)
+- [x] 03-04-PLAN.md — Service-variant grid: deep cleaning (wave 1)
 - [ ] 03-05-PLAN.md — Service-variant grid: end of tenancy cleaning (wave 1)
 - [ ] 03-06-PLAN.md — Service-variant grid: flat cleaning (wave 1)
 - [ ] 03-07-PLAN.md — Service-variant grid: builders clean (wave 1)
@@ -283,7 +283,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation & Design System Integration | 5/5 | Complete   | 2026-08-09 |
 | 2. Component Library Completion & Core Templates | 14/15 | In Progress|  |
-| 3. Programmatic Location × Service Engine | 3/24 | In Progress|  |
+| 3. Programmatic Location × Service Engine | 4/24 | In Progress|  |
 | 4. Reviews & Trust at Scale | 0/TBD | Not started | - |
 | 5. Technical SEO & Schema Layer | 0/TBD | Not started | - |
 | 6. Content & Blog | 0/TBD | Not started | - |
