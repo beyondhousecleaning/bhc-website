@@ -7,6 +7,7 @@
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js",
+    "./geo": "./src/components/InterlinkBlock/geo.js",
     "./tokens.css": "./tokens.css",
     "./styles.css": "./styles.css",
     "./fonts/*": "./fonts/*"

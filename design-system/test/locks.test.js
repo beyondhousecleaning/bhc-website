@@ -683,6 +683,82 @@ test('the audited pin distances reproduce', () => {
   assert.ok(Math.abs(distanceMiles(pin, telford) - 46.2) < 1.5);
 });
 
+test('buildInterlinks takes an optional per-link meta formatter and is unchanged without one', () => {
+  /*
+    `county` here is the DISPLAY county and `region` is the URL SEGMENT. They are
+    two different fields with confusingly similar names — geo.js builds hrefs from
+    `region`, and any call site that hands it a display county silently ships 426
+    wrong URLs. The fixture keeps both so the distinction is exercised.
+  */
+  const warwick = { slug: 'warwick', name: 'Warwick', region: 'warwickshire', county: 'Warwickshire', lat: 52.2819, lon: -1.5849 };
+  const towns = [
+    warwick,
+    { slug: 'leamington-spa', name: 'Leamington Spa', region: 'warwickshire', county: 'Warwickshire', lat: 52.2852, lon: -1.5201 },
+    { slug: 'coventry', name: 'Coventry', region: 'west-midlands', county: 'West Midlands', lat: 52.4068, lon: -1.5197 },
+  ];
+  const service = { slug: 'deep-cleaning', name: 'Deep Cleaning', tagline: 'Top to bottom, once' };
+  const allServices = [service, { slug: 'end-of-tenancy', name: 'End of Tenancy', tagline: 'Deposit back' }];
+  const input = { town: warwick, service, allTowns: towns, allServices, nearbyCount: 2 };
+
+  // 1. Backwards compatibility, proved rather than assumed: no formatter, and the
+  //    nearby meta is still the distance string this module has always produced.
+  const before = buildInterlinks(input);
+  assert.match(before.nearby.links[0].meta, /^\d+\.\d+ miles away$/);
+  assert.equal(before.nearby.links.length, 2);
+
+  // 2. A formatter returning the destination's display county replaces it, and
+  //    receives (destination, miles) — the miles being the real distance, so the
+  //    geography is still available to the caller even when it is not published.
+  const seen = [];
+  const after = buildInterlinks({
+    ...input,
+    metaFor: (destination, miles) => {
+      seen.push([destination.slug, miles]);
+      return destination.county;
+    },
+  });
+  assert.deepEqual(
+    after.nearby.links.map((l) => l.meta),
+    ['Warwickshire', 'West Midlands']
+  );
+  assert.deepEqual(seen.map(([slug]) => slug), ['leamington-spa', 'coventry']);
+  assert.equal(seen[1][1], distanceMiles(warwick, towns[2]));
+  for (const link of after.nearby.links) {
+    assert.doesNotMatch(link.meta, /miles/, 'a formatted meta must not carry a distance');
+  }
+
+  // 3. Ordering is where the geography lives, and it is identical either way —
+  //    the formatter changes one line of copy and nothing structural.
+  assert.deepEqual(
+    after.nearby.links.map((l) => l.href),
+    before.nearby.links.map((l) => l.href)
+  );
+  assert.equal(after.nearby.links[0].href, '/location/warwickshire/leamington-spa/deep-cleaning');
+  assert.equal(after.nearby.links[1].href, '/location/west-midlands/coventry/deep-cleaning');
+
+  // 4. The services block's meta is the tagline and neither call touches it.
+  assert.equal(before.services.links[0].meta, 'Deposit back');
+  assert.equal(after.services.links[0].meta, 'Deposit back');
+
+  // 5. Returning nothing suppresses the line — InterlinkBlock renders the span
+  //    only for a truthy meta, so this is a supported way to have no second line.
+  const bare = buildInterlinks({ ...input, metaFor: () => undefined });
+  assert.equal(bare.nearby.links[0].meta, undefined);
+
+  /*
+    And the subpath that lets a bare `node` process import this file at all. The
+    barrel routes these functions through a .jsx, which node cannot parse, so
+    every plan in this phase that verifies computed links without a build depends
+    on the exports entry below. Pointing it at a .jsx would still resolve inside
+    the bundler and break only outside it — which is the quiet failure this asserts.
+  */
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+  const geoEntry = pkg.exports['./geo'];
+  assert.equal(geoEntry, './src/components/InterlinkBlock/geo.js');
+  assert.ok(geoEntry.endsWith('.js') && !geoEntry.endsWith('.jsx'));
+  assert.ok(existsSync(join(ROOT, geoEntry)), `exports["./geo"] points at ${geoEntry}, which does not exist`);
+});
+
 /* --- JSON-LD escaping — no </script> breakout ---------------------------- */
 
 test('JSON-LD escaping: a </script> in a value cannot break out of the block', () => {

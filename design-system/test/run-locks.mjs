@@ -49,8 +49,13 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
   `previews.length >= 6` floor inside locks.test.js to 22, which changes an
   assertion rather than adding a test, so the count is unchanged by it. Anyone who
   adds a lock in any other plan still raises this number.
+
+  20 -> 21 in plan 03-02: buildInterlinks' optional per-link meta formatter, whose
+  test also asserts the `./geo` subpath entry the phase's build-free checks import
+  through. Raised in the SAME change as the test, which is the only way the floor
+  and the suite can be trusted to agree.
 */
-const MIN_TESTS = 20;
+const MIN_TESTS = 21;
 
 const files = readdirSync(TEST_DIR)
   .filter((name) => name.endsWith('.test.js'))
