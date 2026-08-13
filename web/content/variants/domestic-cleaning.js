@@ -418,3 +418,294 @@ export const A_VARIANTS = [
     },
   ],
 ];
+
+/**
+ * Block 4 — how the job runs. Eight stages, indexed by a town's second variant
+ * value, each a sub-heading and two or three paragraphs and no list.
+ *
+ * The stages, in order: the first visit; who arrives; the order the house is
+ * worked in; products and kit; access; time; the check at the end; and what
+ * happens afterwards. They are chosen to be ORTHOGONAL to the deck above — that
+ * one is about the house, this one is about the visit — which is what lets the
+ * two be selected independently without a pair of pages ever sharing both.
+ *
+ * These read as one continuous account of a working arrangement rather than as
+ * eight sales paragraphs, and that is intentional: the passage a reader trusts
+ * is the one that describes a procedure they can check us against. Nothing here
+ * restates the three shared process steps, which render on every page carrying
+ * that band and are stripped out of the counted corpus for exactly that reason.
+ *
+ * No list block in this deck. The service-detail block above already carries
+ * one, both blocks land inside the same prose container, and two bulleted runs
+ * in a row is where a page starts reading like a specification.
+ */
+export const B_VARIANTS = [
+  // 0 — the first visit and the walk round.
+  [
+    { type: 'h3', text: 'The first visit, and the walk round that sets up the rest' },
+    {
+      type: 'p',
+      text:
+        'The first visit does not begin with a bucket. It begins with a walk round the house with ' +
+        'you, room by room, and it is worth the quarter of an hour it takes, because nearly every ' +
+        'complaint anybody ever has about a cleaner comes from something that was never actually ' +
+        'said out loud. What we are trying to establish is what you would notice — which is not ' +
+        'the same thing as what is dirtiest, and not the same thing as what we would have started ' +
+        'with either.',
+    },
+    {
+      type: 'p',
+      text:
+        'So we ask. Which rooms carry the most weight and which can have less spent on them. ' +
+        'Whether there is a room to be left alone entirely. Whether anyone here reacts to a ' +
+        'perfume. Which surfaces are delicate, which have already been damaged once, and which ' +
+        'have a product of yours we should be using. Where the rubbish goes and on which morning. ' +
+        'Whether somebody works at home, and on which days a door has to stay shut. Where an ' +
+        'animal will be, and how it behaves when a machine starts up. How we get in, and who else ' +
+        'holds a key.',
+    },
+    {
+      type: 'p',
+      text:
+        "All of it goes onto your file rather than staying in one cleaner's memory, and that is " +
+        'the part that does the work. A written note is what makes cover possible, what keeps the ' +
+        'rotation in the right order, and what stops you having the same conversation over again in ' +
+        'six months with a new face. Anything we agreed that turns out to be wrong takes one ' +
+        'message to change, and then it stays changed.',
+    },
+  ],
+
+  // 1 — who arrives, how many, and what continuity actually buys.
+  [
+    { type: 'h3', text: 'Who comes through the door, and how many of them' },
+    {
+      type: 'p',
+      text:
+        'On a routine round it is usually one cleaner, and two only where a house is large enough ' +
+        'or a window short enough that one person could not finish it properly. Everyone who works ' +
+        'for us is checked before their first job and we carry insurance for the work we do inside ' +
+        'your home. You are told the name of whoever is coming before they arrive rather than on ' +
+        'the doorstep.',
+    },
+    {
+      type: 'p',
+      text:
+        'We hold a cleaner to a round rather than to a day of the week, and that is the part of the ' +
+        'arrangement actually worth paying for. Somebody who has been to your house eight times ' +
+        'does not need telling again that the side gate sticks, that the alarm panel is behind the ' +
+        'coats, that the baby goes down after lunch, or that the glasses on the second shelf are ' +
+        'not to be moved. Most households have never had to say any of that out loud, and a ' +
+        'stranger begins from zero every single time.',
+    },
+    {
+      type: 'p',
+      text:
+        'When yours is ill or on holiday somebody covers, and you hear who beforehand — an ' +
+        "unfamiliar person letting themselves in with your key is nobody's idea of a pleasant " +
+        'surprise. Whoever covers works from your file rather than from a general instinct about ' +
+        'how houses go. And if it is simply not working with the person we have sent, say so: they ' +
+        'will be moved, and you will not be asked to justify why.',
+    },
+  ],
+
+  // 2 — the sequence, and why a house looks worse halfway through.
+  [
+    { type: 'h3', text: 'The order a house gets worked in, which is not the obvious one' },
+    {
+      type: 'p',
+      text:
+        'Left to instinct, most people clean a house the way they walk through it: front door, ' +
+        'hall, kitchen, and upstairs last if there is anything left. We do close to the opposite, ' +
+        'and it is worth knowing why, because if you happen to be in the house it will look for a ' +
+        'good while as though nothing whatsoever is being achieved.',
+    },
+    {
+      type: 'p',
+      text:
+        'The first thing that happens upstairs is that the bathrooms get their products put on and ' +
+        'then get left. Chemistry needs time on a surface, and time spent standing over a shower ' +
+        'screen waiting for it is time paid for twice, so while it works the bedrooms get done. ' +
+        'Then it is back to the bathrooms, which is the point at which they are actually scrubbed. ' +
+        'The kitchen runs on the same trick from the other end of the visit: the hob and the oven ' +
+        'front are wetted early and finished once the rest of that room is behind us.',
+    },
+    {
+      type: 'p',
+      text:
+        'After that the whole thing runs downhill and towards the exit. A room is worked from its ' +
+        'far corner back to its threshold so that nobody has to walk over what has just been done. ' +
+        'Upstairs comes before down. The stairs happen on the way down them, not on the way up. ' +
+        'Mopping is always the last thing in a room and the hall floor is the last thing in the ' +
+        'house, immediately before the door closes. Which is why the midpoint of a visit is the ' +
+        'worst the place will look all day.',
+    },
+  ],
+
+  // 3 — the kit, the cloth discipline, and the two-way list of what is not used.
+  [
+    { type: 'h3', text: 'What we bring, what of yours we will use, and what we will not' },
+    {
+      type: 'p',
+      text:
+        'Everything arrives with the cleaner, the machine included, and that is not a favour. A ' +
+        'household machine is usually the wrong tool for the job, frequently half full, and asking ' +
+        'to borrow one is a small resentment waiting to happen. The kit is a machine with its ' +
+        'narrow and brush heads, a flat mop with spares, a bucket, a graded set of cloths, and a ' +
+        'short enough list of products that a cleaner can carry all of it in one trip.',
+    },
+    {
+      type: 'p',
+      text:
+        'Cloths are the thing nobody thinks about and the thing that decides whether cleaning is ' +
+        'happening at all. They are separated by where they are permitted to go, so that nothing ' +
+        'which has been near a lavatory can find its way onto a worktop, and they go away with the ' +
+        'cleaner to be laundered rather than being rinsed through in your sink and left over your ' +
+        'tap. Mop heads work the same way. A cloth that has been used all morning has stopped ' +
+        'cleaning and started distributing.',
+    },
+    {
+      type: 'p',
+      text:
+        'If you would rather we used something of yours, leave it out with a note and that is what ' +
+        'gets used: an unscented range because somebody here reacts to perfume, a particular ' +
+        'finish for a stone worktop or an oiled board, or nothing at all on something that has ' +
+        'suffered once already. There is a short refusal list on our side as well. No bleach on ' +
+        'coloured grout. Nothing abrasive on an acrylic bath or a painted door. No descaler on ' +
+        'plating that has begun to lift. Never two products mixed in one bucket. Say what is ' +
+        'delicate before a visit rather than after one.',
+    },
+  ],
+
+  // 4 — access, the changes that cost a visit, and what we will not take on.
+  [
+    { type: 'h3', text: 'Getting in, getting out, and who is holding a key' },
+    {
+      type: 'p',
+      text:
+        'Most of our customers are somewhere else when we come, so most of the time we let ' +
+        'ourselves in. A key is held on a numbered tag carrying nothing that says where it fits, ' +
+        'we know at any point who has it, and it comes back to you the day an arrangement ends. A ' +
+        'key safe or a door code does the same job and saves everybody a handover.',
+    },
+    {
+      type: 'p',
+      text:
+        'The one thing that reliably costs a whole visit is a change nobody mentioned. A lock done ' +
+        'at the weekend. An alarm code updated. A side gate bolted from the inside. A key safe ' +
+        'whose battery has gone. Any of those and a cleaner is standing outside with a car full of ' +
+        'kit and nowhere to be. A message the evening before is enough to prevent all of it. If we ' +
+        'genuinely cannot get in we will ring you and wait a while, but there is another household ' +
+        'expecting us after yours, and at some point we have to go to them.',
+    },
+    {
+      type: 'p',
+      text:
+        'If you are in, that is entirely fine, and it helps to know which room you will be sitting ' +
+        'in so the noisy part happens elsewhere first. What we will not do is take charge of the ' +
+        'house while we are in it. We do not sign for parcels. We do not let anybody else through ' +
+        'the door — not a meter reader, not a courier, not a tradesman — unless you have told us ' +
+        'beforehand to expect them and told us who they are. It is your house, and we are in no ' +
+        'position to judge who ought to be inside it.',
+    },
+  ],
+
+  // 5 — the length of the slot, what gives when it is not enough, and how that is said.
+  [
+    { type: 'h3', text: 'How long a visit runs, and what gives when a house needs more' },
+    {
+      type: 'p',
+      text:
+        'The length of a visit is set when we quote for it, out of the room count, the bathrooms, ' +
+        'how much hard floor there is and whichever extras you want built in. It is a figure we ' +
+        'would rather get right than get agreed to. Something that overruns on every single ' +
+        'occasion is not a slow cleaner; it is a slot that was measured wrongly at the beginning, ' +
+        'and the person carrying that mistake is whoever is still in your kitchen at half past ' +
+        'four.',
+    },
+    {
+      type: 'p',
+      text:
+        'When there is more in a house on a given day than the slot holds, what gives has already ' +
+        'been decided rather than being worked out on the spot. The core comes first, so a kitchen ' +
+        'and a bathroom are never what slips. Then the rotation jobs come off from the bottom of ' +
+        'the order and go to the front of the next visit. So an overrunning day costs you the tops ' +
+        'of the doors rather than a properly cleaned sink, and nobody is making that call under ' +
+        'pressure with a coat half on.',
+    },
+    {
+      type: 'p',
+      text:
+        'If the slot turns out to be wrong three visits in a row, your cleaner tells us and we ' +
+        'tell you, with the reason and with what it would take in extra time to put right. Then ' +
+        'you decide. Nobody adds a half hour on the day and puts it on the bill afterwards, and ' +
+        'nobody quietly does two thirds of a job for a year in the hope that the shortfall goes ' +
+        'unnoticed. Both are easier than the conversation, and both finish in the same place.',
+    },
+  ],
+
+  // 6 — the end-of-visit check, and the definition of done.
+  [
+    { type: 'h3', text: 'The check at the end, and what "done" means without a checklist' },
+    {
+      type: 'p',
+      text:
+        'Before the door shuts, the cleaner walks the house a second time, in the order it was ' +
+        'cleaned, and looks at each room from its doorway rather than from wherever they were ' +
+        'working. That sounds like a fine distinction and it is very nearly the whole trick: ' +
+        'almost every patch that gets missed is plainly visible from where you would stand and ' +
+        'invisible from where somebody was kneeling. Glass and metal get looked at from an angle, ' +
+        'because an angle is the only way to tell whether they were dried or merely wiped.',
+    },
+    {
+      type: 'p',
+      text:
+        'The rest of it is undramatic. Nothing of ours left behind anywhere. Liners in the bins. ' +
+        'Seats down, curtains where they were, windows as they were found. No machine tracks ' +
+        'across a rug. Lights off, internal doors as they started the day, the front door locked ' +
+        'and the alarm set where that is the arrangement. It costs a few minutes and it is the ' +
+        'difference between a visit that ended and a visit that merely stopped.',
+    },
+    {
+      type: 'p',
+      text:
+        'As for what counts as finished: there is no card hanging on the back of a door to be ' +
+        'ticked, and that is deliberate, because a ticked list is something that can be entirely ' +
+        'true while a house is still wrong. Finished means the rooms we agreed on, at the standard ' +
+        'the first visit set, and anything that could not be reached or could not be completed is ' +
+        'written down and told to you instead of being left for you to come across by yourself.',
+    },
+  ],
+
+  // 7 — afterwards: remedy, breakage, and changing a standing arrangement.
+  [
+    { type: 'h3', text: 'Afterwards: putting things right, breakages, and changes' },
+    {
+      type: 'p',
+      text:
+        'If something is not right, tell us, and a photograph of the spot is worth more than a ' +
+        'paragraph describing it. We would far rather hear within a day or two of the visit, while ' +
+        'it is still obvious which visit it belongs to and while the cleaner can still picture the ' +
+        'room. You will not be asked to build a case for it, and you will not be asked to ' +
+        'demonstrate that anything was ever dirty in the first place.',
+    },
+    {
+      type: 'p',
+      text:
+        'Things do get knocked over in houses that people live in, and we carry insurance for the ' +
+        'work we do in yours. The rule on our side has less to do with liability than with ' +
+        'telling: you hear about it from us before you find it for yourself. A note, a message, a ' +
+        'call that afternoon. The breakages that turn into arguments are hardly ever the expensive ' +
+        'ones — they are the ones nobody mentioned. So if there is something in the house that ' +
+        'could not be replaced at any price, point at it and it will simply not be touched.',
+    },
+    {
+      type: 'p',
+      text:
+        'Changing a standing arrangement takes a message. Skip a visit while you are away and it ' +
+        'is not charged. Move a day, run weekly through a wet winter and go back in the summer, ' +
+        'add a room, drop a room, or stop the whole thing. The single thing we ask for is as much ' +
+        "notice as you can manage, because a gap in a cleaner's week is somebody's wages rather " +
+        'than an inconvenience. There is nothing to unpick at the end of it.',
+    },
+  ],
+];
