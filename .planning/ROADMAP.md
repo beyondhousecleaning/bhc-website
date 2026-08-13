@@ -149,10 +149,12 @@ Plans:
 >
 > **Batches 2-5 are NOT a one-line increment, and no phase currently owns them.** Plans 03-11, 03-12
 > and 03-13 author town and hub prose for the 21 batch-1 towns only — about 16,700 words. The other
-> **37 towns need roughly 29,400 more authored words** (opener, locality paragraph and two hub blocks
-> each), which `03-VALIDATION.md` already states. Plan 03-16's prose-coverage guard makes a bare
+> **37 towns need roughly 30,500 more authored words** (opener, locality paragraph and two hub blocks
+> each). That figure is `03-VALIDATION.md`'s own arithmetic — it states ~82,600 for the whole corpus
+> and ~52,100 for batch 1, and the remainder is 30,500; counting the four per-town fragments directly
+> gives ~29,200. Both are about 800 words per town. Plan 03-16's prose-coverage guard makes a bare
 > `PUBLISHED_BATCHES` increment a **red build at module load**, deliberately — a batch cannot publish
-> towns whose prose does not exist. Each batch is therefore ~29,400/37 ≈ 800 words per town plus the
+> towns whose prose does not exist. Each batch is therefore ~800 words per town plus the
 > increment plus a raised route floor. Tracked as a post-v1 backlog item in STATE.md's Deferred Items
 > table; Phases 4, 5 and 6 do not carry it.
 >
