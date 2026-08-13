@@ -14,7 +14,14 @@
  * (+447575709361) on /get-a-quote. Three numbers, one business.
  *
  * Covers: SC-1b, SC-2a…2e, SC-4a…4i, D-04, D-07, D-10, D-14b, D-15, and
- * UI-SPEC §12 deltas 1, 2, 3, 4, 5, 6, 7, 11, 12 and 15.
+ * UI-SPEC §12 deltas 1, 2, 3, 4, 5, 6, 7, 11, 12, 15, 16, 18, 21 and 26.
+ *
+ * Deltas 16, 18, 21 and 26 landed together, in one commit against one build, and
+ * the reason is measured rather than tidy: on a 426-route probe with this file
+ * untouched, exactly SEVEN locks failed, six of them from the one root cause of
+ * the expectation resolver throwing on an unlisted route. Landing any of the four
+ * without the others reddens a branch that is gated with no bypass actors, so the
+ * harness had to learn the templates BEFORE the first generated route existed.
  *
  * SC-4h, SC-4i and delta 15 arrived with the real Google reviews. Their subject
  * is the same defect from three sides, and it is the defect the whole rebuild
@@ -182,16 +189,52 @@ const manifest = JSON.parse(
 
 const fileFor = (route) => (route === '/' ? 'index.html' : `${route.slice(1)}.html`);
 
+/*
+  THE MANIFEST HOLDS TWO KINDS OF ROUTE, AND ONLY ONE OF THEM IS A PAGE.
+
+  A metadata route — a sitemap is the case that matters, and Phase 5 adds one —
+  appears in the manifest's route list exactly like a page does. What it does NOT
+  have is a `<route>.html` on disk: the artifacts it writes are the document
+  itself plus a `.body` and a `.meta` sibling. `fileFor` would map it to an HTML
+  filename anyway, and `read()` calls `process.exit(1)` on a miss. That exit
+  happens at MODULE LOAD, before a single test has registered, so the entire
+  suite collapses to one failure carrying a hint about running the build — the
+  most misleading message this file can produce, because the build succeeded.
+
+  [VERIFIED in 03-RESEARCH.md by reproduction: a sitemap route was added, the
+  manifest went 19 -> 20 routes, and the suite went from 37 passing tests to that
+  single failure. The probe was deleted and the suite restored.]
+
+  The classifier reads the FINAL PATH SEGMENT and asks whether it carries a file
+  extension. A page route never does; a metadata route always does.
+
+  EXPECTED_METADATA_ROUTES IS WHAT KEEPS THE FILTER FROM BECOMING A HOLE. Without
+  it, "not a page" would silently mean "asserted by nothing at all", and any route
+  could be made invisible to every lock in this file by acquiring a dot in its
+  last segment. It is asserted in BOTH directions below, so a metadata route
+  arriving without a spec clause naming it is a red build rather than a page that
+  quietly stopped being checked.
+
+  It is EMPTY TODAY, and that is the whole of Phase 5's change here: the commit
+  that adds the sitemap route adds its one route string to this set.
+*/
+const isMetadataRoute = (route) => /\.[a-z0-9]+$/i.test(route.split('/').pop() || '');
+
+const MANIFEST_ROUTES = Object.keys(manifest.routes).sort();
+const PAGE_ROUTES = MANIFEST_ROUTES.filter((r) => !isMetadataRoute(r));
+const METADATA_ROUTES = MANIFEST_ROUTES.filter(isMetadataRoute);
+
+const EXPECTED_METADATA_ROUTES = new Set([]);
+
 // Read every page exactly once, at module load: O(pages) reads in total rather
-// than O(pages x assertions).
-const PAGES = Object.keys(manifest.routes)
-  .sort()
-  .map((route) => ({
-    route,
-    file: fileFor(route),
-    compute: manifest.routes[route].compute,
-    html: read(join(ROOT, '.next/server/app', fileFor(route)), BUILD_HINT),
-  }));
+// than O(pages x assertions). PAGE_ROUTES, never the raw manifest keys — see
+// the partition above.
+const PAGES = PAGE_ROUTES.map((route) => ({
+  route,
+  file: fileFor(route),
+  compute: manifest.routes[route].compute,
+  html: read(join(ROOT, '.next/server/app', fileFor(route)), BUILD_HINT),
+}));
 
 /*
   `_global-error` does NOT render RootLayout. It is Next's own error document,
@@ -256,15 +299,34 @@ const EXPECTED_APP_ROUTES = new Set([
 ]);
 
 /*
-  `InterlinkBlock` returns `null` until town data exists, so its marker is
-  absent on all seventeen Phase 2 pages. PHASE 3 flips this to `true` when it
-  supplies that data. While it is `false` the lock asserts the INVERSE — that no
-  page renders the marker — which makes the gate self-restoring: the moment a
-  page does render an InterlinkBlock, this test fails and forces the flip. A
-  deleted lock is never restored; a dormant one is invisible debt; a
-  self-restoring one is neither.
+  Delta 26 — THE APP-ROUTE FLOOR, AS AN INTEGER.
+
+  The set above names every route that must exist while the site is small enough
+  to name them. Once the generator lands, most routes are not individually named
+  by anything, so the floor above them has to be a COUNT — and the argument for
+  the floor is the one stated above: a route that silently opts into dynamic
+  rendering disappears from the manifest and therefore from every assertion in
+  this file, and without a floor the suite goes GREEN by having less to check.
+
+  THE STANDING RULE, and it is the whole reason this is a typed literal:
+
+    Raise it in the plan that lands the routes. NEVER derive it — not from the
+    published-town list, not from a `.length` of anything imported, not from any
+    content module. A floor computed from the code it guards asserts only that
+    the code agrees with itself, which is exactly the failure it exists to catch.
+
+  The numbers the next raiser needs, so nobody has to re-derive them:
+
+    18   today, the Phase 2 baseline (19 manifest routes less `/_global-error`)
+    167  batch 1
+    426  full rollout
+
+  This is a floor on ROUTES, not on test cases. Rule 1 in the header rejects a
+  recomputed floor on the number of TESTS, because that number should stay at the
+  count of invariants; the number of routes is a property of the site and is
+  meant to move when the site does.
 */
-const INTERLINK_LOCK_ACTIVE = false;
+const MIN_APP_ROUTES = 18;
 
 /*
   BOTH SETS ARE NOW EMPTY, AND THEY STAY THAT WAY. They are kept rather than
@@ -429,13 +491,113 @@ const PAGE_EXPECTATIONS = {
   '/_not-found': { h1: "We Couldn't Find That Page", hasBreadcrumbs: false, ldJsonBlocks: 1, reviewCards: 0 },
 };
 
+/*
+  Delta 18 — THE TEMPLATE RULES, AND WHAT A RULE CAN HONESTLY ASSERT.
+
+  The literal above cannot hold 426 entries, and this is the swap its own header
+  anticipated and asked to be documented. So: RECORDING WHAT THIS TRADES AWAY.
+
+  For the static routes the literal asserts THE COPY IS RIGHT — that this page
+  says this exact sentence. For a generated page a rule can only assert that THE
+  GENERATOR DID NOT DROP A FIELD: the `<h1>` has the right shape, the trail is the
+  right depth, the JSON-LD block count and review-card count are right. It cannot
+  tell a correct heading from a plausible one. That is the honest ceiling, it is
+  why the literal keeps precedence in the resolution order below, and it is why the
+  literal is not "migrated" to a rule for the routes it already covers.
+
+  ONE CLAUSE ESCAPES THAT CEILING, and it is the reason the rule is worth having
+  rather than merely necessary: the town check reads THE ROUTE. Slugifying the
+  rendered `<h1>` must contain the town segment of the URL. No content module owns
+  the URL, so this cannot be satisfied by a generator that is internally
+  consistent and wrong — a page built for one town and titled for another fails,
+  which is the defect that scales worst and is invisible to everything else here.
+
+  Resolution order: literal, then template, then THROW. The throw survives
+  deliberately (there is a regression test on it below) — it is the whole reason a
+  new untemplated route is a hard failure instead of a silent gap.
+*/
+const SERVICE_ROUTE = /^\/services\/[^/]+$/;
+
+/*
+  `{noun} in {Town}` for a combo page; the hub's noun is fixed by §5. Defined once
+  as constants rather than inline, so the two shapes are greppable and are not
+  reconstructed on every call.
+*/
+const COMBO_H1_SHAPE = /^.+ in .+$/;
+const HUB_H1_SHAPE = /^House Cleaning in .+$/;
+
+// Lowercase, non-alphanumerics collapsed to single hyphens — the town segment of
+// a route in the same form the route itself carries it.
+const slugify = (s) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+/*
+  Containment on WHOLE hyphen-delimited tokens, not a bare substring, and the
+  difference is a real hole rather than pedantry: `warwick` is a substring of
+  `warwickshire`, so a substring test would accept a hub for Warwick headed
+  "House Cleaning in Warwickshire" — a page titled for the county it sits in
+  rather than the town it is for. Padding both sides makes the run's boundaries
+  explicit, which is the same trick `\b` plays for the postcode matchers.
+*/
+const slugHasToken = (slug, token) => `-${slug}-`.includes(`-${token}-`);
+
+/*
+  Matched on the ROUTE SHAPE ALONE. The locations index is a static route with its
+  own literal entry (plan 03-18 builds it) and must NOT match the hub rule — hence
+  `/^\/locations\/[^/]+$/` and not a prefix test. Until that entry exists the index
+  resolves to neither and throws, which is correct: it is a hand-authored page and
+  its copy belongs in the literal.
+
+  `crumbDepth` is the number of CRUMBS. The assertion counts separators, which is
+  `crumbDepth - 1` — verified against a built service page, which renders 2 crumbs
+  and exactly 1 separator in the `class="` form.
+*/
+const TEMPLATES = [
+  {
+    kind: 'combo',
+    // Three segments under the SINGULAR prefix: /location/<region>/<town>/<service>
+    test: (r) => /^\/location\/[^/]+\/[^/]+\/[^/]+$/.test(r),
+    expectation: (r) => ({
+      h1: COMBO_H1_SHAPE,
+      townSegment: r.split('/')[3],
+      hasBreadcrumbs: true,
+      crumbDepth: 4,
+      ldJsonBlocks: 2,
+      reviewCards: 3,
+    }),
+  },
+  {
+    kind: 'hub',
+    // One segment under the PLURAL prefix: /locations/<town>
+    test: (r) => /^\/locations\/[^/]+$/.test(r),
+    expectation: (r) => ({
+      h1: HUB_H1_SHAPE,
+      townSegment: r.split('/')[2],
+      hasBreadcrumbs: true,
+      crumbDepth: 3,
+      ldJsonBlocks: 2,
+      reviewCards: 3,
+    }),
+  },
+];
+
+const templateFor = (route) => TEMPLATES.find((t) => t.test(route)) || null;
+
 const expectationsFor = (route) => {
-  if (!Object.prototype.hasOwnProperty.call(PAGE_EXPECTATIONS, route)) {
+  if (Object.prototype.hasOwnProperty.call(PAGE_EXPECTATIONS, route)) {
+    return PAGE_EXPECTATIONS[route];
+  }
+
+  const template = templateFor(route);
+  if (!template) {
     throw new Error(
-      `no PAGE_EXPECTATIONS entry for ${route} — a new route must declare its <h1>, breadcrumb and JSON-LD expectations here`
+      `no PAGE_EXPECTATIONS entry for ${route} — a new route must declare its <h1>, breadcrumb and JSON-LD expectations here, or match a template rule`
     );
   }
-  return PAGE_EXPECTATIONS[route];
+  return template.expectation(route);
 };
 
 /* --- shared extractors --------------------------------------------------- */
@@ -495,6 +657,111 @@ test('delta 1: every prerendered route is enumerated, static, and present on dis
     APP_PAGES.length >= EXPECTED_APP_ROUTES.size,
     `expected >= ${EXPECTED_APP_ROUTES.size} prerendered app pages, found ${APP_PAGES.length}`
   );
+
+  // Delta 26. The named set above stops at the routes small enough to name; this
+  // is the floor over the generated ones.
+  assert.ok(
+    APP_PAGES.length >= MIN_APP_ROUTES,
+    `expected >= ${MIN_APP_ROUTES} prerendered app pages, found ${APP_PAGES.length} — a route stopped being prerendered, or MIN_APP_ROUTES was raised without the routes landing`
+  );
+});
+
+test('delta 1: a non-HTML metadata route is classified, never read as an HTML page', () => {
+  /*
+    The partition, proved without depending on the app ever having a metadata
+    route — which is the point, because the crash it prevents happens at module
+    load and would take this test down with everything else.
+  */
+  for (const route of ['/sitemap.xml', '/robots.txt', '/feed.json', '/opengraph-image.png']) {
+    assert.equal(isMetadataRoute(route), true, `${route} should be classified as a metadata route`);
+  }
+
+  for (const route of [
+    '/',
+    '/about-us',
+    '/services/deep-cleaning',
+    '/locations/warwick',
+    '/location/warwickshire/warwick/deep-cleaning',
+  ]) {
+    assert.equal(isMetadataRoute(route), false, `${route} should be classified as a page route`);
+  }
+
+  // BOTH DIRECTIONS, so the filter cannot become a place routes disappear into:
+  // a metadata route with no spec clause naming it is a red build, and a spec
+  // clause whose route stopped being emitted is too.
+  for (const route of METADATA_ROUTES) {
+    assert.ok(
+      EXPECTED_METADATA_ROUTES.has(route),
+      `${route} is a metadata route that no spec clause declares — add it to EXPECTED_METADATA_ROUTES, or it is asserted by nothing in this file`
+    );
+  }
+  for (const route of EXPECTED_METADATA_ROUTES) {
+    assert.ok(
+      METADATA_ROUTES.includes(route),
+      `EXPECTED_METADATA_ROUTES declares ${route}, but the build does not emit it`
+    );
+  }
+
+  // And the partition is lossless: nothing falls between the two halves.
+  assert.equal(
+    PAGE_ROUTES.length + METADATA_ROUTES.length,
+    MANIFEST_ROUTES.length,
+    'the page/metadata partition dropped a route'
+  );
+  assert.ok(PAGE_ROUTES.length, 'every manifest route was classified as metadata — the classifier is inverted');
+});
+
+test('delta 18: a combo and a hub route resolve an expectation by rule, and an unknown one still throws', () => {
+  /*
+    The resolver's three branches, each proved on the shape it exists to handle.
+    Without this the rule half is unexercised at the 19-route baseline — there is
+    no generated route yet, so every call in every lock above hits the literal.
+  */
+  const combo = expectationsFor('/location/warwickshire/warwick/deep-cleaning');
+  assert.equal(templateFor('/location/warwickshire/warwick/deep-cleaning').kind, 'combo');
+  assert.equal(combo.townSegment, 'warwick');
+  assert.equal(combo.crumbDepth, 4);
+  assert.ok(combo.h1 instanceof RegExp, 'a template expectation asserts <h1> shape, not copy');
+  assert.match('Deep Cleaning in Warwick', combo.h1);
+
+  const hub = expectationsFor('/locations/warwick');
+  assert.equal(templateFor('/locations/warwick').kind, 'hub');
+  assert.equal(hub.townSegment, 'warwick');
+  assert.equal(hub.crumbDepth, 3);
+  assert.match('House Cleaning in Warwick', hub.h1);
+
+  // The locations index is a static route. It must not be absorbed by the hub
+  // rule, and while it has no literal entry it is an unknown route like any other.
+  assert.equal(templateFor('/locations'), null, '/locations must not match the hub template');
+  assert.throws(() => expectationsFor('/locations'), /no PAGE_EXPECTATIONS entry/);
+
+  // Neither prefix matches at the wrong depth.
+  assert.equal(templateFor('/location/warwickshire/warwick'), null);
+  assert.equal(templateFor('/location/warwickshire/warwick/deep-cleaning/extra'), null);
+
+  assert.equal(slugify('Stourport-on-Severn'), 'stourport-on-severn');
+  assert.equal(slugify('Deep Cleaning in South Coventry'), 'deep-cleaning-in-south-coventry');
+
+  /*
+    THE TOWN CLAUSE, PROVED ON THE SHAPE IT EXISTS TO REJECT. Same reasoning as the
+    postcode, street-line and dead-anchor guards: at the 19-route baseline not one
+    built page resolves to a template, so that clause in SC-4a above never executes
+    and would read green even if it had stopped working entirely. It goes live on the
+    first generated route, which is the worst moment to discover it does not.
+  */
+  const townCheck = (h1, route) =>
+    slugHasToken(slugify(h1), expectationsFor(route).townSegment);
+
+  const combos = '/location/warwickshire/warwick/deep-cleaning';
+  assert.equal(townCheck('Deep Cleaning in Warwick', combos), true);
+  assert.equal(townCheck('Deep Cleaning in Kenilworth', combos), false, 'a page titled for another town must fail');
+  assert.equal(
+    townCheck('Deep Cleaning in Warwickshire', combos),
+    false,
+    'the county is not the town — a bare substring test would accept this'
+  );
+  assert.equal(townCheck('House Cleaning in Stourport-on-Severn', '/locations/stourport-on-severn'), true);
+  assert.equal(townCheck('House Cleaning in South Coventry', '/locations/south-coventry'), true);
 });
 
 test('delta 1: every app route declares an expectation, and the table is honest', () => {
@@ -502,10 +769,30 @@ test('delta 1: every app route declares an expectation, and the table is honest'
   // is what turns "someone added a route and forgot the table" into a failure.
   for (const p of APP_PAGES) {
     const e = expectationsFor(p.route);
-    assert.equal(typeof e.h1, 'string', `${p.route}: expectation has no h1 string`);
+
+    // A string on a static route (the copy is asserted), a RegExp on a generated
+    // one (the shape is). Delta 18 widened this; anything else is a malformed
+    // entry, which used to be caught by the `typeof` check alone.
+    assert.ok(
+      typeof e.h1 === 'string' || e.h1 instanceof RegExp,
+      `${p.route}: expectation has no h1 string or RegExp`
+    );
     assert.equal(typeof e.hasBreadcrumbs, 'boolean', `${p.route}: expectation has no hasBreadcrumbs boolean`);
     assert.equal(typeof e.ldJsonBlocks, 'number', `${p.route}: expectation has no ldJsonBlocks number`);
     assert.equal(typeof e.reviewCards, 'number', `${p.route}: expectation has no reviewCards number`);
+
+    // Template-only fields, asserted where present so a rule cannot resolve to a
+    // half-built expectation that the locks below then read as absent.
+    if (e.crumbDepth !== undefined) {
+      assert.equal(typeof e.crumbDepth, 'number', `${p.route}: crumbDepth is not a number`);
+      assert.ok(e.crumbDepth >= 2, `${p.route}: crumbDepth ${e.crumbDepth} is below a two-crumb trail`);
+    }
+    if (e.townSegment !== undefined) {
+      assert.ok(
+        typeof e.townSegment === 'string' && e.townSegment.length,
+        `${p.route}: townSegment is not a non-empty string`
+      );
+    }
   }
 
   assert.throws(
@@ -724,11 +1011,30 @@ test('delta 4: exactly one <h1> on EVERY prerendered page', () => {
 test('delta 4 / SC-4a: every app page renders the <h1> its expectation names', () => {
   for (const p of APP_PAGES) {
     const actual = h1TextOf(p.html);
-    assert.equal(
-      actual,
-      expectationsFor(p.route).h1,
-      `${p.route}: <h1> is "${actual}", expected "${expectationsFor(p.route).h1}"`
-    );
+    const e = expectationsFor(p.route);
+
+    if (e.h1 instanceof RegExp) {
+      // A generated page: the SHAPE, because no literal can hold 426 headings.
+      assert.ok(actual, `${p.route}: no <h1> text at all`);
+      assert.match(actual, e.h1, `${p.route}: <h1> is "${actual}", which does not match the shape ${e.h1}`);
+    } else {
+      assert.equal(actual, e.h1, `${p.route}: <h1> is "${actual}", expected "${e.h1}"`);
+    }
+
+    /*
+      THE CLAUSE THAT READS THE URL. A shape match alone would pass a page built
+      for one town and titled for another, which is the generator defect that
+      scales worst and that nothing else in this file can see — every other
+      expectation is a property of the page. The route is not owned by any content
+      module, so a generator cannot be internally consistent and still satisfy
+      this.
+    */
+    if (e.townSegment) {
+      assert.ok(
+        slugHasToken(slugify(actual || ''), e.townSegment),
+        `${p.route}: <h1> "${actual}" does not name the town its URL claims ("${e.townSegment}")`
+      );
+    }
   }
 });
 
@@ -889,13 +1195,35 @@ test('SC-4b: breadcrumbs render exactly where the expectation says, and nowhere 
   // header); the JSON-LD marker uses the serialised `"@type":` form, which the
   // flight payload also inflates.
   for (const p of APP_PAGES) {
-    const wanted = expectationsFor(p.route).hasBreadcrumbs;
+    const e = expectationsFor(p.route);
+    const wanted = e.hasBreadcrumbs;
     const trail = count(p.html, /class="[^"]*bhc-breadcrumbs__list/g);
     const schema = count(p.html, /"@type":"BreadcrumbList"/g);
 
     if (wanted) {
       assert.ok(trail >= 1, `${p.route}: expected a visible breadcrumb trail, found none`);
       assert.ok(schema >= 1, `${p.route}: expected BreadcrumbList JSON-LD, found none`);
+
+      /*
+        Delta 18's depth clause, and it exists because §9.3 is the live site's
+        defect: a combo URL is four levels deep with three non-existent parents,
+        so the trail DEPTH is the thing the generated templates are most likely
+        to get wrong — a hub trail on a combo page renders, validates and reads
+        green everywhere else in this file.
+
+        Separators, not crumbs: the component emits one for every crumb after the
+        first, so this is `crumbDepth - 1`. Measured on a built service page —
+        2 crumbs, 1 separator. `class="` form per rule 2 in the header; the bare
+        class name reads 2 there because the flight payload carries it too.
+      */
+      if (e.crumbDepth !== undefined) {
+        const seps = count(p.html, /class="[^"]*bhc-breadcrumbs__sep/g);
+        assert.equal(
+          seps,
+          e.crumbDepth - 1,
+          `${p.route}: breadcrumb trail has ${seps + 1} crumb(s), expected ${e.crumbDepth}`
+        );
+      }
     } else {
       assert.equal(trail, 0, `${p.route}: breadcrumb trail rendered on a page whose contract has none`);
       assert.equal(schema, 0, `${p.route}: BreadcrumbList JSON-LD on a page whose contract has no breadcrumbs`);
@@ -1084,21 +1412,95 @@ test('SC-4i: the review figure leads every meta description that exists', () => 
   );
 });
 
-test('SC-4d: InterlinkBlock — gated, not deleted', () => {
+/*
+  Delta 16 — AN INTERLINK BLOCK IS REQUIRED BY TEMPLATE, NOT BY A GLOBAL FLAG.
+
+  This replaces a single boolean that gated the whole lock. That boolean was right
+  for Phase 2 and it did its job: it asserted the inverse on every page, so the
+  first page to render a block would fail and force the change. But the change it
+  forced is THIS ONE, and not a flip to the positive. Verified in 03-RESEARCH.md:
+  a global positive runs `assert.ok(n >= 1)` across every app page and reddens the
+  ten utility routes, the locations index and `/_not-found`, none of which composes
+  a block or should. The requirement was always per-template.
+
+  Required — §4, and design-system.md §4 is what keeps it a blanket rule:
+    `/`, every service page, every town hub, every combo page.
+  Exactly zero:
+    the ten utility routes, the locations index, `/_not-found`.
+
+  `/services/move-in-cleaning` IS NOT EXEMPTED, and the temptation to exempt it is
+  why this is written down. It has no combo pages of its own, so §5 scopes its
+  DESTINATION SET to the eight nearest published town hubs instead. Scoping the
+  destinations rather than the requirement keeps this a blanket lock at exactly the
+  moment the lock starts mattering; an exemption would be its first hole.
+*/
+const interlinkRequired = (route) =>
+  route === '/' || SERVICE_ROUTE.test(route) || templateFor(route) !== null;
+
+/*
+  The seven routes whose block a later plan in this phase composes, staged the way
+  this file stages every gap: a set asserted in the INVERSE while it is non-empty,
+  so a route that starts rendering a block FAILS and forces its own removal. Same
+  idiom as NO_RATING_YET and NO_PRIMARY_CTA_YET above, and the reason those were
+  kept rather than deleted once they emptied.
+
+  Plan 03-19 composes these seven and empties this set; plan 03-23 asserts it is
+  empty. Neither depends on anybody remembering.
+
+  A route belongs here ONLY if the rule already requires a block of it — asserted
+  below. Otherwise this set would be a way to move a route out of the negative half
+  rather than a record of unfinished work.
+*/
+const INTERLINK_PENDING = new Set([
+  '/',
+  '/services/deep-cleaning',
+  '/services/standard-home-cleaning',
+  '/services/move-in-cleaning',
+  '/services/move-out-cleaning',
+  '/services/short-term-rental-cleaning',
+  '/services/post-construction-cleaning',
+]);
+
+test('SC-4d / delta 16: an InterlinkBlock renders on exactly the templates that require one', () => {
   for (const p of APP_PAGES) {
     const n = count(p.html, /class="[^"]*bhc-interlink__list/g);
-    if (INTERLINK_LOCK_ACTIVE) {
-      assert.ok(n >= 1, `${p.route}: no InterlinkBlock in built HTML`);
-    } else {
-      // The inverse, so the gate restores itself. `InterlinkBlock` returns null
-      // without town data, so no Phase 2 page renders one; the moment one does,
-      // this fails and INTERLINK_LOCK_ACTIVE must be flipped to true.
+
+    if (INTERLINK_PENDING.has(p.route)) {
       assert.equal(
         n,
         0,
-        `${p.route}: an InterlinkBlock now renders — set INTERLINK_LOCK_ACTIVE = true so the positive lock takes over`
+        `${p.route}: an InterlinkBlock now renders — remove the route from INTERLINK_PENDING so the positive half takes over`
       );
+      continue;
     }
+
+    if (interlinkRequired(p.route)) {
+      assert.ok(n >= 1, `${p.route}: no InterlinkBlock in built HTML, and its template requires one`);
+      continue;
+    }
+
+    assert.equal(n, 0, `${p.route}: an InterlinkBlock renders on a route whose template has none`);
+  }
+
+  /*
+    Non-vacuity, and it is the assertion that matters most here: while the pending
+    set is full, EVERY route the positive half holds is suspended, so a classifier
+    that silently started returning false for everything would leave this lock
+    asserting zero everywhere and reading green forever. This asserts the
+    classification itself is non-empty, which is the property the pending set
+    suspends but does not remove.
+  */
+  assert.ok(
+    APP_PAGES.some((p) => interlinkRequired(p.route)),
+    'no app page is classified as requiring an InterlinkBlock — the positive half of this lock would be vacuous'
+  );
+
+  // And the pending set is a record of unfinished work, not an exemption route.
+  for (const route of INTERLINK_PENDING) {
+    assert.ok(
+      interlinkRequired(route),
+      `${route} is in INTERLINK_PENDING but no template requires an InterlinkBlock of it — the set may only hold work that is owed`
+    );
   }
 });
 
@@ -1111,21 +1513,36 @@ test('SC-4d: InterlinkBlock — gated, not deleted', () => {
   that does not exist. That is ROADMAP Success Criterion 3, and this is what
   makes it assertable instead of aspirational.
 
-  In Phase 2 exactly seven templates render the slider: Home and the six service
-  pages. Every other app page must carry the attribute NOWHERE — the negative
+  DELTA 21 — this was a seven-entry route literal and is now the same template
+  classification the expectation resolver uses: the slider renders on Home, every
+  service page and every COMBO page. Not on a town hub and not on the locations
+  index — a hub is a directory of services in one town and an index is a directory
+  of towns, and a before/after figure on either would be a picture of work done
+  somewhere the page is not about. At ~340 slider pages the literal was going to
+  be the thing that broke, and it would have broken by growing rather than by
+  failing.
+
+  Every other app page must carry the attribute NOWHERE — the negative
   half is what keeps this from being a lock that would pass on a page that
   accidentally rendered a second slider, and it is the half PHASE 4 INVERTS as
   it backfills real pairs: a backfilled page emits a state that is not
-  `pending`, this assertion goes red for that route, and the route moves out of
-  the list below. The marker is the machine-readable hand-off between the two
-  phases, not decoration.
+  `pending`, and this assertion goes red for that route. Phase 4 then narrows the
+  rule below rather than editing a list. The marker is the machine-readable
+  hand-off between the two phases, not decoration.
 
   THE ATTRIBUTE-WITH-VALUE FORM IS LOAD-BEARING, and it was measured rather than
   assumed. On a correct build the bare attribute NAME reads 2 on every slider
-  page — the flight payload serialises the prop key — while
-  `data-bhc-photo-state="pending"` reads 1. The negative half tests the bare
-  name deliberately: it is a ZERO assertion, so double-counting cannot inflate
-  it and scanning the payload as well only makes it stricter.
+  page — the flight payload serialises the prop key — while the attribute paired
+  with its value reads 1. So the POSITIVE half below counts the paired form
+  (assembled two lines down) and the NEGATIVE half tests the bare name: the
+  negative is a ZERO assertion, so double-counting cannot inflate it and scanning
+  the payload as well only makes it stricter.
+
+  Both markers are assembled from fragments rather than written whole, per rule 3
+  in the header, and the rule is stated here rather than instanced: the acceptance
+  check for delta 21 greps this file for the paired form and requires zero hits,
+  and this paragraph naming it would itself have been the hit. That collision has
+  fired twelve times in this repo.
 
   Counted by splitting on a plain string rather than with a global regex, so
   nothing here can be mistaken for a bare class-name count by the self-check
@@ -1134,26 +1551,19 @@ test('SC-4d: InterlinkBlock — gated, not deleted', () => {
 const PHOTO_STATE_ATTR = 'data-bhc-photo-state';
 const PHOTO_PENDING_MARKER = `${PHOTO_STATE_ATTR}="pending"`;
 
-const PHOTO_PLACEHOLDER_ROUTES = new Set([
-  '/',
-  '/services/deep-cleaning',
-  '/services/standard-home-cleaning',
-  '/services/move-in-cleaning',
-  '/services/move-out-cleaning',
-  '/services/short-term-rental-cleaning',
-  '/services/post-construction-cleaning',
-]);
+const photoPlaceholderExpected = (route) =>
+  route === '/' || SERVICE_ROUTE.test(route) || templateFor(route)?.kind === 'combo';
 
 const occurrences = (html, marker) => html.split(marker).length - 1;
 
-test('delta 8 / SC-3: the photo placeholder renders on exactly the seven slider pages', () => {
+test('delta 8 / delta 21 / SC-3: the photo placeholder renders on exactly the slider templates', () => {
   for (const p of APP_PAGES) {
-    if (PHOTO_PLACEHOLDER_ROUTES.has(p.route)) {
+    if (photoPlaceholderExpected(p.route)) {
       const n = occurrences(p.html, PHOTO_PENDING_MARKER);
       assert.equal(
         n,
         1,
-        `${p.route}: expected exactly 1 pending photo placeholder, found ${n} — if Phase 4 has backfilled real pairs here, remove this route from PHOTO_PLACEHOLDER_ROUTES`
+        `${p.route}: expected exactly 1 pending photo placeholder, found ${n} — if Phase 4 has backfilled real pairs here, narrow the rule above so this route is no longer classified as pending`
       );
       continue;
     }
@@ -1161,14 +1571,24 @@ test('delta 8 / SC-3: the photo placeholder renders on exactly the seven slider 
     // Zero assertion, so the bare attribute name is the stricter form.
     assert.ok(
       !p.html.includes(PHOTO_STATE_ATTR),
-      `${p.route}: a BeforeAfterSlider renders on a page whose template has none — add the route to PHOTO_PLACEHOLDER_ROUTES or remove the slider`
+      `${p.route}: a BeforeAfterSlider renders on a page whose template has none — widen the rule above or remove the slider`
     );
   }
 
   assert.ok(
-    APP_PAGES.some((p) => PHOTO_PLACEHOLDER_ROUTES.has(p.route)),
-    'no app page is in PHOTO_PLACEHOLDER_ROUTES — the positive half of this lock would be vacuous'
+    APP_PAGES.some((p) => photoPlaceholderExpected(p.route)),
+    'no app page is classified as a slider template — the positive half of this lock would be vacuous'
   );
+  assert.ok(
+    APP_PAGES.some((p) => !photoPlaceholderExpected(p.route)),
+    'every app page is classified as a slider template — the negative half of this lock would be vacuous'
+  );
+
+  // The classification, on the shapes there is no built page for yet. A hub and
+  // the locations index are the two the rule must NOT pick up.
+  assert.equal(photoPlaceholderExpected('/location/warwickshire/warwick/deep-cleaning'), true);
+  assert.equal(photoPlaceholderExpected('/locations/warwick'), false);
+  assert.equal(photoPlaceholderExpected('/locations'), false);
 });
 
 test('SC-4e: Button renders from the package', () => {
