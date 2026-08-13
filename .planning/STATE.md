@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: awaiting-human-checkpoint
-stopped_at: 02-15-PLAN.md task 2 — blocking human-verify checkpoint (12 visual + keyboard checks); 02-16 reviews work complete on top of it
-last_updated: "2026-08-11T14:50:00.000Z"
-last_activity: 2026-08-11
+status: executing
+stopped_at: 03-01 complete (Wave 0 harness rewrite). npm run verify exit 0 at 20 + 39 tests, 19 routes.
+last_updated: "2026-08-13T11:52:10.850Z"
+last_activity: 2026-08-13
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 20
-  completed_plans: 19
-  percent: 17
+  total_plans: 44
+  completed_plans: 22
+  percent: 50
 ---
 
 # Project State
@@ -21,15 +21,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-08)
 
 **Core value:** Every technical and content decision serves organic + Google Maps visibility for `cleaner <town>` and `<service> <town>` searches across Warwickshire, Coventry, and five new postcode areas (B, DY, TF, WS, WV).
-**Current focus:** Phase 02 — component-library-completion-core-templates
+**Current focus:** Phase 03 — programmatic-location-service-engine
 
 ## Current Position
 
-Phase: 02 (component-library-completion-core-templates) — EXECUTING
-Plan: 15 of 15 — PAUSED at a blocking human checkpoint; 02-16 (unplanned) landed on top
-Status: 02-15 task 1 COMPLETE (all four Success Criteria proven against build output). 02-15 task 2
-        is a `checkpoint:human-verify` and has NOT been answered — the twelve visual and keyboard
-        checks in 02-15-SUMMARY.md still need Sam. The phase is NOT verified.
+Phase: 03 (programmatic-location-service-engine) — EXECUTING
+Plan: 2 of 24
+Status: 03-01 COMPLETE — Wave 0's lock-harness rewrite landed as one commit (`5120f5b`) against one
+        build. `npm run verify` exit 0 at **20 + 39** tests (was 20 + 37), still 19 routes, JS
+        unchanged at 129.8 KB, worst page 299.4 KB. No route, page, component or content module was
+        touched: this plan only taught the harness to classify routes by template so the generated
+        pages in waves 1+ cannot redden `main`. Ready to execute 03-02.
+
+        **STILL THE STANDING GATE — carried from Phase 2, not resolved by anything above:** 02-15
+        task 2 is a `checkpoint:human-verify` and has NOT been answered — the twelve visual and
+        keyboard checks in 02-15-SUMMARY.md still need Sam. Phase 2 is NOT verified (14/15), which
+        is why `completed_phases` is 1 rather than 2.
         `www.beyondhousecleaning.com` still on Webflow, untouched.
 
         **02-16 (2026-08-11, no PLAN.md — Phase 4 work pulled forward at Sam's request):** eighteen
@@ -42,9 +49,9 @@ Status: 02-15 task 1 COMPLETE (all four Success Criteria proven against build ou
         When re-running 02-15's twelve visual checks, note two are now different: the home page has
         a seventh band (the review rail, `warm`, between ProcessSteps and the FAQs) and the trust
         band has a `Read Our Reviews` action under it.
-Last activity: 2026-08-11
+Last activity: 2026-08-13
 
-Progress: [█████████░] 93%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -85,6 +92,7 @@ Progress: [█████████░] 93%
 | Phase 02 P13 | 52min | 3 tasks tasks | 3 files files |
 | Phase 02 P15 | 18min | 1 of 2 tasks tasks | 0 files files |
 | Phase 02 P16 | 95min | 5 tasks | 14 files |
+| Phase 03 P01 | 34min | 3 tasks | 1 file |
 
 ## Accumulated Context
 
@@ -188,6 +196,10 @@ Highlights a fresh session needs immediately:
 - [Phase 02]: 02-16: `.bhc-section__action` is a plain class in SectionBand's CSS block (the .bhc-service-card__grid arrangement), NOT an `actions` prop — a band that carries its own CTA is a second, weaker CTA surface on all 18 call sites, competing with CTABand above the footer
 - [Phase 02]: 02-16: UI-SPEC §5 gained a Revision 2 note, §7.14 was rewritten and §13-P is struck through as REVERSED — the spec had said the CTA was withdrawn and Phase 4 would supply the data, both now false and both would have misinformed Phase 3 planning
 - [Phase 02]: 02-16: twelfth avoided scanner self-collision — the CTA label lives in reviews.js (no grep polices it) precisely so home.js can explain the restoration without instancing the string its own acceptance check greps for
+- [Phase ?]: 03-01: the lock harness classifies routes by template rule, not by route literal — expectationsFor keeps its signature and its throw, with the 20-entry literal keeping precedence so hand-authored copy is still asserted verbatim
+- [Phase ?]: 03-01: MIN_APP_ROUTES is a hard-coded integer (18 today) and is never derived from PUBLISHED_TOWNS or any content module — a floor computed from the code it guards asserts only that the code agrees with itself. Raised by the plan that lands routes: batch 1 = 167, full rollout = 426
+- [Phase ?]: 03-01: INTERLINK_LOCK_ACTIVE was deleted and replaced by a per-template requirement plus a self-restoring INTERLINK_PENDING set (7 routes), NOT flipped to true — under true the lock asserts n >= 1 on every app page and reddens 12 correct pages. Plan 03-19 empties the set, 03-23 asserts it empty
+- [Phase ?]: 03-01: EXPECTED_METADATA_ROUTES is empty and asserted equal to the built metadata routes in both directions — Phase 5 adds the sitemap route string to it in the same commit as app/sitemap.js, or the build goes red rather than silently unasserted
 
 ### Pending Todos
 
@@ -230,8 +242,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-11T14:50:00.000Z
-Stopped at: 02-16 complete (reviews, unplanned). 02-15-PLAN.md task 2 is still the open blocking
-            `checkpoint:human-verify` — 12 checks pending Sam, two of which the reviews change
-            altered. The branch is not pushed.
-Resume file: .planning/phases/02-component-library-completion-core-templates/02-16-REVIEWS-SUMMARY.md
+Last session: 2026-08-13T11:52:10.838Z
+Stopped at: 03-01 complete (Wave 0 harness rewrite). npm run verify exit 0 at 20 + 39 tests, 19 routes.
+            Phase 2's 02-15 task 2 remains an open blocking `checkpoint:human-verify` — 12 checks
+            pending Sam, two of which the reviews change altered. The branch is not pushed.
+Resume file: None
