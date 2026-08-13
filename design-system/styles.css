@@ -1299,6 +1299,74 @@ h4.bhc-town-card__title { font-size: var(--bhc-text-lg); }
   body { padding-bottom: 64px; }
 }
 
+/* --- Locations index and the stacked interlink pair -----------------------
+   Three plain classes a template applies, following plan 02-16's
+   .bhc-section__action precedent. None of them adds a prop to a component and
+   none is a new component: a 23rd component directory would cost four files,
+   two .design-sync registrations and a raised delta-9 floor to deliver one
+   gap and one border.
+
+   THE 44px FLOOR IS DECLARED, NEVER LEFT TO PADDING. --bhc-text-sm is a clamp
+   whose mobile end is 14px; that text plus a --bhc-space-2 pad above and below
+   computes to 42.9px, which reads as if it clears UI-SPEC §2's 44 × 44 target
+   and does not. Both link rules below state min-height outright.
+
+   Descendant rules go through :where() so specificity stays at zero and a
+   bhc- component dropped inside still wins — the .bhc-prose convention.
+
+   .bhc-jump-links is the wrapped row of county anchors on /locations, and the
+   only substitute for a filter box that survives the zero-JavaScript rule. The
+   class carries the flex row itself and also applies it to a nested <ul>, so it
+   works whether the template puts it on the <nav> or on the list.            */
+
+.bhc-jump-links,
+.bhc-jump-links :where(ul) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bhc-space-2);
+}
+
+.bhc-jump-links :where(ul) { list-style: none; margin: 0; padding: 0; }
+
+.bhc-jump-links :where(a) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--bhc-text-sm);
+  font-weight: var(--bhc-weight-semibold);
+}
+
+/* One SectionBand holds every county group — seven bands would stack seven
+   lots of --bhc-section-y into a page whose job is to be scanned — so the
+   separation between groups is declared here, on the adjacent sibling only.
+   No leading margin on the first group, which the band already spaces.
+
+   __back is part of this block, not a fourth class. Every group ends with an
+   anchor back to the jump row because at 375px the grid is one column and a
+   reader who has passed sixteen cards is ~20 screens from it with no
+   scroll-to-top gesture available.                                          */
+
+.bhc-town-group + .bhc-town-group { margin-top: var(--bhc-space-12); }
+
+.bhc-town-group__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--bhc-space-4);
+  font-size: var(--bhc-text-sm);
+  color: var(--bhc-action-hover);
+}
+
+/* The hairline between the combo page's stacked interlink pair — the two
+   blocks sit one above the other with no band between them, so without this
+   they read as one long list. .bhc-interlink already pads its block axis by
+   the same token; the padding is restated so the rule reads as one shape.   */
+
+.bhc-interlink + .bhc-interlink {
+  border-top: 1px solid var(--bhc-line);
+  padding-top: var(--bhc-space-12);
+}
+
 /* --- Focus overrides — THIS SECTION MUST REMAIN LAST IN THE FILE ----------
    Every later plan appends its component block ABOVE this banner, never
    below it. These two rules are scoped overrides of the base
