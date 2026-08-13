@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: 03-02 complete (package changes for the location engine). npm run verify exit 0 at 21 + 39 tests, 19 routes.
-last_updated: "2026-08-13T12:08:00.635Z"
+stopped_at: 03-03 complete (the domestic-cleaning 8x8 variant grid). npm run verify exit 0 at 21 + 39 tests, 19 routes, unchanged budget.
+last_updated: "2026-08-13T12:28:00.250Z"
 last_activity: 2026-08-13
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 44
-  completed_plans: 23
-  percent: 52
+  completed_plans: 24
+  percent: 55
 ---
 
 # Project State
@@ -26,21 +26,36 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 03 (programmatic-location-service-engine) — EXECUTING
-Plan: 3 of 24
-Status: 03-02 COMPLETE — the three package changes the phase's templates need, in three commits
-        (`3ec4bf0`, `162a7c1`, `373c1fb`). `buildInterlinks` takes an optional
-        `metaFor(destination, miles)` formatter defaulting to today's distance string; the geometry
-        is published as a **`./geo` exports subpath** so a bare `node` process can import it without
-        touching the barrel's `.jsx`; the review rail's default `<h2>` is now
-        `What our customers say` in all four files; and `.bhc-jump-links`, `.bhc-town-group`
-        (+ `__back`) and `.bhc-interlink + .bhc-interlink` exist as token-only classes above the
-        focus-override banner. `npm run verify` exit 0 at **21 + 39** tests, still 19 routes, JS
-        unchanged at 129.8 KB, CSS one shared 4.8 KB file, worst page 299.5 KB. Zero dependencies,
-        zero devDependencies, no build step, no `dist/` — re-proved by running the suite from a
-        scratch copy with no `node_modules`. Ready to execute 03-03.
+Plan: 4 of 24
+Status: 03-03 COMPLETE — the first of the seven service-variant copy decks, in two commits
+        (`a3aa922`, `8e2c986`). `web/content/variants/domestic-cleaning.js` exports `A_VARIANTS[8]`
+        (service detail, 300-353 words each, one section heading + two paragraphs + one list) and
+        `B_VARIANTS[8]` (how the job runs, 251-287 words each, one sub-heading + three paragraphs,
+        no list). 4,798 authored words. The two axes are ORTHOGONAL by construction — A is eight
+        subjects inside the house, B is eight stages of a visit — which is what keeps the 8x8 grid a
+        grid. Measured: all-16 mean 5-gram Jaccard **0.0003** / worst 0.0158, and **TF-IDF cosine
+        mean 0.0709**, which is the metric that actually detects paraphrase (a paraphrase deck sits
+        at 0.736 there while passing the lexical gate at 0.05). Also measured against the six
+        shipped `services.js` prose decks, worst 0.0088 — this is new prose, not recycled house
+        copy, and that check caught two B passages drafted with `services.js`'s own examples. The
+        plan's sibling sweep ran and reported `compared against 0 sibling deck(s)`: **vacuous, a
+        legitimate pass, and NOT coverage** — 03-03 through 03-08 are wave-mates with no ordering,
+        and 03-17 task 1 is the gate that actually holds over all 6,216 cross-deck pairs.
+        `npm run verify` exit 0 at **21 + 39** tests, still **19** routes, JS unchanged at 129.8 KB,
+        worst page 299.5 KB — identical to the 03-02 baseline in every figure, which is correct: no
+        route imports this module yet. **No requirement was marked complete** (see the Decisions
+        entry). Ready to execute 03-04.
 
-        03-01 before it: Wave 0's lock-harness rewrite landed as one commit (`5120f5b`) against one
-        build, taking the harness from 37 to 39 tests so the generated pages in waves 1+ cannot
+        03-02 before it: `buildInterlinks` takes an optional `metaFor(destination, miles)` formatter
+        defaulting to today's distance string; the geometry is published as a **`./geo` exports
+        subpath** so a bare `node` process can import it without touching the barrel's `.jsx`; the
+        review rail's default `<h2>` is now `What our customers say` in all four files; and
+        `.bhc-jump-links`, `.bhc-town-group` (+ `__back`) and `.bhc-interlink + .bhc-interlink`
+        exist as token-only classes above the focus-override banner. Three commits (`3ec4bf0`,
+        `162a7c1`, `373c1fb`), no package installed, zero dependencies still.
+
+        03-01 before that: Wave 0's lock-harness rewrite landed as one commit (`5120f5b`) against
+        one build, taking the harness from 37 to 39 tests so the generated pages in waves 1+ cannot
         redden `main`.
 
         **STILL THE STANDING GATE — carried from Phase 2, not resolved by anything above:** 02-15
@@ -63,7 +78,7 @@ Status: 03-02 COMPLETE — the three package changes the phase's templates need,
         pages.
 Last activity: 2026-08-13
 
-Progress: [█████░░░░░] 52%
+Progress: [██████░░░░] 55%
 
 ## Performance Metrics
 
@@ -106,6 +121,7 @@ Progress: [█████░░░░░] 52%
 | Phase 02 P16 | 95min | 5 tasks | 14 files |
 | Phase 03 P01 | 34min | 3 tasks | 1 file |
 | Phase 03 P02 | 41min | 3 tasks | 10 files |
+| Phase 03 P03 | 41min | 2 tasks | 1 file |
 
 ## Accumulated Context
 
@@ -218,6 +234,11 @@ Highlights a fresh session needs immediately:
 - [Phase 03]: 03-02: ReviewRail's default heading is `What our customers say` SITEWIDE and names no county — no review in the data carries a town and none may be invented one (02-16), so a county is a claim the data cannot support and is false outside Warwickshire; the `town` prop is kept but passed by NO template (§13-J), so Phase 4's decision stays a data change rather than a breaking API change
 - [Phase 03]: 03-02: the three new CSS classes declare `min-height: 44px` outright — --bhc-text-sm is a clamp whose mobile end plus a --bhc-space-2 pad computes to 42.9px, which looks like it clears the 44 × 44 target and does not; .bhc-jump-links applies its flex row to itself AND to a nested ul so the class works on the nav or on the list
 - [Phase 03]: 03-02: the state SDK's write verbs are still unsafe on this project — `state.record-metric` alone flipped `status` to completed, `completed_phases` to 2 and `percent` to 33, and doubled the words in the row it appended; every STATE.md field here was repaired by hand and the metric row rewritten
+- [Phase 03]: 03-03: the variant-deck module header states the block shape in words rather than in block literals - a conventional block-shape comment would take the h2/h3 grep counts to 9 and the h1 count to 1, failing the three greps that police it
+- [Phase 03]: 03-03: the seven variant decks measure distinctness with BOTH metrics - 5-gram Jaccard is lexical and cannot see paraphrase (a paraphrase deck measures 0.05 and passes), TF-IDF cosine can (the same deck measures 0.736); domestic-cleaning lands at 0.0709 mean
+- [Phase 03]: 03-03: a vacuous sibling sweep is recorded as vacuous, never as coverage - the wave-1 variant plans have no ordering between them, so 'compared against 0 sibling decks' is a legitimate pass that proves nothing; each deck therefore also measures against the six shipped services.js prose decks, which IS non-vacuous (worst 0.0088)
+- [Phase 03]: 03-03: no requirement marked complete by a copy-deck plan - 20 of phase 03's 24 plans claim REQ-content-depth-bar and REQ-programmatic-page-scale, both of which are measurements over built HTML and a route count; the plan that lands batch 1's routes owns them
+- [Phase 03]: 03-03: CONFIRMED REPEAT of 03-02's finding — the state SDK's write verbs corrupt this STATE.md every time. `state.update-progress` flipped `completed_phases` 1 -> 2 (Phase 2 is unverified at 14/15) and `percent` 52 -> 33 while writing 55% into the body bar; `state.advance-plan` replaced the Status line and orphaned the whole narrative under it; `state.record-metric` and `state.add-decision` reject positional args and need `--phase/--plan/--duration/--summary` flags, and add-decision labels an entry `[Phase ?]` without `--phase`. All four fields repaired by hand, both times. Any future executor should diff STATE.md against a snapshot after every SDK write rather than trusting the handler's own JSON
 
 ### Pending Todos
 
@@ -260,10 +281,12 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-13T12:08:00.635Z
-Stopped at: 03-02 complete (package changes: geo.js metaFor, the ./geo subpath, the county-free rail
-            heading, three token-only CSS classes). npm run verify exit 0 at 21 + 39 tests, 19
-            routes. Three commits, no package installed, zero dependencies still.
+Last session: 2026-08-13T12:28:00.239Z
+Stopped at: 03-03 complete (the domestic-cleaning 8x8 variant grid: A_VARIANTS[8] + B_VARIANTS[8],
+            4,798 authored words, TF-IDF cosine mean 0.0709). npm run verify exit 0 at 21 + 39
+            tests, 19 routes, budget unchanged at 129.8 KB JS / 299.5 KB worst page. Two commits,
+            one new file, no package installed, zero dependencies still. No requirement marked
+            complete. The sibling sweep was vacuous (0 sibling decks) and is recorded as such.
             Phase 2's 02-15 task 2 remains an open blocking `checkpoint:human-verify` — 12 checks
             pending Sam, three of which have now changed under them (the review band, the
             `Read Our Reviews` action, and the rail's heading). The branch is not pushed.
