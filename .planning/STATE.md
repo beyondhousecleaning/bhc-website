@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: 03-01 complete (Wave 0 harness rewrite). npm run verify exit 0 at 20 + 39 tests, 19 routes.
-last_updated: "2026-08-13T11:52:10.850Z"
+stopped_at: 03-02 complete (package changes for the location engine). npm run verify exit 0 at 21 + 39 tests, 19 routes.
+last_updated: "2026-08-13T12:08:00.635Z"
 last_activity: 2026-08-13
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 44
-  completed_plans: 22
-  percent: 50
+  completed_plans: 23
+  percent: 52
 ---
 
 # Project State
@@ -26,12 +26,22 @@ See: .planning/PROJECT.md (updated 2026-08-08)
 ## Current Position
 
 Phase: 03 (programmatic-location-service-engine) — EXECUTING
-Plan: 2 of 24
-Status: 03-01 COMPLETE — Wave 0's lock-harness rewrite landed as one commit (`5120f5b`) against one
-        build. `npm run verify` exit 0 at **20 + 39** tests (was 20 + 37), still 19 routes, JS
-        unchanged at 129.8 KB, worst page 299.4 KB. No route, page, component or content module was
-        touched: this plan only taught the harness to classify routes by template so the generated
-        pages in waves 1+ cannot redden `main`. Ready to execute 03-02.
+Plan: 3 of 24
+Status: 03-02 COMPLETE — the three package changes the phase's templates need, in three commits
+        (`3ec4bf0`, `162a7c1`, `373c1fb`). `buildInterlinks` takes an optional
+        `metaFor(destination, miles)` formatter defaulting to today's distance string; the geometry
+        is published as a **`./geo` exports subpath** so a bare `node` process can import it without
+        touching the barrel's `.jsx`; the review rail's default `<h2>` is now
+        `What our customers say` in all four files; and `.bhc-jump-links`, `.bhc-town-group`
+        (+ `__back`) and `.bhc-interlink + .bhc-interlink` exist as token-only classes above the
+        focus-override banner. `npm run verify` exit 0 at **21 + 39** tests, still 19 routes, JS
+        unchanged at 129.8 KB, CSS one shared 4.8 KB file, worst page 299.5 KB. Zero dependencies,
+        zero devDependencies, no build step, no `dist/` — re-proved by running the suite from a
+        scratch copy with no `node_modules`. Ready to execute 03-03.
+
+        03-01 before it: Wave 0's lock-harness rewrite landed as one commit (`5120f5b`) against one
+        build, taking the harness from 37 to 39 tests so the generated pages in waves 1+ cannot
+        redden `main`.
 
         **STILL THE STANDING GATE — carried from Phase 2, not resolved by anything above:** 02-15
         task 2 is a `checkpoint:human-verify` and has NOT been answered — the twelve visual and
@@ -48,10 +58,12 @@ Status: 03-01 COMPLETE — Wave 0's lock-harness rewrite landed as one commit (`
         still the phase gate.
         When re-running 02-15's twelve visual checks, note two are now different: the home page has
         a seventh band (the review rail, `warm`, between ProcessSteps and the FAQs) and the trust
-        band has a `Read Our Reviews` action under it.
+        band has a `Read Our Reviews` action under it. Since 03-02 the rail's heading reads
+        `What our customers say` rather than naming a county, on the home page and all six service
+        pages.
 Last activity: 2026-08-13
 
-Progress: [█████░░░░░] 50%
+Progress: [█████░░░░░] 52%
 
 ## Performance Metrics
 
@@ -93,6 +105,7 @@ Progress: [█████░░░░░] 50%
 | Phase 02 P15 | 18min | 1 of 2 tasks tasks | 0 files files |
 | Phase 02 P16 | 95min | 5 tasks | 14 files |
 | Phase 03 P01 | 34min | 3 tasks | 1 file |
+| Phase 03 P02 | 41min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -200,6 +213,11 @@ Highlights a fresh session needs immediately:
 - [Phase ?]: 03-01: MIN_APP_ROUTES is a hard-coded integer (18 today) and is never derived from PUBLISHED_TOWNS or any content module — a floor computed from the code it guards asserts only that the code agrees with itself. Raised by the plan that lands routes: batch 1 = 167, full rollout = 426
 - [Phase ?]: 03-01: INTERLINK_LOCK_ACTIVE was deleted and replaced by a per-template requirement plus a self-restoring INTERLINK_PENDING set (7 routes), NOT flipped to true — under true the lock asserts n >= 1 on every app page and reddens 12 correct pages. Plan 03-19 empties the set, 03-23 asserts it empty
 - [Phase ?]: 03-01: EXPECTED_METADATA_ROUTES is empty and asserted equal to the built metadata routes in both directions — Phase 5 adds the sitemap route string to it in the same commit as app/sitemap.js, or the build goes red rather than silently unasserted
+- [Phase 03]: 03-02: the design-system publishes a `./geo` exports subpath pointing at the plain .js geometry — the barrel routes those functions through InterlinkBlock.jsx, so `.` cannot be imported by bare node; a lock asserts the target's exact path AND its extension, because a .jsx target still resolves inside Next and breaks only outside it
+- [Phase 03]: 03-02: buildInterlinks takes an optional metaFor(destination, miles) whose default is today's distance string — the geography belongs in the ORDERING (which is all SC-4 requires) and call sites at page scale return the destination's COUNTY; returning undefined suppresses the line, since InterlinkBlock renders the meta span only when truthy
+- [Phase 03]: 03-02: ReviewRail's default heading is `What our customers say` SITEWIDE and names no county — no review in the data carries a town and none may be invented one (02-16), so a county is a claim the data cannot support and is false outside Warwickshire; the `town` prop is kept but passed by NO template (§13-J), so Phase 4's decision stays a data change rather than a breaking API change
+- [Phase 03]: 03-02: the three new CSS classes declare `min-height: 44px` outright — --bhc-text-sm is a clamp whose mobile end plus a --bhc-space-2 pad computes to 42.9px, which looks like it clears the 44 × 44 target and does not; .bhc-jump-links applies its flex row to itself AND to a nested ul so the class works on the nav or on the list
+- [Phase 03]: 03-02: the state SDK's write verbs are still unsafe on this project — `state.record-metric` alone flipped `status` to completed, `completed_phases` to 2 and `percent` to 33, and doubled the words in the row it appended; every STATE.md field here was repaired by hand and the metric row rewritten
 
 ### Pending Todos
 
@@ -242,8 +260,11 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-13T11:52:10.838Z
-Stopped at: 03-01 complete (Wave 0 harness rewrite). npm run verify exit 0 at 20 + 39 tests, 19 routes.
+Last session: 2026-08-13T12:08:00.635Z
+Stopped at: 03-02 complete (package changes: geo.js metaFor, the ./geo subpath, the county-free rail
+            heading, three token-only CSS classes). npm run verify exit 0 at 21 + 39 tests, 19
+            routes. Three commits, no package installed, zero dependencies still.
             Phase 2's 02-15 task 2 remains an open blocking `checkpoint:human-verify` — 12 checks
-            pending Sam, two of which the reviews change altered. The branch is not pushed.
+            pending Sam, three of which have now changed under them (the review band, the
+            `Read Our Reviews` action, and the rail's heading). The branch is not pushed.
 Resume file: None
